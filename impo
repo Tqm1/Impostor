@@ -1,0 +1,3345 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Impostor</title>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            #3b1678 0%,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            #581c87 0%,
+            transparent 35%
+        ),
+        #08080d;
+
+    color: white;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 15px;
+
+}
+
+.app {
+
+    width: 100%;
+
+    max-width: 540px;
+
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+
+    text-align: center;
+
+    margin-bottom: 18px;
+
+}
+
+.logo .emoji {
+
+    font-size: 58px;
+
+    filter:
+        drop-shadow(
+            0 0 18px
+            rgba(168,85,247,.8)
+        );
+
+}
+
+.logo h1 {
+
+    margin:
+        4px 0 0;
+
+    font-size: 38px;
+
+    letter-spacing: 2px;
+
+}
+
+.logo p {
+
+    margin:
+        5px 0 0;
+
+    color: #aaa;
+
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card {
+
+    background:
+        rgba(24,23,39,.95);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 25px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.55);
+
+    animation:
+        appear .3s ease;
+
+}
+
+@keyframes appear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(12px)
+            scale(.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =====================================================
+   FORMULARZE
+===================================================== */
+
+h2 {
+
+    margin-top: 0;
+
+}
+
+label {
+
+    display: block;
+
+    text-align: left;
+
+    color: #bcbac7;
+
+    font-size: 14px;
+
+    margin:
+        18px 0 8px;
+
+}
+
+input[type="text"],
+select {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid
+        #3d3a52;
+
+    background:
+        #11101b;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+
+}
+
+input[type="text"]:focus,
+select:focus {
+
+    border-color:
+        #a855f7;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(168,85,247,.15);
+
+}
+
+
+/* =====================================================
+   BUTTONY
+===================================================== */
+
+button {
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 16px;
+
+    margin-top: 14px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #c026d3
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform .15s,
+        filter .15s;
+
+    box-shadow:
+        0 9px 24px
+        rgba(124,58,237,.28);
+
+}
+
+button:active {
+
+    transform:
+        scale(.97);
+
+}
+
+button:hover {
+
+    filter:
+        brightness(1.08);
+
+}
+
+button.secondary {
+
+    background:
+        #29273a;
+
+    box-shadow: none;
+
+}
+
+button.green {
+
+    background:
+        linear-gradient(
+            135deg,
+            #059669,
+            #10b981
+        );
+
+}
+
+button.red {
+
+    background:
+        linear-gradient(
+            135deg,
+            #dc2626,
+            #ef4444
+        );
+
+}
+
+
+/* =====================================================
+   LISTA GRACZY
+===================================================== */
+
+.player-list {
+
+    margin-top: 14px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+}
+
+.player-tag {
+
+    background:
+        #29273a;
+
+    padding:
+        8px 12px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        13px;
+
+}
+
+
+/* =====================================================
+   KATEGORIE
+===================================================== */
+
+.category-panel {
+
+    margin-top: 10px;
+
+    padding: 10px;
+
+    border-radius: 15px;
+
+    background: #11101b;
+
+    border: 1px solid #3d3a52;
+
+}
+
+.category-check {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 3px 0;
+
+    padding: 11px 10px;
+
+    border-radius: 10px;
+
+    color: #ddd;
+
+    cursor: pointer;
+
+    transition:
+        background .15s,
+        border-color .15s;
+
+    border: 1px solid transparent;
+
+}
+
+.category-check:hover {
+
+    background:
+        rgba(168,85,247,.08);
+
+}
+
+.category-check input {
+
+    width: 18px;
+
+    height: 18px;
+
+    margin: 0;
+
+    padding: 0;
+
+    accent-color: #a855f7;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+}
+
+.category-check span {
+
+    font-size: 14px;
+
+}
+
+.all-category {
+
+    margin-bottom: 8px;
+
+    background:
+        rgba(168,85,247,.12);
+
+    border-color:
+        rgba(168,85,247,.25);
+
+    font-weight: 700;
+
+}
+
+.category-selected {
+
+    background:
+        rgba(168,85,247,.14);
+
+    border-color:
+        #a855f7;
+
+}
+
+.adult-category {
+
+    margin-top: 8px;
+
+    background:
+        rgba(220,38,38,.08);
+
+    border-color:
+        rgba(239,68,68,.25);
+
+}
+
+.adult-category input {
+
+    accent-color:
+        #ef4444;
+
+}
+
+.adult-category.category-selected {
+
+    background:
+        rgba(239,68,68,.13);
+
+    border-color:
+        #ef4444;
+
+}
+
+
+/* =====================================================
+   INFO
+===================================================== */
+
+.info {
+
+    margin-top: 15px;
+
+    padding: 13px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(139,92,246,.09);
+
+    border:
+        1px solid
+        rgba(139,92,246,.15);
+
+    color: #bbb;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress {
+
+    height: 7px;
+
+    background:
+        #29273a;
+
+    border-radius:
+        10px;
+
+    overflow: hidden;
+
+    margin:
+        18px 0 22px;
+
+}
+
+.progress-bar {
+
+    height: 100%;
+
+    width: 0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8b5cf6,
+            #ec4899
+        );
+
+    transition:
+        width .3s ease;
+
+}
+
+
+/* =====================================================
+   ROLE
+===================================================== */
+
+.pass-icon {
+
+    font-size: 65px;
+
+    margin:
+        8px 0;
+
+}
+
+.player-name {
+
+    color:
+        #c084fc;
+
+    font-size:
+        30px;
+
+    font-weight:
+        800;
+
+    margin:
+        10px 0;
+
+}
+
+.role-box {
+
+    margin:
+        20px 0;
+
+    padding:
+        27px 16px;
+
+    border-radius:
+        19px;
+
+    background:
+        #11101b;
+
+    border:
+        1px solid
+        #39364e;
+
+    text-align:
+        center;
+
+}
+
+.role-title {
+
+    font-size:
+        25px;
+
+    font-weight:
+        800;
+
+    color:
+        #ff4d8d;
+
+}
+
+.role-subtitle {
+
+    color:
+        #bbb;
+
+    line-height:
+        1.5;
+
+}
+
+.word {
+
+    font-size:
+        36px;
+
+    font-weight:
+        900;
+
+    color:
+        #2dd4bf;
+
+    margin:
+        15px 0;
+
+    text-shadow:
+        0 0 22px
+        rgba(45,212,191,.22);
+
+}
+
+.hint-title {
+
+    color:
+        #fbbf24;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    margin-top:
+        25px;
+
+}
+
+.hint {
+
+    color:
+        #fbbf24;
+
+    font-size:
+        23px;
+
+    font-weight:
+        800;
+
+    margin-top:
+        8px;
+
+}
+
+.category {
+
+    display:
+        inline-block;
+
+    padding:
+        7px 12px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(139,92,246,.15);
+
+    color:
+        #c4b5fd;
+
+    font-size:
+        13px;
+
+}
+
+.difficulty {
+
+    display:
+        inline-block;
+
+    margin-top:
+        10px;
+
+    padding:
+        6px 10px;
+
+    border-radius:
+        15px;
+
+    font-size:
+        12px;
+
+    background:
+        #242236;
+
+}
+
+.big-emoji {
+
+    font-size:
+        65px;
+
+}
+
+.small {
+
+    font-size:
+        13px;
+
+    color:
+        #999;
+
+    line-height:
+        1.5;
+
+}
+
+.success {
+
+    color:
+        #34d399;
+
+}
+
+
+/* =====================================================
+   WYNIK
+===================================================== */
+
+.result-box {
+
+    text-align:
+        center;
+
+    background:
+        #11101b;
+
+    border-radius:
+        19px;
+
+    padding:
+        25px;
+
+    margin:
+        15px 0;
+
+}
+
+.result-impostors {
+
+    color:
+        #ff4d8d;
+
+    font-size:
+        24px;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    text-align:
+        center;
+
+    color:
+        #666;
+
+    font-size:
+        12px;
+
+    margin-top:
+        15px;
+
+}
+
+.creator-credit {
+
+    position: fixed;
+
+    right: 12px;
+
+    bottom: 10px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    opacity: .8;
+
+    letter-spacing: .3px;
+
+    pointer-events: none;
+
+}
+
+hr {
+
+    border:
+        0;
+
+    border-top:
+        1px solid
+        #29273a;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    body {
+
+        align-items:
+            flex-start;
+
+        padding-top:
+            12px;
+
+    }
+
+    .card {
+
+        padding:
+            20px;
+
+    }
+
+    .logo .emoji {
+
+        font-size:
+            48px;
+
+    }
+
+    .logo h1 {
+
+        font-size:
+            32px;
+
+    }
+
+    .creator-credit {
+
+        right:
+            8px;
+
+        bottom:
+            6px;
+
+        font-size:
+            10px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- =====================================================
+     LOGO
+===================================================== -->
+
+<div class="logo">
+
+    <div class="emoji">
+        🕵️
+    </div>
+
+    <h1>
+        IMPOSTOR
+    </h1>
+
+    <p>
+        Komu można zaufać?
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     SETUP
+===================================================== -->
+
+<div
+    id="setup-screen"
+    class="card"
+>
+
+    <h2>
+        🎮 Nowa gra
+    </h2>
+
+
+    <label>
+        Imiona graczy
+    </label>
+
+
+    <input
+        id="players-input"
+        type="text"
+        value=""
+        placeholder="Np. Tymek, Daria, Kuba"
+    >
+
+
+    <div
+        id="player-preview"
+        class="player-list">
+    </div>
+
+
+    <label>
+        Liczba impostorów
+    </label>
+
+
+    <select
+        id="impostor-count">
+    </select>
+
+
+    <label>
+        Kategorie haseł
+    </label>
+
+
+    <div class="category-panel">
+
+
+        <!-- WSZYSTKIE -->
+
+        <label
+            class="category-check all-category"
+        >
+
+            <input
+                type="checkbox"
+                id="all-categories"
+                checked
+            >
+
+            <span>
+                🎲 Wszystkie kategorie
+            </span>
+
+        </label>
+
+
+        <div id="category-options">
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="food"
+                >
+                <span>
+                    🍕 Jedzenie
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="fastfood"
+                >
+                <span>
+                    🍔 Fast Food
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="drinks"
+                >
+                <span>
+                    🥤 Napoje
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="animals"
+                >
+                <span>
+                    🐶 Zwierzęta
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="places"
+                >
+                <span>
+                    🌍 Miejsca
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="objects"
+                >
+                <span>
+                    📦 Przedmioty
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="nature"
+                >
+                <span>
+                    🌲 Natura
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="technology"
+                >
+                <span>
+                    💻 Technologia
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="internet"
+                >
+                <span>
+                    🧠 Gen Z / Internet
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="memes"
+                >
+                <span>
+                    💀 Memy / Brainrot
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="social"
+                >
+                <span>
+                    📱 Social Media
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="gaming"
+                >
+                <span>
+                    🎮 Gaming
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="movies"
+                >
+                <span>
+                    🎬 Filmy i Seriale
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="music"
+                >
+                <span>
+                    🎵 Muzyka
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="fashion"
+                >
+                <span>
+                    👟 Moda
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="sports"
+                >
+                <span>
+                    🏆 Sport
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="cars"
+                >
+                <span>
+                    🚗 Samochody
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="school"
+                >
+                <span>
+                    🏫 Szkoła
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="relationships"
+                >
+                <span>
+                    ❤️ Relacje / Randki
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="nostalgia"
+                >
+                <span>
+                    🧸 Nostalgia
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="travel"
+                >
+                <span>
+                    ✈️ Podróże
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="party"
+                >
+                <span>
+                    🎉 Impreza
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="scary"
+                >
+                <span>
+                    👻 Straszne rzeczy
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="weird"
+                >
+                <span>
+                    🧪 Dziwne rzeczy
+                </span>
+            </label>
+
+
+            <label class="category-check">
+                <input
+                    type="checkbox"
+                    value="everyday"
+                >
+                <span>
+                    💸 Życie codzienne
+                </span>
+            </label>
+
+
+            <!-- 18+ -->
+
+            <label
+                class="category-check adult-category"
+            >
+
+                <input
+                    type="checkbox"
+                    value="adult"
+                >
+
+                <span>
+                    🔞 18+ / Dla dorosłych
+                </span>
+
+            </label>
+
+
+        </div>
+
+    </div>
+
+
+    <label>
+        Poziom podpowiedzi dla impostora
+    </label>
+
+
+    <select
+        id="difficulty-select"
+    >
+
+        <option value="random">
+            🎲 Losowy
+        </option>
+
+        <option value="easy">
+            🟢 Łatwy
+        </option>
+
+        <option value="normal">
+            🟡 Normalny
+        </option>
+
+        <option value="hard">
+            🔴 Trudny
+        </option>
+
+    </select>
+
+
+    <div class="info">
+
+        💡 Każde hasło ma kilka różnych
+        podpowiedzi. Impostor otrzymuje
+        tylko jedną, losowo wybraną.
+
+        <br><br>
+
+        🎯 Możesz zaznaczyć dowolną liczbę
+        kategorii. Hasło będzie losowane
+        wyłącznie z zaznaczonych kategorii.
+
+    </div>
+
+
+    <button
+        onclick="startGame()"
+    >
+
+        🚀 ROZPOCZNIJ GRĘ
+
+    </button>
+
+
+    <p class="small">
+
+        Minimum 3 graczy.
+
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     PASS SCREEN
+===================================================== -->
+
+<div
+    id="pass-screen"
+    class="card hidden"
+>
+
+    <div class="pass-icon">
+        📱
+    </div>
+
+
+    <p>
+        Teraz gra:
+    </p>
+
+
+    <div
+        id="pass-player-name"
+        class="player-name">
+    </div>
+
+
+    <p>
+        Przejmij telefon i upewnij się,
+        że nikt nie patrzy.
+    </p>
+
+
+    <div class="progress">
+
+        <div
+            id="progress-bar"
+            class="progress-bar">
+        </div>
+
+    </div>
+
+
+    <p
+        id="progress-text"
+        class="small">
+    </p>
+
+
+    <button
+        onclick="revealRole()"
+    >
+
+        👁️ POKAŻ MOJĄ ROLĘ
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ROLE SCREEN
+===================================================== -->
+
+<div
+    id="role-screen"
+    class="card hidden"
+>
+
+    <div
+        id="role-player-name"
+        class="player-name">
+    </div>
+
+
+    <div
+        class="role-box"
+        id="role-content">
+    </div>
+
+
+    <button
+        onclick="nextPlayer()"
+    >
+
+        🔒 UKRYJ I PRZEKAŻ DALEJ
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     STARTER SCREEN
+===================================================== -->
+
+<div
+    id="end-screen"
+    class="card hidden"
+>
+
+    <div class="big-emoji">
+        🎉
+    </div>
+
+
+    <h2>
+        Role zostały rozdane!
+    </h2>
+
+
+    <div class="result-box">
+
+        <p class="small">
+
+            Wszyscy gracze znają już
+            swoje role.
+
+        </p>
+
+
+        <hr>
+
+
+        <p>
+            🎤 Grę rozpoczyna:
+        </p>
+
+
+        <div
+            id="starter-info"
+            class="player-name">
+        </div>
+
+    </div>
+
+
+    <button
+        onclick="revealFinalResult()"
+    >
+
+        🏁 KONIEC GRY
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     FINAL SCREEN
+===================================================== -->
+
+<div
+    id="final-screen"
+    class="card hidden"
+>
+
+    <div class="big-emoji">
+        🕵️
+    </div>
+
+
+    <h2>
+        Koniec gry!
+    </h2>
+
+
+    <div class="result-box">
+
+        <p>
+            Hasło:
+        </p>
+
+
+        <div
+            id="final-word"
+            class="word">
+        </div>
+
+
+        <p>
+            Kategoria:
+        </p>
+
+
+        <div
+            id="final-category"
+            class="category">
+        </div>
+
+
+        <hr>
+
+
+        <p>
+            🕵️ Impostor / impostorzy:
+        </p>
+
+
+        <div
+            id="final-impostors"
+            class="result-impostors">
+        </div>
+
+    </div>
+
+
+    <button
+        onclick="newRound()"
+    >
+
+        🔄 NOWA GRA
+
+    </button>
+
+
+    <button
+        class="secondary"
+        onclick="backToSetup()"
+    >
+
+        ⚙️ ZMIEŃ USTAWIENIA
+
+    </button>
+
+</div>
+
+
+<div class="footer">
+
+    Impostor 3.0 • Gra imprezowa 🕵️
+
+</div>
+
+
+</div>
+
+
+<div class="creator-credit">
+    IMPOSTOR by: @tlada_
+</div>
+
+
+<script>
+
+/* =====================================================
+   BAZA HASEŁ
+
+   format:
+
+   [
+       HASŁO,
+       KATEGORIA,
+       ŁATWA,
+       NORMALNA,
+       TRUDNA,
+       DODATKOWA
+   ]
+
+===================================================== */
+
+const wordsList = [
+
+
+/* =====================================================
+   JEDZENIE
+===================================================== */
+
+["PIZZA","food","Włochy","mozzarella","trójkąt","piec"],
+["SUSHI","food","Japonia","ryż","pałeczki","surowe"],
+["SPAGHETTI","food","Włochy","makaron","sos","widelec"],
+["PIEROGI","food","Polska","farsz","babcia","gotowane"],
+["LASAGNE","food","Włochy","warstwy","makaron","ser"],
+["NALEŚNIKI","food","patelnia","ciasto","dżem","cienkie"],
+["CZEKOLADA","food","słodkie","kakao","tabliczka","Milka"],
+["TORT","food","urodziny","świeczki","krem","piętra"],
+["LODY","food","zimne","gałka","rożek","wakacje"],
+["POPCORN","food","kino","kukurydza","słony","mikrofala"],
+["PĄCZEK","food","słodkie","lukier","Tłusty Czwartek","róża"],
+["ARBUZ","food","lato","zielony","pestki","soczysty"],
+["BANAN","food","żółty","owoc","małpa","skórka"],
+["JABŁKO","food","owoc","zdrowie","sok","czerwone"],
+["BURGER","food","bułka","mięso","ser","grill"],
+["TACO","food","Meksyk","tortilla","ostre","fasola"],
+["RAMEN","food","Japonia","makaron","zupa","pałeczki"],
+["KURCZAK","food","obiad","mięso","skrzydełka","rosół"],
+["SAŁATKA","food","warzywa","zdrowe","miska","sos"],
+["KANAPKA","food","chleb","śniadanie","ser","szkoła"],
+["WAFLER","food","słodkie","kratka","czekolada","chrupiący"],
+["SER","food","żółty","nabiał","kanapka","mysz"],
+["ZUPA","food","łyżka","ciepła","miska","rosół"],
+["MAKARON","food","Włochy","pszenica","sos","widelec"],
+["OMLET","food","jajka","patelnia","śniadanie","puszysty"],
+
+
+/* =====================================================
+   FAST FOOD
+===================================================== */
+
+["MCDONALD'S","fastfood","złote łuki","frytki","drive-thru","McFlurry"],
+["KFC","fastfood","kurczak","kubełek","pan w okularach","smażone"],
+["KEBAB","fastfood","noc","sos","mięso","tortilla"],
+["HOT DOG","fastfood","parówka","stadion","musztarda","bułka"],
+["FRYTKI","fastfood","ziemniaki","sól","ketchup","McDonald's"],
+["NUGGETSY","fastfood","kurczak","sos","małe","chrupiące"],
+["SUBWAY","fastfood","kanapka","zielony","długa","sos"],
+["PIZZA HAWAJSKA","fastfood","ananas","Włochy","kontrowersyjna","ser"],
+["DRIVE-THRU","fastfood","samochód","okienko","McDonald's","noc"],
+["MCFLURRY","fastfood","lody","McDonald's","łyżka","Oreo"],
+["BIG MAC","fastfood","McDonald's","sos","bułka","podwójny"],
+["WHOPPER","fastfood","Burger King","burger","ogień","królewski"],
+["KUBEŁEK","fastfood","KFC","kurczak","dużo","papier"],
+["SOS CZOSNKOWY","fastfood","kebab","czosnek","biały","sos"],
+["PIZZERIA","fastfood","pizza","Włochy","piec","dostawa"],
+
+
+/* =====================================================
+   NAPOJE
+===================================================== */
+
+["COLA","drinks","gazowana","czarna","puszka","Coca-Cola"],
+["PEPSI","drinks","cola","niebieski","puszka","konkurencja"],
+["ENERGY DRINK","drinks","kofeina","puszka","noc","Red Bull"],
+["RED BULL","drinks","skrzydła","kofeina","puszka","niebieski"],
+["MONSTER","drinks","zielony","kofeina","puszka","M"],
+["KAWA","drinks","rano","kofeina","kubek","espresso"],
+["HERBATA","drinks","gorąca","kubek","liście","cytryna"],
+["BUBBLE TEA","drinks","kulki","słomka","Tajwan","kolorowa"],
+["LEMONIADA","drinks","cytryna","lato","kwaśna","dzbanek"],
+["KAKAO","drinks","czekolada","mleko","dzieciństwo","ciepłe"],
+["SMOOTHIE","drinks","owoce","blender","gęste","kolorowe"],
+["WODA","drinks","szklanka","pragnienie","butelka","bez smaku"],
+
+
+/* =====================================================
+   ZWIERZĘTA
+===================================================== */
+
+["LEW","animals","król","Afryka","grzywa","ryczący"],
+["TYGRYS","animals","paski","kot","dżungla","pomarańczowy"],
+["SŁOŃ","animals","trąba","duży","Afryka","kły"],
+["ŻYRAFA","animals","szyja","wysoka","Afryka","plamy"],
+["PINGWIN","animals","Antarktyda","czarno-biały","lód","nie lata"],
+["REKIN","animals","ocean","zęby","Jaws","płetwa"],
+["DELFIN","animals","ocean","inteligentny","skacze","Flipper"],
+["WIELORYB","animals","ocean","ogromny","fontanna","Moby Dick"],
+["KROKODYL","animals","ząb","bagno","Gustave","zielony"],
+["WĄŻ","animals","pełza","jadowity","skóra","sssss"],
+["SOWA","animals","noc","mądra","Harry Potter","lata"],
+["WILK","animals","stado","las","wycie","księżyc"],
+["LIS","animals","rudy","sprytny","las","Foxy"],
+["NIEDŹWIEDŹ","animals","las","miód","duży","miś"],
+["KOŃ","animals","jeździectwo","stajnia","galop","kopyto"],
+["KROWA","animals","mleko","gospodarstwo","łaty","muuu"],
+["KURA","animals","jajko","gospodarstwo","pióra","kogut"],
+["PSZCZOŁA","animals","miód","żółta","ul","użądlenie"],
+["MOTYL","animals","skrzydła","kolorowy","gąsienica","kwiat"],
+["PAJĄK","animals","sieć","osiem","strach","kąt"],
+["KOT","animals","mruczy","pupil","internet","pazury"],
+["PIES","animals","szczeka","smycz","pupil","Hachiko"],
+["REKIN MŁOT","animals","ocean","głowa","zęby","dziwny kształt"],
+["KAMELEON","animals","kolor","język","jaszczurka","kamuflaż"],
+
+
+/* =====================================================
+   MIEJSCA
+===================================================== */
+
+["PARYŻ","places","Francja","Wieża Eiffla","romantyczne","croissant"],
+["NOWY JORK","places","USA","wieżowce","Times Square","żółte taksówki"],
+["TOKIO","places","Japonia","neony","anime","Shibuya"],
+["LONDYN","places","Anglia","Big Ben","czerwony autobus","król"],
+["RZYM","places","Włochy","Koloseum","pizza","papież"],
+["KRAKÓW","places","Polska","smok","Wawel","Rynek"],
+["WARSZAWA","places","Polska","stolica","Syrenka","Pałac Kultury"],
+["ZAKOPANE","places","góry","oscypek","Tatry","Krupówki"],
+["LOTNISKO","places","samoloty","bagaż","kontrola","bramka"],
+["SZPITAL","places","lekarz","chory","korytarz","operacja"],
+["KINO","places","film","popcorn","ekran","fotele"],
+["RESTAURACJA","places","kelner","jedzenie","menu","rachunek"],
+["SIŁOWNIA","places","hantle","trening","lustro","białko"],
+["STADION","places","mecz","kibice","trybuny","murawa"],
+["MUZEUM","places","obrazy","eksponaty","historia","cisza"],
+["KLUB","places","muzyka","taniec","noc","DJ"],
+["PLAŻA","places","piasek","morze","lato","parasol"],
+["GÓRY","places","szczyt","śnieg","wspinaczka","Tatry"],
+
+
+/* =====================================================
+   PRZEDMIOTY
+===================================================== */
+
+["TELEFON","objects","ekran","dzwonienie","kieszeń","iPhone"],
+["LAPTOP","objects","komputer","klawiatura","praca","MacBook"],
+["TELEWIZOR","objects","ekran","pilot","Netflix","salon"],
+["LODÓWKA","objects","zimna","jedzenie","kuchnia","magnes"],
+["PARASOL","objects","deszcz","mokro","rączka","wiatr"],
+["PLECAK","objects","szkoła","ramiona","książki","zamek"],
+["PORTFEL","objects","pieniądze","kieszeń","karty","skóra"],
+["ZEGAREK","objects","czas","ręka","tarcza","Rolex"],
+["OKULARY","objects","wzrok","szkła","nos","słońce"],
+["LUSTRO","objects","odbicie","łazienka","twarz","selfie"],
+["PODUSZKA","objects","sen","łóżko","miękka","głowa"],
+["KOŁDRA","objects","sen","ciepło","łóżko","zima"],
+["KRZESŁO","objects","siedzenie","stół","cztery nogi","biuro"],
+["KUBEK","objects","picie","kawa","ucho","ceramika"],
+["KLUCZE","objects","drzwi","kieszeń","zamek","zgubione"],
+["WALIZKA","objects","podróż","lotnisko","bagaż","kółka"],
+["GITARA","objects","muzyka","struny","koncert","akustyczna"],
+["APARAT","objects","zdjęcie","obiektyw","fotograf","flash"],
+
+
+/* =====================================================
+   NATURA
+===================================================== */
+
+["TĘCZA","nature","kolory","deszcz","niebo","siedem"],
+["BURZA","nature","błyskawica","deszcz","grzmot","chmury"],
+["ŚNIEG","nature","zima","biały","bałwan","zimno"],
+["SŁOŃCE","nature","światło","lato","gorące","gwiazda"],
+["KSIĘŻYC","nature","noc","niebo","satelita","pełnia"],
+["GWIAZDY","nature","noc","niebo","kosmos","migoczą"],
+["WODOSPAD","nature","woda","skała","wysoki","Niagara"],
+["OCEAN","nature","woda","fale","sól","horyzont"],
+["WULKAN","nature","lawa","ogień","krater","erupcja"],
+["TORNADO","nature","wiatr","wir","USA","zniszczenie"],
+["MGŁA","nature","biała","rano","widoczność","wilgoć"],
+["LAWINA","nature","śnieg","góry","zjazd","niebezpieczna"],
+["DRZEWO","nature","liście","las","pień","korzenie"],
+["KWIAT","nature","płatki","ogród","zapach","bukiet"],
+
+
+/* =====================================================
+   TECHNOLOGIA
+===================================================== */
+
+["INTERNET","technology","sieć","Wi-Fi","Google","online"],
+["WI-FI","technology","internet","router","hasło","sygnał"],
+["SMARTFON","technology","telefon","aplikacje","ekran","5G"],
+["KOMPUTER","technology","myszka","klawiatura","monitor","Windows"],
+["KONSOLA","technology","gry","pad","PlayStation","Xbox"],
+["DRON","technology","latanie","kamera","pilot","powietrze"],
+["ROBOT","technology","maszyna","AI","metal","człowiek"],
+["SZTUCZNA INTELIGENCJA","technology","AI","ChatGPT","robot","przyszłość"],
+["GPS","technology","mapa","lokalizacja","samochód","satelita"],
+["BLUETOOTH","technology","bezprzewodowe","telefon","słuchawki","niebieskie"],
+["SŁUCHAWKI","technology","muzyka","uszy","AirPods","bezprzewodowe"],
+["DRUKARKA","technology","papier","atrament","biuro","druk"],
+["HASŁO","technology","bezpieczeństwo","login","tajne","1234"],
+["KOD QR","technology","kwadrat","telefon","skanowanie","menu"],
+["AIRPODS","technology","Apple","uszy","białe","etui"],
+["POWERBANK","technology","bateria","telefon","ładowanie","kabel"],
+
+
+/* =====================================================
+   GEN Z / INTERNET
+===================================================== */
+
+["RIZZ","internet","flirt","charyzma","romans","slang"],
+["SIGMA","internet","samotnik","mężczyzna","meme","slang"],
+["NPC","internet","gra","postać","bezmyślny","TikTok"],
+["FOMO","internet","strach","przegapić","impreza","internet"],
+["GOAT","internet","najlepszy","sport","slang","owca"],
+["SUS","internet","podejrzany","Among Us","slang","kłamstwo"],
+["VIRAL","internet","popularny","TikTok","miliony","internet"],
+["INFLUENCER","internet","followersi","reklama","Instagram","popularność"],
+["STREAMER","internet","Twitch","live","gaming","kamera"],
+["SELFIE","internet","telefon","twarz","zdjęcie","lustro"],
+["FYP","internet","TikTok","algorytm","scrollowanie","filmiki"],
+["DM","internet","wiadomość","Instagram","prywatne","czat"],
+["CRINGE","internet","wstyd","internet","niezręczne","reakcja"],
+["CANCEL","internet","Twitter","kontrowersja","internet","osoba"],
+["RATIO","internet","Twitter","komentarze","lajki","internet"],
+["THREAD","internet","Twitter","posty","długi","komentarze"],
+["ALGORITHM","internet","TikTok","YouTube","polecane","matematyka"],
+["CLICKBAIT","internet","tytuł","YouTube","kliknięcie","sensacja"],
+["POV","internet","TikTok","perspektywa","film","skrót"],
+["GRWM","internet","TikTok","ubieranie","makijaż","film"],
+
+
+/* =====================================================
+   MEMY
+===================================================== */
+
+["BRAINROT","memes","internet","absurd","TikTok","mózg"],
+["SKIBIDI TOILET","memes","toaleta","YouTube","absurd","głowa"],
+["MEM","memes","internet","śmieszne","obrazek","viral"],
+["TROLL","memes","internet","prowokacja","komentarz","kłamstwo"],
+["SHITPOST","memes","internet","absurd","meme","głupie"],
+["AMOGUS","memes","Among Us","czerwony","meme","sus"],
+["DANK MEME","memes","internet","śmieszne","stare","absurd"],
+["DOGE","memes","pies","Shiba","internet","wow"],
+["PEPE","memes","żaba","internet","zielony","meme"],
+["GIGACHAD","memes","mężczyzna","szczęka","meme","siłownia"],
+["SIGMA EDIT","memes","muzyka","slow motion","mężczyzna","TikTok"],
+["OHIO","memes","internet","dziwne","USA","meme"],
+["GRIMACE","memes","fioletowy","McDonald's","shake","meme"],
+["RICKROLL","memes","YouTube","piosenka","Rick Astley","link"],
+["LOSS","memes","komiks","internet","cztery panele","meme"],
+["REACTION IMAGE","memes","twarz","internet","komentarz","GIF"],
+
+
+/* =====================================================
+   SOCIAL MEDIA
+===================================================== */
+
+["TIKTOK","social","krótkie filmy","pionowy","viral","scroll"],
+["INSTAGRAM","social","zdjęcia","stories","Meta","serduszko"],
+["SNAPCHAT","social","żółty","filtry","zdjęcie","streak"],
+["YOUTUBE","social","film","subskrypcja","czerwony","creator"],
+["TWITCH","social","stream","fioletowy","gaming","chat"],
+["DISCORD","social","serwer","gamer","fioletowy","voice"],
+["REDDIT","social","forum","subreddit","upvote","pomarańczowy"],
+["FACEBOOK","social","niebieski","Meta","rodzice","post"],
+["LINKEDIN","social","praca","CV","niebieski","kariera"],
+["PINTEREST","social","zdjęcia","inspiracje","tablice","estetyka"],
+["SPOTIFY","social","muzyka","zielony","playlista","Wrapped"],
+["BE REAL","social","zdjęcie","codziennie","aplikacja","szczerość"],
+["STREAK","social","Snapchat","dni","ogień","wiadomości"],
+["STORY","social","Instagram","24 godziny","zdjęcie","relacja"],
+
+
+/* =====================================================
+   GAMING
+===================================================== */
+
+["MINECRAFT","gaming","klocki","Steve","Creeper","kopanie"],
+["ROBLOX","gaming","dzieci","klocki","avatar","gra"],
+["FORTNITE","gaming","Epic","battle royale","budowanie","skin"],
+["GTA","gaming","samochody","Rockstar","kradzież","Los Santos"],
+["FIFA","gaming","piłka","EA","Messi","Ultimate Team"],
+["CALL OF DUTY","gaming","broń","FPS","żołnierz","multiplayer"],
+["VALORANT","gaming","Riot","FPS","agenci","Spike"],
+["COUNTER-STRIKE","gaming","CS","terroryści","FPS","bomba"],
+["LEAGUE OF LEGENDS","gaming","Riot","MOBA","championi","Summoner"],
+["AMONG US","gaming","impostor","statek","sus","załoga"],
+["FORTNITE SKIN","gaming","postać","V-Bucks","kosmetyczny","gra"],
+["PLAYSTATION","gaming","Sony","pad","niebieski","konsola"],
+["XBOX","gaming","Microsoft","zielony","pad","Game Pass"],
+["NINTENDO","gaming","Mario","Switch","Japonia","Zelda"],
+["MARIO","gaming","Nintendo","wąs","grzybek","Włoch"],
+["POKEMON","gaming","Pikachu","kule","Japonia","trener"],
+["MARIO KART","gaming","wyścigi","Nintendo","banan","kart"],
+["ELDEN RING","gaming","boss","Dark Souls","otwarty świat","Malenia"],
+["MINECRAFT CREEPER","gaming","zielony","wybuch","Minecraft","ssss"],
+["GAMER","gaming","komputer","gry","słuchawki","noc"],
+
+
+/* =====================================================
+   FILMY
+===================================================== */
+
+["HARRY POTTER","movies","magia","Hogwart","różdżka","blizna"],
+["BARBIE","movies","różowy","lalka","Ken","2023"],
+["OPPENHEIMER","movies","bomba","naukowiec","Christopher Nolan","Manhattan"],
+["AVATAR","movies","niebieski","Pandora","James Cameron","Na'vi"],
+["TITANIC","movies","statek","lód","Rose","Jack"],
+["SHREK","movies","ogr","bagno","Fiona","zielony"],
+["SPIDER-MAN","movies","pajęczyna","Marvel","Nowy Jork","Peter Parker"],
+["BATMAN","movies","nietoperz","Gotham","Bruce Wayne","czarny"],
+["IRON MAN","movies","Marvel","zbroja","Tony Stark","reaktor"],
+["JOKER","movies","klaun","Gotham","Batman","śmiech"],
+["STRANGER THINGS","movies","Netflix","Upside Down","Eleven","Demogorgon"],
+["WEDNESDAY","movies","Netflix","Addams","czarny","taniec"],
+["SQUID GAME","movies","Netflix","zielone stroje","gry","456"],
+["THE OFFICE","movies","biuro","Dunder Mifflin","Michael Scott","papier"],
+["BREAKING BAD","movies","Walter White","metamfetamina","Albuquerque","chemia"],
+["GAME OF THRONES","movies","smoki","Westeros","tron","zima"],
+["THE BOYS","movies","superbohaterowie","Homelander","Amazon","brutalne"],
+["MATRIX","movies","Neo","zielony","tabletka","maszyny"],
+["STAR WARS","movies","kosmos","Jedi","Darth Vader","miecz"],
+["DISNEY","movies","myszka","bajki","zamek","magia"],
+
+
+/* =====================================================
+   MUZYKA
+===================================================== */
+
+["TAYLOR SWIFT","music","piosenkarka","Eras Tour","albumy","Swifties"],
+["THE WEEKND","music","piosenkarz","Blinding Lights","Toronto","XO"],
+["DRAKE","music","rap","Kanada","OVO","Toronto"],
+["TRAVIS SCOTT","music","rap","Astroworld","Houston","Cactus Jack"],
+["EMINEM","music","rap","Detroit","8 Mile","blond"],
+["MICHAEL JACKSON","music","król popu","moonwalk","Thriller","rękawiczka"],
+["BAD BUNNY","music","reggaeton","Puerto Rico","królik","rap"],
+["SZA","music","R&B","SOS","piosenkarka","Ameryka"],
+["BILLIE EILISH","music","zielone włosy","Ocean Eyes","piosenkarka","brat"],
+["ARIANA GRANDE","music","wysoki głos","kucyk","pop","Thank U Next"],
+["KANYE WEST","music","rap","Ye","Chicago","Yeezy"],
+["METALLICA","music","metal","gitary","czarny","Nothing Else Matters"],
+["ROCK","music","gitary","koncert","zespoły","perkusja"],
+["RAP","music","mikrofon","flow","hip-hop","rym"],
+["DJ","music","klub","muzyka","konsola","noc"],
+["KARAOKE","music","mikrofon","śpiewanie","impreza","tekst"],
+["FESTIWAL","music","muzyka","lato","scena","tłum"],
+
+
+/* =====================================================
+   MODA
+===================================================== */
+
+["NIKE","fashion","buty","swoosh","sport","Just Do It"],
+["ADIDAS","fashion","trzy paski","buty","sport","niemiecka"],
+["SUPREME","fashion","czerwone","streetwear","box logo","Nowy Jork"],
+["JORDAN","fashion","Nike","buty","koszykówka","Michael Jordan"],
+["CROCS","fashion","buty","dziury","gumowe","charms"],
+["HOODIE","fashion","bluza","kaptur","streetwear","kieszeń"],
+["SNEAKERSY","fashion","buty","streetwear","sznurówki","Nike"],
+["JEANSY","fashion","spodnie","denim","niebieskie","kieszeń"],
+["VINTAGE","fashion","stare","moda","second hand","retro"],
+["THRIFTING","fashion","second hand","ubrania","tanie","szukanie"],
+["LUXURY","fashion","drogo","marka","designer","logo"],
+["GUCCI","fashion","luksus","wąż","Włochy","GG"],
+["LOUIS VUITTON","fashion","luksus","monogram","Francja","torba"],
+["BALENCIAGA","fashion","luksus","buty","duże","Hiszpania"],
+
+
+/* =====================================================
+   SPORT
+===================================================== */
+
+["PIŁKA NOŻNA","sports","bramka","mecz","murawa","Messi"],
+["KOSZYKÓWKA","sports","kosz","piłka","NBA","LeBron"],
+["TENIS","sports","rakieta","kort","Wimbledon","piłka"],
+["SIATKÓWKA","sports","siatka","piłka","boisko","blok"],
+["FORMUŁA 1","sports","samochód","wyścig","F1","pit stop"],
+["LEWIS HAMILTON","sports","F1","Mercedes","kierowca","siedem"],
+["NBA","sports","koszykówka","USA","parkiet","LeBron"],
+["OLIMPIADA","sports","sport","medale","flaga","lato"],
+["MARATON","sports","bieganie","42 km","wytrzymałość","meta"],
+["BOKS","sports","rękawice","ring","cios","Mike Tyson"],
+["UFC","sports","MMA","octagon","Dana White","walka"],
+["SIŁOWNIA","sports","hantle","trening","mięśnie","protein"],
+["PIŁKA NOŻNA PLAŻOWA","sports","piasek","bramka","piłka","lato"],
+["SNOWBOARD","sports","śnieg","deska","góry","zima"],
+["NARTY","sports","śnieg","kijki","góry","zjazd"],
+
+
+/* =====================================================
+   SAMOCHODY
+===================================================== */
+
+["BMW","cars","Niemcy","nerki","M3","kierowca"],
+["MERCEDES","cars","gwiazda","Niemcy","luksus","AMG"],
+["AUDI","cars","pierścienie","Niemcy","quattro","A4"],
+["TESLA","cars","elektryczna","Elon Musk","Model 3","ładowarka"],
+["FERRARI","cars","czerwone","Włochy","wyścigi","koń"],
+["LAMBORGHINI","cars","Włochy","byk","drogi","Lambo"],
+["PORSCHE","cars","Niemcy","911","sportowe","logo"],
+["VOLKSWAGEN","cars","Niemcy","Golf","VW","garbus"],
+["GOLF","cars","Volkswagen","Niemcy","auto","GTI"],
+["MUSTANG","cars","Ford","koń","USA","Muscle"],
+["SUPERCAR","cars","szybki","drogi","Ferrari","V10"],
+["DRIFT","cars","poślizg","samochód","Japonia","opony"],
+["TAXI","cars","żółty","miasto","kierowca","Uber"],
+["UBER","cars","aplikacja","samochód","przejazd","telefon"],
+
+
+/* =====================================================
+   SZKOŁA
+===================================================== */
+
+["MATEMATYKA","school","liczby","lekcja","równanie","kartkówka"],
+["POLSKI","school","lektury","język","wypracowanie","ortografia"],
+["WF","school","sport","strój","piłka","zwolnienie"],
+["SPRAWDZIAN","school","ocena","stres","kartka","nauczyciel"],
+["KARTKÓWKA","school","mała","lekcja","ocena","zaskoczenie"],
+["MATURA","school","egzamin","18 lat","polski","stres"],
+["DZWONEK","school","lekcja","przerwa","hałas","koniec"],
+["PRZERWA","school","korytarz","jedzenie","10 minut","dzwonek"],
+["TABLICA","school","marker","lekcja","ściana","nauczyciel"],
+["PLECAK","school","książki","ramiona","zeszyty","ciężki"],
+["ZESZYT","school","papier","lekcja","notatki","kratka"],
+["NAUCZYCIEL","school","lekcja","oceny","tablica","profesor"],
+["LEKTURA","school","książka","polski","czytanie","egzamin"],
+["ŚCIĄGA","school","egzamin","tajna","kartka","oszustwo"],
+
+
+/* =====================================================
+   RELACJE
+===================================================== */
+
+["RANDKA","relationships","romantyczna","restauracja","dwie osoby","kino"],
+["CRUSH","relationships","sympatia","szkoła","motyle","sekret"],
+["FLIRT","relationships","romans","wiadomości","uśmiech","rizz"],
+["BREAKUP","relationships","związek","koniec","smutek","wiadomość"],
+["TINDER","relationships","randki","swipe","aplikacja","serce"],
+["BUMBLE","relationships","randki","aplikacja","żółty","swipe"],
+["ZAZDROŚĆ","relationships","związek","emocje","inna osoba","kontrola"],
+["FIRST DATE","relationships","kino","restauracja","nerwy","poznanie"],
+["GHOSTING","relationships","wiadomość","cisza","internet","zniknięcie"],
+["RED FLAG","relationships","związek","ostrzeżenie","problem","TikTok"],
+["GREEN FLAG","relationships","związek","dobry znak","partner","zdrowe"],
+["FRIENDZONE","relationships","przyjaźń","romans","odrzucenie","uczucia"],
+
+
+/* =====================================================
+   NOSTALGIA
+===================================================== */
+
+["DISNEY CHANNEL","nostalgia","dzieciństwo","telewizja","bajki","Hannah Montana"],
+["HARRY POTTER","nostalgia","magia","książka","Hogwart","dzieciństwo"],
+["POKEMON","nostalgia","Pikachu","gry","karty","dzieciństwo"],
+["KLOCKI LEGO","nostalgia","budowanie","dzieci","cegły","ból stopy"],
+["BAJKA","nostalgia","telewizja","dzieci","animacja","rano"],
+["GAME BOY","nostalgia","Nintendo","przenośne","Pokemon","stare"],
+["NINTENDO DS","nostalgia","konsola","dwa ekrany","Nintendo","dzieci"],
+["PS2","nostalgia","PlayStation","Sony","gry","2000"],
+["GUMY KULKI","nostalgia","słodycze","dzieci","okrągłe","sklepik"],
+["KARTA POKEMON","nostalgia","Pokemon","kolekcja","Pikachu","gra"],
+["TAMAGOTCHI","nostalgia","zwierzak","japońskie","dzieci","pikający"],
+["NEOPETS","nostalgia","internet","zwierzątka","stare","gra"],
+
+
+/* =====================================================
+   PODRÓŻE
+===================================================== */
+
+["SAMOLOT","travel","lotnisko","skrzydła","podróż","pilot"],
+["WALIZKA","travel","bagaż","lotnisko","ubrania","kółka"],
+["PASZPORT","travel","granica","dokument","zdjęcie","lotnisko"],
+["HOTEL","travel","pokój","recepcja","noc","wakacje"],
+["HOSTEL","travel","tani","podróż","łóżko","plecak"],
+["AIRBNB","travel","mieszkanie","aplikacja","nocleg","wakacje"],
+["GRECJA","travel","wyspy","morze","oliwki","lato"],
+["HISZPANIA","travel","Barcelona","słońce","tapas","piłka"],
+["WŁOCHY","travel","pizza","Rzym","makaron","espresso"],
+["JAPONIA","travel","Tokio","anime","sushi","samuraj"],
+["USA","travel","Nowy Jork","Hollywood","flaga","burger"],
+["THAILAND","travel","Azja","plaża","Bangkok","pad thai"],
+["EGIPT","travel","piramidy","Kair","pustynia","faraon"],
+["MALDIVES","travel","wyspy","luksus","ocean","wakacje"],
+
+
+/* =====================================================
+   IMPREZA
+===================================================== */
+
+["IMPREZA","party","muzyka","ludzie","noc","alkohol"],
+["DJ","party","muzyka","klub","konsola","mikrofon"],
+["KARAOKE","party","śpiewanie","mikrofon","piosenka","impreza"],
+["TANIEC","party","muzyka","ruch","klub","parkiet"],
+["KLUB","party","noc","muzyka","DJ","tłum"],
+["PARKIET","party","taniec","klub","podłoga","muzyka"],
+["KONFETTI","party","kolory","urodziny","papier","wybuch"],
+["BAL","party","sukienka","taniec","szkoła","elegancki"],
+["SYLWESTER","party","Nowy Rok","fajerwerki","północ","szampan"],
+["URODZINY","party","tort","prezent","świeczki","rok"],
+["DOMÓWKA","party","dom","znajomi","muzyka","noc"],
+["FESTIWAL","party","muzyka","lato","tłum","scena"],
+
+
+/* =====================================================
+   STRASZNE
+===================================================== */
+
+["DUCH","scary","zjawa","noc","zamek","przezroczysty"],
+["WAMPIR","scary","krew","Dracula","noc","ząb"],
+["WILKOŁAK","scary","pełnia","wilk","noc","człowiek"],
+["ZOMBIE","scary","martwy","mózg","chodzenie","apokalipsa"],
+["CMENTARZ","scary","groby","noc","duchy","cisza"],
+["DOM DUCHÓW","scary","strach","ciemność","atrakcja","Halloween"],
+["HALLOWEEN","scary","dynia","kostium","cukierki","październik"],
+["NOŻOWNIK","scary","horror","morderca","nóż","film"],
+["DARK WEB","scary","internet","tajemnica","nielegalne","ciemność"],
+["KOSZMAR","scary","sen","strach","noc","potwór"],
+["PARALIŻ SENNY","scary","sen","ciało","strach","noc"],
+["EGZORCYSTA","scary","duch","film","kościół","opętanie"],
+
+
+/* =====================================================
+   DZIWNE
+===================================================== */
+
+["KACZKA W BUTACH","weird","internet","buty","ptak","absurd"],
+["BANAN NA PIZZY","weird","jedzenie","kontrowersja","żółty","dziwne"],
+["CZŁOWIEK W KOSTIUMIE KURCZAKA","weird","kurczak","kostium","internet","dziwne"],
+["LATAJĄCY SAMOCHÓD","weird","przyszłość","samochód","niebo","science fiction"],
+["SMAŻONY LÓD","weird","deser","gorące","zimne","dziwne"],
+["ZIELONE MLEKO","weird","mleko","kolor","internet","dziwne"],
+["MÓWIĄCY KOT","weird","kot","głos","internet","TikTok"],
+["OLBRZYMI KURCZAK","weird","ptak","duży","internet","absurd"],
+["LUDZKI ROZMIAROWY PLUSZAK","weird","maskotka","człowiek","kostium","dziwne"],
+["JEDZENIE W KSZTAŁCIE ZWIERZĘCIA","weird","jedzenie","Instagram","słodkie","dziwne"],
+["HOT DOG Z LODAMI","weird","jedzenie","lody","parówka","absurd"],
+["PIZZA Z ANANASEM","weird","ananas","pizza","kontrowersja","Włochy"],
+
+
+/* =====================================================
+   ŻYCIE CODZIENNE
+===================================================== */
+
+["BUDZIK","everyday","rano","sen","telefon","hałas"],
+["KORKI","everyday","samochody","droga","miasto","spóźnienie"],
+["ZAKUPY","everyday","sklep","pieniądze","koszyk","paragon"],
+["PARAGON","everyday","sklep","papier","zakupy","kasa"],
+["PRANIE","everyday","ubrania","pralka","detergent","kosz"],
+["SPRZĄTANIE","everyday","dom","odkurzacz","bałagan","miotła"],
+["ODKURZACZ","everyday","sprzątanie","hałas","kurz","dom"],
+["KURIER","everyday","paczka","drzwi","telefon","dostawa"],
+["PACZKA","everyday","kurier","karton","zakupy","Amazon"],
+["ZAKUPY ONLINE","everyday","internet","paczka","koszyk","dostawa"],
+["WYPŁATA","everyday","pieniądze","praca","konto","koniec miesiąca"],
+["PODATEK","everyday","pieniądze","państwo","urząd","ból"],
+["CZYNSZ","everyday","mieszkanie","pieniądze","rachunek","co miesiąc"],
+["KAWA RANO","everyday","sen","kofeina","kubek","praca"],
+["SPÓŹNIENIE","everyday","czas","autobus","szkoła","praca"],
+["GPS","everyday","mapa","droga","telefon","samochód"],
+["HASŁO DO WIFI","everyday","internet","router","dom","zapomniałem"],
+["LODÓWKA O PÓŁNOCY","everyday","noc","jedzenie","głód","kuchnia"],
+["OTWIERANIE PACZKI","everyday","karton","zakupy","nożyczki","internet"],
+["ALARM","everyday","rano","telefon","hałas","sen"],
+
+
+/* =====================================================
+   18+
+===================================================== */
+
+["PREZERWATYWA","adult","bezpieczny seks","apteka","opakowanie","ochrona"],
+["BIELIZNA","adult","sypialnia","koronka","ubrania","czarna"],
+["KISS","adult","romans","usta","para","film"],
+["ONE NIGHT STAND","adult","impreza","noc","randka","spontaniczne"],
+["FLIRT","adult","rizz","wiadomości","uśmiech","romans"],
+["HOTEL","adult","pokój","noc","klucz","randka"],
+["MASAŻ","adult","relaks","olejek","plecy","spa"],
+["RANDKA W NOCY","adult","romans","miasto","noc","dwie osoby"],
+["SEKSOWNY STRÓJ","adult","impreza","ubrania","czerwony","odważny"],
+["LOVE HOTEL","adult","Japonia","pokój","para","prywatność"],
+["RED FLAG","adult","związek","ostrzeżenie","problem","partner"],
+["GREEN FLAG","adult","związek","dobry znak","partner","szacunek"],
+["CRUSH","adult","sympatia","motyle","flirt","sekret"],
+["FIRST KISS","adult","randka","usta","romans","nerwy"],
+["RANDKA","adult","dwie osoby","restauracja","romans","kino"],
+["AFTER PARTY","adult","impreza","noc","znajomi","późno"],
+["HOT DATE","adult","randka","romans","wieczór","elegancko"],
+["SINGIEL","adult","samotny","randki","Tinder","wolność"],
+["TINDER","adult","swipe","randki","serce","aplikacja"],
+["FLIRTOWANIE","adult","rizz","wiadomości","uśmiech","kontakt"]
+
+];
+
+
+/* =====================================================
+   NAZWY KATEGORII
+===================================================== */
+
+const categoryNames = {
+
+    food:
+        "🍕 Jedzenie",
+
+    fastfood:
+        "🍔 Fast Food",
+
+    drinks:
+        "🥤 Napoje",
+
+    animals:
+        "🐶 Zwierzęta",
+
+    places:
+        "🌍 Miejsca",
+
+    objects:
+        "📦 Przedmioty",
+
+    nature:
+        "🌲 Natura",
+
+    technology:
+        "💻 Technologia",
+
+    internet:
+        "🧠 Gen Z / Internet",
+
+    memes:
+        "💀 Memy / Brainrot",
+
+    social:
+        "📱 Social Media",
+
+    gaming:
+        "🎮 Gaming",
+
+    movies:
+        "🎬 Filmy i Seriale",
+
+    music:
+        "🎵 Muzyka",
+
+    fashion:
+        "👟 Moda",
+
+    sports:
+        "🏆 Sport",
+
+    cars:
+        "🚗 Samochody",
+
+    school:
+        "🏫 Szkoła",
+
+    relationships:
+        "❤️ Relacje / Randki",
+
+    nostalgia:
+        "🧸 Nostalgia",
+
+    travel:
+        "✈️ Podróże",
+
+    party:
+        "🎉 Impreza",
+
+    scary:
+        "👻 Straszne rzeczy",
+
+    weird:
+        "🧪 Dziwne rzeczy",
+
+    everyday:
+        "💸 Życie codzienne",
+
+    adult:
+        "🔞 18+ / Dla dorosłych"
+
+};
+
+
+/* =====================================================
+   NAZWY POZIOMÓW
+===================================================== */
+
+const difficultyNames = {
+
+    easy:
+        "🟢 ŁATWA",
+
+    normal:
+        "🟡 NORMALNA",
+
+    hard:
+        "🔴 TRUDNA"
+
+};
+
+
+/* =====================================================
+   ZMIENNE
+===================================================== */
+
+let players = [];
+
+let impostors = [];
+
+let currentIndex = 0;
+
+let currentWord = null;
+
+let currentHint = null;
+
+let currentDifficulty = null;
+
+
+/* =====================================================
+   ELEMENTY
+===================================================== */
+
+const playersInput =
+    document.getElementById(
+        "players-input"
+    );
+
+
+playersInput.addEventListener(
+    "input",
+    updatePlayerPreview
+);
+
+
+playersInput.addEventListener(
+    "input",
+    updateImpostorOptions
+);
+
+
+/* =====================================================
+   PODGLĄD GRACZY
+===================================================== */
+
+function updatePlayerPreview() {
+
+    const names =
+        playersInput.value
+        .split(",")
+        .map(
+            name =>
+                name.trim()
+        )
+        .filter(
+            name =>
+                name.length > 0
+        );
+
+
+    const preview =
+        document.getElementById(
+            "player-preview"
+        );
+
+
+    preview.innerHTML = "";
+
+
+    names.forEach(
+        name => {
+
+            const tag =
+                document.createElement(
+                    "div"
+                );
+
+
+            tag.className =
+                "player-tag";
+
+
+            tag.innerText =
+                "👤 " + name;
+
+
+            preview.appendChild(
+                tag
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LICZBA IMPOSTORÓW
+===================================================== */
+
+function updateImpostorOptions() {
+
+    const names =
+        playersInput.value
+        .split(",")
+        .map(
+            name =>
+                name.trim()
+        )
+        .filter(
+            name =>
+                name.length > 0
+        );
+
+
+    const select =
+        document.getElementById(
+            "impostor-count"
+        );
+
+
+    const oldValue =
+        parseInt(
+            select.value
+        ) || 1;
+
+
+    select.innerHTML = "";
+
+
+    const max =
+        Math.max(
+            1,
+            names.length - 1
+        );
+
+
+    for (
+        let i = 1;
+        i <= max;
+        i++
+    ) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            i;
+
+
+        option.textContent =
+            i === 1
+                ? "1 impostor"
+                : `${i} impostorów`;
+
+
+        select.appendChild(
+            option
+        );
+
+    }
+
+
+    if (
+        oldValue <= max
+    ) {
+
+        select.value =
+            oldValue;
+
+    } else {
+
+        select.value =
+            max;
+
+    }
+
+}
+
+
+/* =====================================================
+   LOSOWANIE
+===================================================== */
+
+function randomItem(array) {
+
+    if (
+        !array ||
+        array.length === 0
+    ) {
+
+        return null;
+
+    }
+
+
+    return array[
+        Math.floor(
+            Math.random() *
+            array.length
+        )
+    ];
+
+}
+
+
+/* =====================================================
+   LOSOWANIE PODPOWIEDZI
+===================================================== */
+
+function chooseHint(word) {
+
+    const difficulty =
+        document.getElementById(
+            "difficulty-select"
+        ).value;
+
+
+    const hintData = {
+
+        easy: [
+            {
+                hint: word[2],
+                difficulty: "easy"
+            }
+        ],
+
+        normal: [
+            {
+                hint: word[3],
+                difficulty: "normal"
+            }
+        ],
+
+        hard: [
+            {
+                hint: word[4],
+                difficulty: "hard"
+            }
+        ],
+
+        random: [
+
+            {
+                hint: word[2],
+                difficulty: "easy"
+            },
+
+            {
+                hint: word[3],
+                difficulty: "normal"
+            },
+
+            {
+                hint: word[4],
+                difficulty: "hard"
+            },
+
+            {
+                hint: word[5],
+                difficulty: "hard"
+            }
+
+        ]
+
+    };
+
+
+    let available =
+        hintData[difficulty]
+        .filter(
+            item =>
+                item.hint &&
+                item.hint.trim() !== ""
+        );
+
+
+    const selected =
+        randomItem(
+            available
+        );
+
+
+    currentDifficulty =
+        selected.difficulty;
+
+
+    return selected.hint;
+
+}
+
+
+/* =====================================================
+   POBIERANIE WYBRANYCH KATEGORII
+===================================================== */
+
+function getSelectedCategories() {
+
+    const allCategories =
+        document.getElementById(
+            "all-categories"
+        );
+
+
+    const checkboxes =
+        document.querySelectorAll(
+            "#category-options input[type='checkbox']"
+        );
+
+
+    if (
+        allCategories.checked
+    ) {
+
+        return null;
+
+    }
+
+
+    return Array.from(
+        checkboxes
+    )
+    .filter(
+        checkbox =>
+            checkbox.checked
+    )
+    .map(
+        checkbox =>
+            checkbox.value
+    );
+
+}
+
+
+/* =====================================================
+   START GRY
+===================================================== */
+
+function startGame() {
+
+    players =
+        playersInput.value
+        .split(",")
+        .map(
+            name =>
+                name.trim()
+        )
+        .filter(
+            name =>
+                name.length > 0
+        );
+
+
+    if (
+        players.length < 3
+    ) {
+
+        alert(
+            "Potrzebujesz co najmniej 3 graczy!"
+        );
+
+        return;
+
+    }
+
+
+    const impostorCount =
+        parseInt(
+            document.getElementById(
+                "impostor-count"
+            ).value
+        );
+
+
+    if (
+        impostorCount >=
+        players.length
+    ) {
+
+        alert(
+            "Liczba impostorów musi być mniejsza niż liczba graczy!"
+        );
+
+        return;
+
+    }
+
+
+    const selectedCategories =
+        getSelectedCategories();
+
+
+    let availableWords;
+
+
+    /*
+       NULL = wszystkie
+    */
+
+    if (
+        selectedCategories === null
+    ) {
+
+        availableWords =
+            wordsList;
+
+    } else {
+
+        if (
+            selectedCategories.length === 0
+        ) {
+
+            alert(
+                "Wybierz przynajmniej jedną kategorię!"
+            );
+
+            return;
+
+        }
+
+
+        availableWords =
+            wordsList.filter(
+                word =>
+                    selectedCategories.includes(
+                        word[1]
+                    )
+            );
+
+    }
+
+
+    if (
+        availableWords.length === 0
+    ) {
+
+        alert(
+            "Nie znaleziono haseł w wybranych kategoriach."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Losowanie hasła
+    */
+
+    currentWord =
+        randomItem(
+            availableWords
+        );
+
+
+    /*
+       Losowanie podpowiedzi
+    */
+
+    currentHint =
+        chooseHint(
+            currentWord
+        );
+
+
+    /*
+       Losowanie impostorów
+    */
+
+    impostors = [];
+
+
+    while (
+        impostors.length <
+        impostorCount
+    ) {
+
+        const index =
+            Math.floor(
+                Math.random() *
+                players.length
+            );
+
+
+        if (
+            !impostors.includes(
+                index
+            )
+        ) {
+
+            impostors.push(
+                index
+            );
+
+        }
+
+    }
+
+
+    currentIndex = 0;
+
+
+    /*
+       Ukrywamy ekrany
+    */
+
+    document.getElementById(
+        "setup-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "role-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "end-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "final-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    showPassScreen();
+
+}
+
+
+/* =====================================================
+   EKRAN PRZEKAZYWANIA
+===================================================== */
+
+function showPassScreen() {
+
+    document.getElementById(
+        "pass-screen"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "role-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "pass-player-name"
+    ).innerText =
+        players[
+            currentIndex
+        ];
+
+
+    const percentage =
+        (
+            currentIndex /
+            players.length
+        ) * 100;
+
+
+    document.getElementById(
+        "progress-bar"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "progress-text"
+    ).innerText =
+        `Gracz ${
+            currentIndex + 1
+        } z ${
+            players.length
+        }`;
+
+}
+
+
+/* =====================================================
+   POKAŻ ROLĘ
+===================================================== */
+
+function revealRole() {
+
+    document.getElementById(
+        "pass-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "role-screen"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "role-player-name"
+    ).innerText =
+        players[
+            currentIndex
+        ];
+
+
+    const content =
+        document.getElementById(
+            "role-content"
+        );
+
+
+    const isImpostor =
+        impostors.includes(
+            currentIndex
+        );
+
+
+    if (
+        isImpostor
+    ) {
+
+        content.innerHTML = `
+
+            <div class="role-title">
+
+                🕵️ JESTEŚ IMPOSTOREM!
+
+            </div>
+
+            <p class="role-subtitle">
+
+                Nie znasz hasła.
+
+                <br><br>
+
+                Słuchaj innych graczy
+                i spróbuj nie dać się
+                zdemaskować.
+
+            </p>
+
+            <div class="hint-title">
+
+                💡 TWOJA WSKAZÓWKA
+
+            </div>
+
+            <div class="hint">
+
+                ${currentHint}
+
+            </div>
+
+            <div class="difficulty">
+
+                ${
+                    difficultyNames[
+                        currentDifficulty
+                    ]
+                }
+
+            </div>
+
+        `;
+
+    } else {
+
+        content.innerHTML = `
+
+            <p>
+                Twoje hasło:
+            </p>
+
+            <div class="word">
+
+                ${currentWord[0]}
+
+            </div>
+
+            <div class="category">
+
+                ${
+                    categoryNames[
+                        currentWord[1]
+                    ]
+                }
+
+            </div>
+
+            <p class="small">
+
+                Nie pokazuj tego ekranu
+                innym graczom!
+
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   NASTĘPNY GRACZ
+===================================================== */
+
+function nextPlayer() {
+
+    currentIndex++;
+
+
+    if (
+        currentIndex <
+        players.length
+    ) {
+
+        showPassScreen();
+
+    } else {
+
+        showEndScreen();
+
+    }
+
+}
+
+
+/* =====================================================
+   EKRAN ROZPOCZĘCIA
+===================================================== */
+
+function showEndScreen() {
+
+    document.getElementById(
+        "role-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "pass-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "final-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "end-screen"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    const starter =
+        randomItem(
+            players
+        );
+
+
+    document.getElementById(
+        "starter-info"
+    ).innerText =
+        starter;
+
+}
+
+
+/* =====================================================
+   KONIEC GRY
+===================================================== */
+
+function revealFinalResult() {
+
+    document.getElementById(
+        "end-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "final-screen"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "final-word"
+    ).innerText =
+        currentWord[0];
+
+
+    document.getElementById(
+        "final-category"
+    ).innerText =
+        categoryNames[
+            currentWord[1]
+        ];
+
+
+    const names =
+        impostors.map(
+            index =>
+                players[index]
+        );
+
+
+    document.getElementById(
+        "final-impostors"
+    ).innerText =
+        names.join(", ");
+
+}
+
+
+/* =====================================================
+   NOWA GRA
+===================================================== */
+
+function newRound() {
+
+    startGame();
+
+}
+
+
+/* =====================================================
+   ZMIEŃ USTAWIENIA
+===================================================== */
+
+function backToSetup() {
+
+    document.getElementById(
+        "end-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "final-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "role-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "pass-screen"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "setup-screen"
+    ).classList.remove(
+        "hidden"
+    );
+
+
+    updatePlayerPreview();
+
+    updateImpostorOptions();
+
+}
+
+
+/* =====================================================
+   OBSŁUGA KATEGORII
+===================================================== */
+
+const allCategories =
+    document.getElementById(
+        "all-categories"
+    );
+
+
+const categoryCheckboxes =
+    document.querySelectorAll(
+        "#category-options input[type='checkbox']"
+    );
+
+
+allCategories.addEventListener(
+    "change",
+    function() {
+
+        if (
+            this.checked
+        ) {
+
+            categoryCheckboxes.forEach(
+                checkbox => {
+
+                    checkbox.checked =
+                        false;
+
+                }
+            );
+
+        }
+
+        updateCategoryVisuals();
+
+    }
+);
+
+
+categoryCheckboxes.forEach(
+    checkbox => {
+
+        checkbox.addEventListener(
+            "change",
+            function() {
+
+                const anySelected =
+                    Array.from(
+                        categoryCheckboxes
+                    ).some(
+                        item =>
+                            item.checked
+                    );
+
+
+                if (
+                    anySelected
+                ) {
+
+                    allCategories.checked =
+                        false;
+
+                }
+
+
+                if (
+                    !anySelected
+                ) {
+
+                    allCategories.checked =
+                        true;
+
+                }
+
+
+                updateCategoryVisuals();
+
+            }
+        );
+
+    }
+);
+
+
+function updateCategoryVisuals() {
+
+    document
+        .querySelectorAll(
+            ".category-check"
+        )
+        .forEach(
+            element => {
+
+                const checkbox =
+                    element.querySelector(
+                        "input"
+                    );
+
+
+                if (
+                    checkbox.checked
+                ) {
+
+                    element.classList.add(
+                        "category-selected"
+                    );
+
+                } else {
+
+                    element.classList.remove(
+                        "category-selected"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   START APLIKACJI
+===================================================== */
+
+updatePlayerPreview();
+
+updateImpostorOptions();
+
+updateCategoryVisuals();
+
+</script>
+
+</body>
+
+</html>
