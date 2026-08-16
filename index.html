@@ -1,989 +1,756 @@
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<title>Impostor</title>
+<title>IMPOSTOR — Gra imprezowa</title>
 
 <style>
-
-/* =====================================================
-   RESET
-===================================================== */
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+:root{
+    --bg:#07070d;
+    --card:rgba(19,18,32,.88);
+    --card2:#11101c;
+    --purple:#8b5cf6;
+    --pink:#ec4899;
+    --cyan:#22d3ee;
+    --green:#10b981;
+    --red:#ef4444;
+    --yellow:#fbbf24;
+    --text:#fff;
+    --muted:#9995a8;
+    --border:rgba(255,255,255,.09);
 }
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-body {
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
     background:
-        radial-gradient(
-            circle at 20% 0%,
-            #3b1678 0%,
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 100% 100%,
-            #581c87 0%,
-            transparent 35%
-        ),
-        #08080d;
-
-    color: white;
-
-    min-height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 15px;
-
+        radial-gradient(circle at 10% 10%,rgba(124,58,237,.32),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(236,72,153,.18),transparent 25%),
+        radial-gradient(circle at 50% 100%,rgba(34,211,238,.12),transparent 30%),
+        #07070d;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:18px;
 }
 
-.app {
+/* ANIMOWANE TŁO */
 
-    width: 100%;
-
-    max-width: 540px;
-
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:.12;
+    pointer-events:none;
+    z-index:-1;
 }
 
-
-/* =====================================================
-   LOGO
-===================================================== */
-
-.logo {
-
-    text-align: center;
-
-    margin-bottom: 18px;
-
+body::before{
+    background:#8b5cf6;
+    top:-180px;
+    left:-160px;
+    animation:float1 12s ease-in-out infinite;
 }
 
-.logo .emoji {
-
-    font-size: 58px;
-
-    filter:
-        drop-shadow(
-            0 0 18px
-            rgba(168,85,247,.8)
-        );
-
+body::after{
+    background:#ec4899;
+    right:-180px;
+    bottom:-180px;
+    animation:float2 15s ease-in-out infinite;
 }
 
-.logo h1 {
-
-    margin:
-        4px 0 0;
-
-    font-size: 38px;
-
-    letter-spacing: 2px;
-
+@keyframes float1{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(80px,50px)}
 }
 
-.logo p {
-
-    margin:
-        5px 0 0;
-
-    color: #aaa;
-
+@keyframes float2{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(-70px,-60px)}
 }
 
+.app{
+    width:100%;
+    max-width:560px;
+    position:relative;
+}
 
-/* =====================================================
-   CARD
-===================================================== */
+/* LOGO */
 
-.card {
+.logo{
+    text-align:center;
+    margin-bottom:20px;
+    animation:logoIn .6s ease;
+}
 
-    background:
-        rgba(24,23,39,.95);
+@keyframes logoIn{
+    from{
+        opacity:0;
+        transform:translateY(-20px) scale(.95);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
 
-    border:
-        1px solid
-        rgba(255,255,255,.08);
+.logo .emoji{
+    font-size:58px;
+    display:inline-block;
+    filter:drop-shadow(0 0 22px rgba(168,85,247,.8));
+    animation:detective 3s ease-in-out infinite;
+}
 
-    border-radius: 25px;
+@keyframes detective{
+    0%,100%{transform:rotate(-3deg) translateY(0)}
+    50%{transform:rotate(3deg) translateY(-5px)}
+}
 
-    padding: 25px;
+.logo h1{
+    margin:3px 0 0;
+    font-size:39px;
+    letter-spacing:4px;
+    font-weight:900;
+    background:linear-gradient(90deg,#fff,#c084fc,#f472b6,#fff);
+    background-size:250% auto;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:gradientMove 5s linear infinite;
+}
 
+@keyframes gradientMove{
+    to{background-position:250% center}
+}
+
+.logo p{
+    margin:6px 0 0;
+    color:#a8a5b4;
+}
+
+/* CARD */
+
+.card{
+    background:linear-gradient(
+        145deg,
+        rgba(27,25,45,.94),
+        rgba(13,13,23,.96)
+    );
+    border:1px solid var(--border);
+    border-radius:27px;
+    padding:25px;
     box-shadow:
-        0 25px 70px
-        rgba(0,0,0,.55);
-
-    animation:
-        appear .3s ease;
-
+        0 30px 90px rgba(0,0,0,.58),
+        inset 0 1px 0 rgba(255,255,255,.04);
+    backdrop-filter:blur(20px);
+    animation:cardIn .35s ease;
 }
 
-@keyframes appear {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(12px)
-            scale(.98);
-
+@keyframes cardIn{
+    from{
+        opacity:0;
+        transform:translateY(16px) scale(.97);
     }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
+    to{
+        opacity:1;
+        transform:none;
     }
-
 }
 
-.hidden {
-
-    display: none !important;
-
+.hidden{
+    display:none!important;
 }
 
-
-/* =====================================================
-   FORMULARZE
-===================================================== */
-
-h2 {
-
-    margin-top: 0;
-
+h2{
+    margin:0 0 5px;
+    font-size:24px;
 }
 
-label {
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
 
-    display: block;
+.section-title small{
+    color:#858192;
+    font-size:12px;
+}
 
-    text-align: left;
+/* INPUTY */
 
-    color: #bcbac7;
-
-    font-size: 14px;
-
-    margin:
-        18px 0 8px;
-
+label{
+    display:block;
+    color:#bbb7c7;
+    font-size:14px;
+    margin:18px 0 8px;
 }
 
 input[type="text"],
-select {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border-radius: 13px;
-
-    border:
-        1px solid
-        #3d3a52;
-
-    background:
-        #11101b;
-
-    color: white;
-
-    font-size: 16px;
-
-    outline: none;
-
+select{
+    width:100%;
+    padding:15px;
+    border-radius:14px;
+    border:1px solid #373449;
+    background:#0d0c16;
+    color:#fff;
+    font-size:16px;
+    outline:none;
+    transition:.2s;
 }
 
 input[type="text"]:focus,
-select:focus {
-
-    border-color:
-        #a855f7;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(168,85,247,.15);
-
+select:focus{
+    border-color:#9b6cff;
+    box-shadow:0 0 0 3px rgba(139,92,246,.14),0 0 20px rgba(139,92,246,.08);
 }
 
+/* BUTTONY */
 
-/* =====================================================
-   BUTTONY
-===================================================== */
-
-button {
-
-    width: 100%;
-
-    border: none;
-
-    border-radius: 14px;
-
-    padding: 16px;
-
-    margin-top: 14px;
-
-    font-size: 17px;
-
-    font-weight: 700;
-
-    color: white;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #c026d3
-        );
-
-    cursor: pointer;
-
+button{
+    width:100%;
+    border:0;
+    border-radius:15px;
+    padding:16px;
+    margin-top:14px;
+    font-size:16px;
+    font-weight:800;
+    color:#fff;
+    background:linear-gradient(135deg,#7c3aed,#c026d3);
+    cursor:pointer;
     transition:
-        transform .15s,
-        filter .15s;
-
-    box-shadow:
-        0 9px 24px
-        rgba(124,58,237,.28);
-
+        transform .15s ease,
+        filter .15s ease,
+        box-shadow .2s ease;
+    box-shadow:0 10px 30px rgba(124,58,237,.25);
 }
 
-button:active {
-
-    transform:
-        scale(.97);
-
+button:hover{
+    filter:brightness(1.1);
+    box-shadow:0 12px 35px rgba(124,58,237,.38);
 }
 
-button:hover {
-
-    filter:
-        brightness(1.08);
-
+button:active{
+    transform:scale(.97);
 }
 
-button.secondary {
-
-    background:
-        #29273a;
-
-    box-shadow: none;
-
+button.secondary{
+    background:#29273a;
+    box-shadow:none;
 }
 
-button.green {
-
-    background:
-        linear-gradient(
-            135deg,
-            #059669,
-            #10b981
-        );
-
+button.green{
+    background:linear-gradient(135deg,#059669,#10b981);
 }
 
-button.red {
-
-    background:
-        linear-gradient(
-            135deg,
-            #dc2626,
-            #ef4444
-        );
-
+button.red{
+    background:linear-gradient(135deg,#dc2626,#ef4444);
 }
 
-
-/* =====================================================
-   LISTA GRACZY
-===================================================== */
-
-.player-list {
-
-    margin-top: 14px;
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 8px;
-
+button.small-btn{
+    width:auto;
+    margin:0;
+    padding:9px 12px;
+    font-size:12px;
 }
 
-.player-tag {
+/* GRACZE */
 
-    background:
-        #29273a;
-
-    padding:
-        8px 12px;
-
-    border-radius:
-        20px;
-
-    font-size:
-        13px;
-
+.player-list{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
 }
 
-
-/* =====================================================
-   KATEGORIE
-===================================================== */
-
-.category-panel {
-
-    margin-top: 10px;
-
-    padding: 10px;
-
-    border-radius: 15px;
-
-    background: #11101b;
-
-    border: 1px solid #3d3a52;
-
+.player-tag{
+    padding:8px 11px;
+    border-radius:20px;
+    background:#29273a;
+    border:1px solid rgba(255,255,255,.05);
+    font-size:13px;
+    animation:tagIn .2s ease;
 }
 
-.category-check {
+@keyframes tagIn{
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
 
-    display: flex;
+/* KATEGORIE */
 
-    align-items: center;
+.category-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+}
 
-    gap: 10px;
+.category-counter{
+    color:#c4b5fd;
+    background:rgba(139,92,246,.12);
+    border:1px solid rgba(139,92,246,.2);
+    border-radius:20px;
+    padding:6px 10px;
+    font-size:12px;
+    font-weight:700;
+}
 
-    margin: 3px 0;
+.category-tools{
+    display:flex;
+    gap:7px;
+    margin-bottom:9px;
+}
 
-    padding: 11px 10px;
+.category-search{
+    flex:1;
+    padding:11px 13px!important;
+    font-size:14px!important;
+}
 
-    border-radius: 10px;
+.category-panel{
+    background:#0c0b14;
+    border:1px solid #353247;
+    border-radius:17px;
+    padding:8px;
+}
 
-    color: #ddd;
+.category-scroll{
+    max-height:275px;
+    overflow-y:auto;
+    padding-right:3px;
+    scroll-behavior:smooth;
+}
 
-    cursor: pointer;
+.category-scroll::-webkit-scrollbar{
+    width:6px;
+}
 
+.category-scroll::-webkit-scrollbar-track{
+    background:#12101c;
+    border-radius:20px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb{
+    background:linear-gradient(#7c3aed,#ec4899);
+    border-radius:20px;
+}
+
+.category-check{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:3px 0;
+    padding:11px 10px;
+    border-radius:11px;
+    color:#ddd;
+    cursor:pointer;
+    border:1px solid transparent;
     transition:
-        background .15s,
-        border-color .15s;
-
-    border: 1px solid transparent;
-
+        background .18s,
+        border .18s,
+        transform .15s;
 }
 
-.category-check:hover {
-
-    background:
-        rgba(168,85,247,.08);
-
+.category-check:hover{
+    background:rgba(139,92,246,.08);
+    transform:translateX(2px);
 }
 
-.category-check input {
-
-    width: 18px;
-
-    height: 18px;
-
-    margin: 0;
-
-    padding: 0;
-
-    accent-color: #a855f7;
-
-    cursor: pointer;
-
-    flex-shrink: 0;
-
+.category-check input{
+    width:18px;
+    height:18px;
+    margin:0;
+    accent-color:#a855f7;
+    flex-shrink:0;
 }
 
-.category-check span {
-
-    font-size: 14px;
-
+.category-check span{
+    font-size:13px;
 }
 
-.all-category {
-
-    margin-bottom: 8px;
-
-    background:
-        rgba(168,85,247,.12);
-
-    border-color:
-        rgba(168,85,247,.25);
-
-    font-weight: 700;
-
+.category-check.selected{
+    background:linear-gradient(
+        90deg,
+        rgba(139,92,246,.18),
+        rgba(236,72,153,.08)
+    );
+    border-color:rgba(168,85,247,.55);
+    box-shadow:inset 3px 0 0 #a855f7;
 }
 
-.category-selected {
-
-    background:
-        rgba(168,85,247,.14);
-
-    border-color:
-        #a855f7;
-
+.all-category{
+    background:rgba(139,92,246,.09);
+    font-weight:800;
 }
 
-.adult-category {
-
-    margin-top: 8px;
-
-    background:
-        rgba(220,38,38,.08);
-
-    border-color:
-        rgba(239,68,68,.25);
-
+.adult-category{
+    background:rgba(239,68,68,.06);
 }
 
-.adult-category input {
-
-    accent-color:
-        #ef4444;
-
+.adult-category input{
+    accent-color:#ef4444;
 }
 
-.adult-category.category-selected {
-
-    background:
-        rgba(239,68,68,.13);
-
-    border-color:
-        #ef4444;
-
+.adult-category.selected{
+    border-color:#ef4444;
+    box-shadow:inset 3px 0 0 #ef4444;
 }
 
+/* INFO */
 
-/* =====================================================
-   INFO
-===================================================== */
-
-.info {
-
-    margin-top: 15px;
-
-    padding: 13px;
-
-    border-radius: 13px;
-
-    background:
-        rgba(139,92,246,.09);
-
-    border:
-        1px solid
-        rgba(139,92,246,.15);
-
-    color: #bbb;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-
+.info{
+    margin-top:15px;
+    padding:13px;
+    border-radius:14px;
+    background:rgba(139,92,246,.07);
+    border:1px solid rgba(139,92,246,.14);
+    color:#aaa6b7;
+    font-size:12px;
+    line-height:1.55;
 }
 
+/* PROGRESS */
 
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-.progress {
-
-    height: 7px;
-
-    background:
-        #29273a;
-
-    border-radius:
-        10px;
-
-    overflow: hidden;
-
-    margin:
-        18px 0 22px;
-
+.progress{
+    height:7px;
+    background:#29273a;
+    border-radius:10px;
+    overflow:hidden;
+    margin:18px 0 22px;
 }
 
-.progress-bar {
-
-    height: 100%;
-
-    width: 0%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #8b5cf6,
-            #ec4899
-        );
-
-    transition:
-        width .3s ease;
-
+.progress-bar{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#8b5cf6,#ec4899,#22d3ee);
+    background-size:200% 100%;
+    animation:progressGlow 2s linear infinite;
+    transition:width .4s ease;
 }
 
-
-/* =====================================================
-   ROLE
-===================================================== */
-
-.pass-icon {
-
-    font-size: 65px;
-
-    margin:
-        8px 0;
-
+@keyframes progressGlow{
+    to{background-position:200% 0}
 }
 
-.player-name {
+/* ROLE */
 
-    color:
-        #c084fc;
-
-    font-size:
-        30px;
-
-    font-weight:
-        800;
-
-    margin:
-        10px 0;
-
+.pass-icon{
+    font-size:64px;
+    text-align:center;
+    animation:phone .8s ease-in-out infinite alternate;
 }
 
-.role-box {
-
-    margin:
-        20px 0;
-
-    padding:
-        27px 16px;
-
-    border-radius:
-        19px;
-
-    background:
-        #11101b;
-
-    border:
-        1px solid
-        #39364e;
-
-    text-align:
-        center;
-
+@keyframes phone{
+    from{transform:rotate(-4deg)}
+    to{transform:rotate(4deg)}
 }
 
-.role-title {
-
-    font-size:
-        25px;
-
-    font-weight:
-        800;
-
-    color:
-        #ff4d8d;
-
+.player-name{
+    color:#c084fc;
+    font-size:30px;
+    font-weight:900;
+    margin:10px 0;
+    text-align:center;
+    text-shadow:0 0 25px rgba(192,132,252,.2);
 }
 
-.role-subtitle {
-
-    color:
-        #bbb;
-
-    line-height:
-        1.5;
-
+.role-box{
+    margin:20px 0;
+    padding:28px 16px;
+    border-radius:20px;
+    background:#0c0b14;
+    border:1px solid #39364e;
+    text-align:center;
+    animation:roleAppear .3s ease;
 }
 
-.word {
-
-    font-size:
-        36px;
-
-    font-weight:
-        900;
-
-    color:
-        #2dd4bf;
-
-    margin:
-        15px 0;
-
-    text-shadow:
-        0 0 22px
-        rgba(45,212,191,.22);
-
+@keyframes roleAppear{
+    from{
+        opacity:0;
+        transform:scale(.95);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
 }
 
-.hint-title {
-
-    color:
-        #fbbf24;
-
-    font-size:
-        14px;
-
-    font-weight:
-        700;
-
-    margin-top:
-        25px;
-
+.role-title{
+    font-size:25px;
+    font-weight:900;
+    color:#ff4d8d;
+    text-shadow:0 0 20px rgba(255,77,141,.2);
 }
 
-.hint {
-
-    color:
-        #fbbf24;
-
-    font-size:
-        23px;
-
-    font-weight:
-        800;
-
-    margin-top:
-        8px;
-
+.role-subtitle{
+    color:#aaa;
+    line-height:1.55;
 }
 
-.category {
-
-    display:
-        inline-block;
-
-    padding:
-        7px 12px;
-
-    border-radius:
-        20px;
-
-    background:
-        rgba(139,92,246,.15);
-
-    color:
-        #c4b5fd;
-
-    font-size:
-        13px;
-
+.word{
+    font-size:36px;
+    font-weight:900;
+    color:#2dd4bf;
+    margin:15px 0;
+    text-shadow:0 0 25px rgba(45,212,191,.2);
+    animation:wordGlow 2s ease-in-out infinite alternate;
 }
 
-.difficulty {
-
-    display:
-        inline-block;
-
-    margin-top:
-        10px;
-
-    padding:
-        6px 10px;
-
-    border-radius:
-        15px;
-
-    font-size:
-        12px;
-
-    background:
-        #242236;
-
+@keyframes wordGlow{
+    from{filter:brightness(1)}
+    to{filter:brightness(1.2)}
 }
 
-.big-emoji {
-
-    font-size:
-        65px;
-
+.hint-title{
+    color:#fbbf24;
+    font-size:13px;
+    font-weight:800;
+    margin-top:25px;
 }
 
-.small {
-
-    font-size:
-        13px;
-
-    color:
-        #999;
-
-    line-height:
-        1.5;
-
+.hint{
+    color:#fbbf24;
+    font-size:23px;
+    font-weight:900;
+    margin-top:8px;
 }
 
-.success {
-
-    color:
-        #34d399;
-
+.category{
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(139,92,246,.15);
+    color:#c4b5fd;
+    font-size:13px;
 }
 
-
-/* =====================================================
-   WYNIK
-===================================================== */
-
-.result-box {
-
-    text-align:
-        center;
-
-    background:
-        #11101b;
-
-    border-radius:
-        19px;
-
-    padding:
-        25px;
-
-    margin:
-        15px 0;
-
+.difficulty{
+    display:inline-block;
+    margin-top:10px;
+    padding:6px 10px;
+    border-radius:15px;
+    font-size:11px;
+    background:#242236;
 }
 
-.result-impostors {
-
-    color:
-        #ff4d8d;
-
-    font-size:
-        24px;
-
-    font-weight:
-        800;
-
-    line-height:
-        1.5;
-
+.big-emoji{
+    text-align:center;
+    font-size:64px;
+    animation:emojiFloat 2s ease-in-out infinite;
 }
 
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-.footer {
-
-    text-align:
-        center;
-
-    color:
-        #666;
-
-    font-size:
-        12px;
-
-    margin-top:
-        15px;
-
+@keyframes emojiFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-7px)}
 }
 
-.creator-credit {
-
-    position: fixed;
-
-    right: 12px;
-
-    bottom: 10px;
-
-    color: #777;
-
-    font-size: 11px;
-
-    opacity: .8;
-
-    letter-spacing: .3px;
-
-    pointer-events: none;
-
+.small{
+    font-size:12px;
+    color:#858192;
+    line-height:1.5;
 }
 
-hr {
-
-    border:
-        0;
-
-    border-top:
-        1px solid
-        #29273a;
-
+.success{
+    color:#34d399;
 }
 
+/* RESULT */
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.result-box{
+    text-align:center;
+    background:#0d0c16;
+    border-radius:20px;
+    padding:25px;
+    margin:15px 0;
+    border:1px solid rgba(255,255,255,.05);
+}
 
-@media (max-width: 600px) {
+.result-impostors{
+    color:#ff4d8d;
+    font-size:23px;
+    font-weight:900;
+    line-height:1.5;
+}
 
-    body {
+hr{
+    border:0;
+    border-top:1px solid #29273a;
+    margin:20px 0;
+}
 
-        align-items:
-            flex-start;
+/* FOOTER */
 
-        padding-top:
-            12px;
+.footer{
+    text-align:center;
+    color:#5e5a6b;
+    font-size:11px;
+    margin-top:15px;
+}
 
+.creator-credit{
+    position:fixed;
+    right:12px;
+    bottom:9px;
+    color:#666;
+    font-size:10px;
+    opacity:.75;
+    letter-spacing:.3px;
+    pointer-events:none;
+}
+
+/* BADGE */
+
+.game-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(16,185,129,.1);
+    border:1px solid rgba(16,185,129,.2);
+    color:#6ee7b7;
+    border-radius:20px;
+    padding:6px 10px;
+    font-size:11px;
+    margin-top:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+    body{
+        align-items:flex-start;
+        padding:12px;
     }
 
-    .card {
-
-        padding:
-            20px;
-
+    .card{
+        padding:19px;
+        border-radius:23px;
     }
 
-    .logo .emoji {
-
-        font-size:
-            48px;
-
+    .logo .emoji{
+        font-size:48px;
     }
 
-    .logo h1 {
-
-        font-size:
-            32px;
-
+    .logo h1{
+        font-size:31px;
     }
 
-    .creator-credit {
-
-        right:
-            8px;
-
-        bottom:
-            6px;
-
-        font-size:
-            10px;
-
+    .category-scroll{
+        max-height:255px;
     }
 
+    .creator-credit{
+        right:8px;
+        bottom:6px;
+    }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
 <div class="app">
 
-
-<!-- =====================================================
-     LOGO
-===================================================== -->
-
 <div class="logo">
-
-    <div class="emoji">
-        🕵️
-    </div>
-
-    <h1>
-        IMPOSTOR
-    </h1>
-
-    <p>
-        Komu można zaufać?
-    </p>
-
+    <div class="emoji">🕵️</div>
+    <h1>IMPOSTOR</h1>
+    <p>Komu można zaufać?</p>
+    <div class="game-badge">● GOTOWE DO GRY</div>
 </div>
 
 
-<!-- =====================================================
+<!-- =========================
      SETUP
-===================================================== -->
+========================= -->
 
-<div
-    id="setup-screen"
-    class="card"
->
+<div id="setup-screen" class="card">
 
-    <h2>
-        🎮 Nowa gra
-    </h2>
+    <div class="section-title">
+        <h2>🎮 Nowa gra</h2>
+        <small id="word-count-info">0 haseł</small>
+    </div>
 
-
-    <label>
-        Imiona graczy
-    </label>
-
+    <label>Imiona graczy</label>
 
     <input
         id="players-input"
         type="text"
-        value=""
         placeholder="Np. Tymek, Daria, Kuba"
     >
 
+    <div id="player-preview" class="player-list"></div>
 
-    <div
-        id="player-preview"
-        class="player-list">
+
+    <label>Liczba impostorów</label>
+
+    <select id="impostor-count"></select>
+
+
+    <label>
+        Kategorie
+    </label>
+
+    <div class="category-header">
+        <span class="small">
+            Wybierz, z czego ma być losowane hasło
+        </span>
+
+        <span
+            id="category-counter"
+            class="category-counter"
+        >
+            Wszystkie
+        </span>
     </div>
 
 
-    <label>
-        Liczba impostorów
-    </label>
+    <div class="category-tools">
 
+        <input
+            id="category-search"
+            class="category-search"
+            type="text"
+            placeholder="🔎 Szukaj kategorii..."
+        >
 
-    <select
-        id="impostor-count">
-    </select>
+        <button
+            class="small-btn secondary"
+            onclick="randomCategories()"
+        >
+            🎲
+        </button>
 
-
-    <label>
-        Kategorie haseł
-    </label>
+    </div>
 
 
     <div class="category-panel">
 
-
-        <!-- WSZYSTKIE -->
-
-        <label
-            class="category-check all-category"
-        >
+        <label class="category-check all-category" data-name="wszystkie">
 
             <input
                 type="checkbox"
@@ -991,610 +758,190 @@ hr {
                 checked
             >
 
-            <span>
-                🎲 Wszystkie kategorie
-            </span>
+            <span>🎲 Wszystkie kategorie</span>
 
         </label>
 
 
-        <div id="category-options">
+        <div
+            id="category-scroll"
+            class="category-scroll"
+        >
 
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="food"
-                >
-                <span>
-                    🍕 Jedzenie
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="fastfood"
-                >
-                <span>
-                    🍔 Fast Food
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="drinks"
-                >
-                <span>
-                    🥤 Napoje
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="animals"
-                >
-                <span>
-                    🐶 Zwierzęta
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="places"
-                >
-                <span>
-                    🌍 Miejsca
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="objects"
-                >
-                <span>
-                    📦 Przedmioty
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="nature"
-                >
-                <span>
-                    🌲 Natura
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="technology"
-                >
-                <span>
-                    💻 Technologia
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="internet"
-                >
-                <span>
-                    🧠 Gen Z / Internet
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="memes"
-                >
-                <span>
-                    💀 Memy / Brainrot
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="social"
-                >
-                <span>
-                    📱 Social Media
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="gaming"
-                >
-                <span>
-                    🎮 Gaming
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="movies"
-                >
-                <span>
-                    🎬 Filmy i Seriale
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="music"
-                >
-                <span>
-                    🎵 Muzyka
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="fashion"
-                >
-                <span>
-                    👟 Moda
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="sports"
-                >
-                <span>
-                    🏆 Sport
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="cars"
-                >
-                <span>
-                    🚗 Samochody
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="school"
-                >
-                <span>
-                    🏫 Szkoła
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="relationships"
-                >
-                <span>
-                    ❤️ Relacje / Randki
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="nostalgia"
-                >
-                <span>
-                    🧸 Nostalgia
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="travel"
-                >
-                <span>
-                    ✈️ Podróże
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="party"
-                >
-                <span>
-                    🎉 Impreza
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="scary"
-                >
-                <span>
-                    👻 Straszne rzeczy
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="weird"
-                >
-                <span>
-                    🧪 Dziwne rzeczy
-                </span>
-            </label>
-
-
-            <label class="category-check">
-                <input
-                    type="checkbox"
-                    value="everyday"
-                >
-                <span>
-                    💸 Życie codzienne
-                </span>
-            </label>
-
-
-            <!-- 18+ -->
-
-            <label
-                class="category-check adult-category"
-            >
-
-                <input
-                    type="checkbox"
-                    value="adult"
-                >
-
-                <span>
-                    🔞 18+ / Dla dorosłych
-                </span>
-
-            </label>
-
+            <!-- KATEGORIE BĘDĄ WYGNEROWANE JS -->
 
         </div>
 
     </div>
 
 
-    <label>
-        Poziom podpowiedzi dla impostora
-    </label>
+    <label>Poziom podpowiedzi dla impostora</label>
 
+    <select id="difficulty-select">
 
-    <select
-        id="difficulty-select"
-    >
-
-        <option value="random">
-            🎲 Losowy
-        </option>
-
-        <option value="easy">
-            🟢 Łatwy
-        </option>
-
-        <option value="normal">
-            🟡 Normalny
-        </option>
-
-        <option value="hard">
-            🔴 Trudny
-        </option>
+        <option value="random">🎲 Losowy</option>
+        <option value="easy">🟢 Łatwy</option>
+        <option value="normal">🟡 Normalny</option>
+        <option value="hard">🔴 Trudny</option>
 
     </select>
 
 
     <div class="info">
 
-        💡 Każde hasło ma kilka różnych
-        podpowiedzi. Impostor otrzymuje
-        tylko jedną, losowo wybraną.
+        💡 <b>Jak działa gra?</b><br>
+        Każdy gracz dostaje to samo hasło — oprócz impostora.
+        Impostor otrzymuje tylko jedną podpowiedź i musi udawać,
+        że zna hasło.<br><br>
 
-        <br><br>
+        🔎 Możesz wyszukiwać kategorie, przewijać listę
+        i zaznaczyć kilka jednocześnie.<br><br>
 
-        🎯 Możesz zaznaczyć dowolną liczbę
-        kategorii. Hasło będzie losowane
-        wyłącznie z zaznaczonych kategorii.
+        🎲 Kliknij <b>🎲</b>, aby automatycznie wylosować
+        kilka kategorii.
 
     </div>
 
 
-    <button
-        onclick="startGame()"
-    >
-
+    <button onclick="startGame()">
         🚀 ROZPOCZNIJ GRĘ
-
     </button>
 
-
     <p class="small">
-
         Minimum 3 graczy.
-
     </p>
 
 </div>
 
 
-<!-- =====================================================
-     PASS SCREEN
-===================================================== -->
+<!-- =========================
+     PASS
+========================= -->
 
-<div
-    id="pass-screen"
-    class="card hidden"
->
+<div id="pass-screen" class="card hidden">
 
-    <div class="pass-icon">
-        📱
-    </div>
+    <div class="pass-icon">📱</div>
 
-
-    <p>
+    <p style="text-align:center">
         Teraz gra:
     </p>
 
+    <div id="pass-player-name" class="player-name"></div>
 
-    <div
-        id="pass-player-name"
-        class="player-name">
-    </div>
-
-
-    <p>
+    <p style="text-align:center;color:#aaa">
         Przejmij telefon i upewnij się,
         że nikt nie patrzy.
     </p>
 
-
     <div class="progress">
-
-        <div
-            id="progress-bar"
-            class="progress-bar">
-        </div>
-
+        <div id="progress-bar" class="progress-bar"></div>
     </div>
 
+    <p id="progress-text" class="small" style="text-align:center"></p>
 
-    <p
-        id="progress-text"
-        class="small">
-    </p>
-
-
-    <button
-        onclick="revealRole()"
-    >
-
+    <button onclick="revealRole()">
         👁️ POKAŻ MOJĄ ROLĘ
-
     </button>
 
 </div>
 
 
-<!-- =====================================================
-     ROLE SCREEN
-===================================================== -->
+<!-- =========================
+     ROLE
+========================= -->
 
-<div
-    id="role-screen"
-    class="card hidden"
->
+<div id="role-screen" class="card hidden">
 
-    <div
-        id="role-player-name"
-        class="player-name">
-    </div>
+    <div id="role-player-name" class="player-name"></div>
 
+    <div id="role-content" class="role-box"></div>
 
-    <div
-        class="role-box"
-        id="role-content">
-    </div>
-
-
-    <button
-        onclick="nextPlayer()"
-    >
-
+    <button onclick="nextPlayer()">
         🔒 UKRYJ I PRZEKAŻ DALEJ
-
     </button>
 
 </div>
 
 
-<!-- =====================================================
-     STARTER SCREEN
-===================================================== -->
+<!-- =========================
+     END STARTER
+========================= -->
 
-<div
-    id="end-screen"
-    class="card hidden"
->
+<div id="end-screen" class="card hidden">
 
-    <div class="big-emoji">
-        🎉
-    </div>
+    <div class="big-emoji">🎉</div>
 
-
-    <h2>
+    <h2 style="text-align:center">
         Role zostały rozdane!
     </h2>
-
 
     <div class="result-box">
 
         <p class="small">
-
-            Wszyscy gracze znają już
-            swoje role.
-
+            Wszyscy gracze znają już swoje role.
         </p>
-
 
         <hr>
 
+        <p>🎤 Grę rozpoczyna:</p>
 
-        <p>
-            🎤 Grę rozpoczyna:
-        </p>
-
-
-        <div
-            id="starter-info"
-            class="player-name">
-        </div>
+        <div id="starter-info" class="player-name"></div>
 
     </div>
 
-
-    <button
-        onclick="revealFinalResult()"
-    >
-
+    <button onclick="revealFinalResult()">
         🏁 KONIEC GRY
-
     </button>
 
 </div>
 
 
-<!-- =====================================================
-     FINAL SCREEN
-===================================================== -->
+<!-- =========================
+     FINAL
+========================= -->
 
-<div
-    id="final-screen"
-    class="card hidden"
->
+<div id="final-screen" class="card hidden">
 
-    <div class="big-emoji">
-        🕵️
-    </div>
+    <div class="big-emoji">🕵️</div>
 
-
-    <h2>
+    <h2 style="text-align:center">
         Koniec gry!
     </h2>
 
-
     <div class="result-box">
 
-        <p>
-            Hasło:
-        </p>
+        <p>Hasło:</p>
 
+        <div id="final-word" class="word"></div>
 
-        <div
-            id="final-word"
-            class="word">
-        </div>
+        <p>Kategoria:</p>
 
-
-        <p>
-            Kategoria:
-        </p>
-
-
-        <div
-            id="final-category"
-            class="category">
-        </div>
-
+        <div id="final-category" class="category"></div>
 
         <hr>
 
+        <p>🕵️ Impostor / impostorzy:</p>
 
-        <p>
-            🕵️ Impostor / impostorzy:
-        </p>
-
-
-        <div
-            id="final-impostors"
-            class="result-impostors">
-        </div>
+        <div id="final-impostors" class="result-impostors"></div>
 
     </div>
 
-
-    <button
-        onclick="newRound()"
-    >
-
+    <button onclick="newRound()">
         🔄 NOWA GRA
-
     </button>
 
-
-    <button
-        class="secondary"
-        onclick="backToSetup()"
-    >
-
+    <button class="secondary" onclick="backToSetup()">
         ⚙️ ZMIEŃ USTAWIENIA
-
     </button>
 
 </div>
 
 
 <div class="footer">
-
     Impostor • Gra imprezowa 🕵️
-
 </div>
 
-
 </div>
-
 
 <div class="creator-credit">
     IMPOSTOR by: @tlada_
@@ -1603,28 +950,63 @@ hr {
 
 <script>
 
-/* =====================================================
+/* =========================================================
+   KATEGORIE
+========================================================= */
+
+const categories = [
+
+    ["food","🍕 Jedzenie"],
+    ["fastfood","🍔 Fast Food"],
+    ["drinks","🥤 Napoje"],
+    ["animals","🐶 Zwierzęta"],
+    ["places","🌍 Miejsca"],
+    ["cities","🏙️ Miasta"],
+    ["countries","🌎 Kraje"],
+    ["objects","📦 Przedmioty"],
+    ["nature","🌲 Natura"],
+    ["technology","💻 Technologia"],
+    ["internet","🧠 Gen Z / Internet"],
+    ["memes","💀 Memy / Brainrot"],
+    ["social","📱 Social Media"],
+    ["gaming","🎮 Gaming"],
+    ["gamechars","👾 Postacie z gier"],
+    ["movies","🎬 Filmy"],
+    ["series","📺 Seriale"],
+    ["characters","🎭 Postacie filmowe"],
+    ["anime","🍥 Anime"],
+    ["superheroes","🦸 Superbohaterowie"],
+    ["music","🎵 Muzyka"],
+    ["celebrities","⭐ Celebryci"],
+    ["fashion","👟 Moda"],
+    ["brands","🏷️ Marki"],
+    ["sports","🏆 Sport"],
+    ["cars","🚗 Samochody"],
+    ["jobs","💼 Zawody"],
+    ["school","🏫 Szkoła"],
+    ["relationships","❤️ Relacje"],
+    ["nostalgia","🧸 Nostalgia"],
+    ["travel","✈️ Podróże"],
+    ["party","🎉 Impreza"],
+    ["scary","👻 Straszne"],
+    ["weird","🧪 Dziwne"],
+    ["everyday","💸 Życie codzienne"],
+    ["adult","🔞 18+ / Dla dorosłych"]
+
+];
+
+const categoryNames = Object.fromEntries(categories);
+
+
+/* =========================================================
    BAZA HASEŁ
-
    format:
-
-   [
-       HASŁO,
-       KATEGORIA,
-       ŁATWA,
-       NORMALNA,
-       TRUDNA,
-       DODATKOWA
-   ]
-
-===================================================== */
+   [HASŁO,KATEGORIA,ŁATWA,NORMALNA,TRUDNA,DODATKOWA]
+========================================================= */
 
 const wordsList = [
 
-
-/* =====================================================
-   JEDZENIE
-===================================================== */
+/* JEDZENIE */
 
 ["PIZZA","food","Włochy","mozzarella","trójkąt","piec"],
 ["SUSHI","food","Japonia","ryż","pałeczki","surowe"],
@@ -1651,11 +1033,13 @@ const wordsList = [
 ["ZUPA","food","łyżka","ciepła","miska","rosół"],
 ["MAKARON","food","Włochy","pszenica","sos","widelec"],
 ["OMLET","food","jajka","patelnia","śniadanie","puszysty"],
+["KISIEL","food","deser","owocowy","galaretka","łyżka"],
+["GOFRY","food","belgijskie","cukier","bita śmietana","budka"],
+["BURRITO","food","Meksyk","tortilla","ryż","fasola"],
+["RAMEN TONKOTSU","food","Japonia","zupa","wieprzowina","bulion"],
+["CYNAMONKA","food","słodkie","bułka","cynamon","piekarnia"],
 
-
-/* =====================================================
-   FAST FOOD
-===================================================== */
+/* FAST FOOD */
 
 ["MCDONALD'S","fastfood","złote łuki","frytki","drive-thru","McFlurry"],
 ["KFC","fastfood","kurczak","kubełek","pan w okularach","smażone"],
@@ -1664,23 +1048,16 @@ const wordsList = [
 ["FRYTKI","fastfood","ziemniaki","sól","ketchup","McDonald's"],
 ["NUGGETSY","fastfood","kurczak","sos","małe","chrupiące"],
 ["SUBWAY","fastfood","kanapka","zielony","długa","sos"],
-["PIZZA HAWAJSKA","fastfood","ananas","Włochy","kontrowersyjna","ser"],
-["DRIVE-THRU","fastfood","samochód","okienko","McDonald's","noc"],
-["MCFLURRY","fastfood","lody","McDonald's","łyżka","Oreo"],
 ["BIG MAC","fastfood","McDonald's","sos","bułka","podwójny"],
 ["WHOPPER","fastfood","Burger King","burger","ogień","królewski"],
-["KUBEŁEK","fastfood","KFC","kurczak","dużo","papier"],
-["SOS CZOSNKOWY","fastfood","kebab","czosnek","biały","sos"],
-["PIZZERIA","fastfood","pizza","Włochy","piec","dostawa"],
+["MCFLURRY","fastfood","lody","McDonald's","łyżka","Oreo"],
+["PIZZA HAWAJSKA","fastfood","ananas","Włochy","kontrowersyjna","ser"],
+["KUBEŁEK KFC","fastfood","KFC","kurczak","dużo","papier"],
 
-
-/* =====================================================
-   NAPOJE
-===================================================== */
+/* NAPOJE */
 
 ["COLA","drinks","gazowana","czarna","puszka","Coca-Cola"],
 ["PEPSI","drinks","cola","niebieski","puszka","konkurencja"],
-["ENERGY DRINK","drinks","kofeina","puszka","noc","Red Bull"],
 ["RED BULL","drinks","skrzydła","kofeina","puszka","niebieski"],
 ["MONSTER","drinks","zielony","kofeina","puszka","M"],
 ["KAWA","drinks","rano","kofeina","kubek","espresso"],
@@ -1690,11 +1067,9 @@ const wordsList = [
 ["KAKAO","drinks","czekolada","mleko","dzieciństwo","ciepłe"],
 ["SMOOTHIE","drinks","owoce","blender","gęste","kolorowe"],
 ["WODA","drinks","szklanka","pragnienie","butelka","bez smaku"],
+["MATCHA","drinks","zielona","Japonia","proszek","mleko"],
 
-
-/* =====================================================
-   ZWIERZĘTA
-===================================================== */
+/* ZWIERZĘTA */
 
 ["LEW","animals","król","Afryka","grzywa","ryczący"],
 ["TYGRYS","animals","paski","kot","dżungla","pomarańczowy"],
@@ -1704,27 +1079,23 @@ const wordsList = [
 ["REKIN","animals","ocean","zęby","Jaws","płetwa"],
 ["DELFIN","animals","ocean","inteligentny","skacze","Flipper"],
 ["WIELORYB","animals","ocean","ogromny","fontanna","Moby Dick"],
-["KROKODYL","animals","ząb","bagno","Gustave","zielony"],
-["WĄŻ","animals","pełza","jadowity","skóra","sssss"],
+["KROKODYL","animals","ząb","bagno","zielony","Gustave"],
+["WĄŻ","animals","pełza","jadowity","skóra","ssss"],
 ["SOWA","animals","noc","mądra","Harry Potter","lata"],
 ["WILK","animals","stado","las","wycie","księżyc"],
 ["LIS","animals","rudy","sprytny","las","Foxy"],
 ["NIEDŹWIEDŹ","animals","las","miód","duży","miś"],
 ["KOŃ","animals","jeździectwo","stajnia","galop","kopyto"],
-["KROWA","animals","mleko","gospodarstwo","łaty","muuu"],
 ["KURA","animals","jajko","gospodarstwo","pióra","kogut"],
 ["PSZCZOŁA","animals","miód","żółta","ul","użądlenie"],
 ["MOTYL","animals","skrzydła","kolorowy","gąsienica","kwiat"],
 ["PAJĄK","animals","sieć","osiem","strach","kąt"],
 ["KOT","animals","mruczy","pupil","internet","pazury"],
 ["PIES","animals","szczeka","smycz","pupil","Hachiko"],
-["REKIN MŁOT","animals","ocean","głowa","zęby","dziwny kształt"],
 ["KAMELEON","animals","kolor","język","jaszczurka","kamuflaż"],
+["AXOLOTL","animals","Minecraft","woda","różowy","płaz"],
 
-
-/* =====================================================
-   MIEJSCA
-===================================================== */
+/* MIEJSCA */
 
 ["PARYŻ","places","Francja","Wieża Eiffla","romantyczne","croissant"],
 ["NOWY JORK","places","USA","wieżowce","Times Square","żółte taksówki"],
@@ -1733,7 +1104,6 @@ const wordsList = [
 ["RZYM","places","Włochy","Koloseum","pizza","papież"],
 ["KRAKÓW","places","Polska","smok","Wawel","Rynek"],
 ["WARSZAWA","places","Polska","stolica","Syrenka","Pałac Kultury"],
-["ZAKOPANE","places","góry","oscypek","Tatry","Krupówki"],
 ["LOTNISKO","places","samoloty","bagaż","kontrola","bramka"],
 ["SZPITAL","places","lekarz","chory","korytarz","operacja"],
 ["KINO","places","film","popcorn","ekran","fotele"],
@@ -1741,14 +1111,43 @@ const wordsList = [
 ["SIŁOWNIA","places","hantle","trening","lustro","białko"],
 ["STADION","places","mecz","kibice","trybuny","murawa"],
 ["MUZEUM","places","obrazy","eksponaty","historia","cisza"],
-["KLUB","places","muzyka","taniec","noc","DJ"],
 ["PLAŻA","places","piasek","morze","lato","parasol"],
-["GÓRY","places","szczyt","śnieg","wspinaczka","Tatry"],
 
+/* MIASTA */
 
-/* =====================================================
-   PRZEDMIOTY
-===================================================== */
+["KRAKÓW","cities","Polska","Wawel","smok","Rynek"],
+["WARSZAWA","cities","Polska","stolica","Syrenka","Pałac Kultury"],
+["WROCŁAW","cities","Polska","krasnale","Odra","mosty"],
+["GDAŃSK","cities","Polska","morze","Neptun","Żuraw"],
+["POZNAŃ","cities","Polska","koziołki","Stary Rynek","rogale"],
+["PARYŻ","cities","Francja","Wieża Eiffla","Luwr","romantyczne"],
+["LONDYN","cities","Anglia","Big Ben","metro","król"],
+["TOKIO","cities","Japonia","Shibuya","neony","anime"],
+["LOS ANGELES","cities","USA","Hollywood","Kalifornia","celebryci"],
+["DUBAJ","cities","ZEA","Burj Khalifa","luksus","pustynia"],
+["NOWY JORK","cities","USA","Manhattan","Times Square","Broadway"],
+["BARCELONA","cities","Hiszpania","Gaudi","FC Barcelona","plaża"],
+["BERLIN","cities","Niemcy","mur","Brama Brandenburska","techno"],
+["LIZBONA","cities","Portugalia","tramwaj","ocean","pastel"],
+
+/* KRAJE */
+
+["POLSKA","countries","biało-czerwona","Warszawa","pierogi","orzeł"],
+["JAPONIA","countries","Azja","Tokio","sushi","anime"],
+["USA","countries","flaga","Nowy Jork","Hollywood","burger"],
+["WŁOCHY","countries","pizza","Rzym","makaron","Mediolan"],
+["FRANCJA","countries","Paryż","Wieża Eiffla","bagietka","moda"],
+["HISZPANIA","countries","Barcelona","słońce","tapas","piłka"],
+["NIEMCY","countries","Berlin","BMW","autostrada","piwo"],
+["GRECJA","countries","wyspy","morze","Ateny","oliwki"],
+["BRAZYLIA","countries","Rio","piłka","karnawał","Amazonia"],
+["MEKSYK","countries","taco","sombrero","Meksyk","tequila"],
+["AUSTRALIA","countries","kangur","Sydney","ocean","koala"],
+["KANADA","countries","liść klonu","hokej","Toronto","zimno"],
+["KOREA POŁUDNIOWA","countries","Seul","K-pop","Samsung","kimchi"],
+["EGIPT","countries","piramidy","Kair","faraon","pustynia"],
+
+/* PRZEDMIOTY */
 
 ["TELEFON","objects","ekran","dzwonienie","kieszeń","iPhone"],
 ["LAPTOP","objects","komputer","klawiatura","praca","MacBook"],
@@ -1769,10 +1168,7 @@ const wordsList = [
 ["GITARA","objects","muzyka","struny","koncert","akustyczna"],
 ["APARAT","objects","zdjęcie","obiektyw","fotograf","flash"],
 
-
-/* =====================================================
-   NATURA
-===================================================== */
+/* NATURA */
 
 ["TĘCZA","nature","kolory","deszcz","niebo","siedem"],
 ["BURZA","nature","błyskawica","deszcz","grzmot","chmury"],
@@ -1789,10 +1185,7 @@ const wordsList = [
 ["DRZEWO","nature","liście","las","pień","korzenie"],
 ["KWIAT","nature","płatki","ogród","zapach","bukiet"],
 
-
-/* =====================================================
-   TECHNOLOGIA
-===================================================== */
+/* TECHNOLOGIA */
 
 ["INTERNET","technology","sieć","Wi-Fi","Google","online"],
 ["WI-FI","technology","internet","router","hasło","sygnał"],
@@ -1808,13 +1201,9 @@ const wordsList = [
 ["DRUKARKA","technology","papier","atrament","biuro","druk"],
 ["HASŁO","technology","bezpieczeństwo","login","tajne","1234"],
 ["KOD QR","technology","kwadrat","telefon","skanowanie","menu"],
-["AIRPODS","technology","Apple","uszy","białe","etui"],
 ["POWERBANK","technology","bateria","telefon","ładowanie","kabel"],
 
-
-/* =====================================================
-   GEN Z / INTERNET
-===================================================== */
+/* INTERNET */
 
 ["RIZZ","internet","flirt","charyzma","romans","slang"],
 ["SIGMA","internet","samotnik","mężczyzna","meme","slang"],
@@ -1829,18 +1218,13 @@ const wordsList = [
 ["FYP","internet","TikTok","algorytm","scrollowanie","filmiki"],
 ["DM","internet","wiadomość","Instagram","prywatne","czat"],
 ["CRINGE","internet","wstyd","internet","niezręczne","reakcja"],
-["CANCEL","internet","Twitter","kontrowersja","internet","osoba"],
-["RATIO","internet","Twitter","komentarze","lajki","internet"],
-["THREAD","internet","Twitter","posty","długi","komentarze"],
-["ALGORITHM","internet","TikTok","YouTube","polecane","matematyka"],
 ["CLICKBAIT","internet","tytuł","YouTube","kliknięcie","sensacja"],
 ["POV","internet","TikTok","perspektywa","film","skrót"],
 ["GRWM","internet","TikTok","ubieranie","makijaż","film"],
+["RATIO","internet","Twitter","komentarze","lajki","internet"],
+["CORE","internet","estetyka","TikTok","styl","mood"],
 
-
-/* =====================================================
-   MEMY
-===================================================== */
+/* MEMY */
 
 ["BRAINROT","memes","internet","absurd","TikTok","mózg"],
 ["SKIBIDI TOILET","memes","toaleta","YouTube","absurd","głowa"],
@@ -1848,21 +1232,16 @@ const wordsList = [
 ["TROLL","memes","internet","prowokacja","komentarz","kłamstwo"],
 ["SHITPOST","memes","internet","absurd","meme","głupie"],
 ["AMOGUS","memes","Among Us","czerwony","meme","sus"],
-["DANK MEME","memes","internet","śmieszne","stare","absurd"],
 ["DOGE","memes","pies","Shiba","internet","wow"],
 ["PEPE","memes","żaba","internet","zielony","meme"],
 ["GIGACHAD","memes","mężczyzna","szczęka","meme","siłownia"],
-["SIGMA EDIT","memes","muzyka","slow motion","mężczyzna","TikTok"],
 ["OHIO","memes","internet","dziwne","USA","meme"],
 ["GRIMACE","memes","fioletowy","McDonald's","shake","meme"],
 ["RICKROLL","memes","YouTube","piosenka","Rick Astley","link"],
 ["LOSS","memes","komiks","internet","cztery panele","meme"],
 ["REACTION IMAGE","memes","twarz","internet","komentarz","GIF"],
 
-
-/* =====================================================
-   SOCIAL MEDIA
-===================================================== */
+/* SOCIAL */
 
 ["TIKTOK","social","krótkie filmy","pionowy","viral","scroll"],
 ["INSTAGRAM","social","zdjęcia","stories","Meta","serduszko"],
@@ -1879,40 +1258,51 @@ const wordsList = [
 ["STREAK","social","Snapchat","dni","ogień","wiadomości"],
 ["STORY","social","Instagram","24 godziny","zdjęcie","relacja"],
 
-
-/* =====================================================
-   GAMING
-===================================================== */
+/* GAMING */
 
 ["MINECRAFT","gaming","klocki","Steve","Creeper","kopanie"],
-["ROBLOX","gaming","dzieci","klocki","avatar","gra"],
+["ROBLOX","gaming","dzieci","avatar","gra","klocki"],
 ["FORTNITE","gaming","Epic","battle royale","budowanie","skin"],
 ["GTA","gaming","samochody","Rockstar","kradzież","Los Santos"],
 ["FIFA","gaming","piłka","EA","Messi","Ultimate Team"],
-["CALL OF DUTY","gaming","broń","FPS","żołnierz","multiplayer"],
+["CALL OF DUTY","gaming","FPS","żołnierz","multiplayer","wojna"],
 ["VALORANT","gaming","Riot","FPS","agenci","Spike"],
 ["COUNTER-STRIKE","gaming","CS","terroryści","FPS","bomba"],
 ["LEAGUE OF LEGENDS","gaming","Riot","MOBA","championi","Summoner"],
 ["AMONG US","gaming","impostor","statek","sus","załoga"],
-["FORTNITE SKIN","gaming","postać","V-Bucks","kosmetyczny","gra"],
 ["PLAYSTATION","gaming","Sony","pad","niebieski","konsola"],
 ["XBOX","gaming","Microsoft","zielony","pad","Game Pass"],
 ["NINTENDO","gaming","Mario","Switch","Japonia","Zelda"],
-["MARIO","gaming","Nintendo","wąs","grzybek","Włoch"],
 ["POKEMON","gaming","Pikachu","kule","Japonia","trener"],
 ["MARIO KART","gaming","wyścigi","Nintendo","banan","kart"],
 ["ELDEN RING","gaming","boss","Dark Souls","otwarty świat","Malenia"],
-["MINECRAFT CREEPER","gaming","zielony","wybuch","Minecraft","ssss"],
-["GAMER","gaming","komputer","gry","słuchawki","noc"],
+["THE SIMS","gaming","dom","EA","życie","sim"],
+["VALHEIM","gaming","wiking","survival","las","boss"],
 
+/* POSTACIE Z GIER */
 
-/* =====================================================
-   FILMY
-===================================================== */
+["MARIO","gamechars","Nintendo","wąs","grzybek","Luigi"],
+["LUIGI","gamechars","Mario","zielony","Nintendo","brat"],
+["LINK","gamechars","Zelda","miecz","elf","Hyrule"],
+["ZELDA","gamechars","Nintendo","księżniczka","Hyrule","Triforce"],
+["PIKACHU","gamechars","Pokemon","żółty","elektryczny","Ash"],
+["CHARIZARD","gamechars","Pokemon","ogień","smok","skrzydła"],
+["SONIC","gamechars","niebieski","szybki","jeż","pierścienie"],
+["KRATOS","gamechars","God of War","broda","Sparta","topór"],
+["GERALT","gamechars","Wiedźmin","biały włosy","potwory","Kaer Morhen"],
+["JOHN MARSTON","gamechars","Red Dead","kowboj","Rockstar","Dziki Zachód"],
+["ARTHUR MORGAN","gamechars","Red Dead 2","kowboj","gang","Rockstar"],
+["LARA CROFT","gamechars","Tomb Raider","archeolog","pistolety","ruiny"],
+["MASTER CHIEF","gamechars","Halo","hełm","zielony","Spartan"],
+["PAC-MAN","gamechars","żółty","labirynt","duchy","retro"],
+["KIRBY","gamechars","różowy","Nintendo","połyka","gwiazdy"],
+["CREEPER","gamechars","Minecraft","zielony","wybuch","ssss"],
+
+/* FILMY */
 
 ["HARRY POTTER","movies","magia","Hogwart","różdżka","blizna"],
 ["BARBIE","movies","różowy","lalka","Ken","2023"],
-["OPPENHEIMER","movies","bomba","naukowiec","Christopher Nolan","Manhattan"],
+["OPPENHEIMER","movies","bomba","naukowiec","Nolan","Manhattan"],
 ["AVATAR","movies","niebieski","Pandora","James Cameron","Na'vi"],
 ["TITANIC","movies","statek","lód","Rose","Jack"],
 ["SHREK","movies","ogr","bagno","Fiona","zielony"],
@@ -1920,21 +1310,100 @@ const wordsList = [
 ["BATMAN","movies","nietoperz","Gotham","Bruce Wayne","czarny"],
 ["IRON MAN","movies","Marvel","zbroja","Tony Stark","reaktor"],
 ["JOKER","movies","klaun","Gotham","Batman","śmiech"],
-["STRANGER THINGS","movies","Netflix","Upside Down","Eleven","Demogorgon"],
-["WEDNESDAY","movies","Netflix","Addams","czarny","taniec"],
-["SQUID GAME","movies","Netflix","zielone stroje","gry","456"],
-["THE OFFICE","movies","biuro","Dunder Mifflin","Michael Scott","papier"],
-["BREAKING BAD","movies","Walter White","metamfetamina","Albuquerque","chemia"],
-["GAME OF THRONES","movies","smoki","Westeros","tron","zima"],
-["THE BOYS","movies","superbohaterowie","Homelander","Amazon","brutalne"],
 ["MATRIX","movies","Neo","zielony","tabletka","maszyny"],
 ["STAR WARS","movies","kosmos","Jedi","Darth Vader","miecz"],
-["DISNEY","movies","myszka","bajki","zamek","magia"],
+["JURASSIC PARK","movies","dinozaury","wyspa","T-Rex","park"],
+["PIRACI Z KARAIBÓW","movies","piraci","statek","Jack Sparrow","rum"],
+["WŁADCA PIERŚCIENI","movies","hobbit","pierścień","Mordor","Gandalf"],
+["HOME ALONE","movies","dziecko","święta","Kevin","złodzieje"],
+["INCEPTION","movies","sen","Nolan","Leonardo","totem"],
+["GLADIATOR","movies","Rzym","arena","Maximus","Cezar"],
+["INTERSTELLAR","movies","kosmos","czarna dziura","Nolan","czas"],
+["THE WOLF OF WALL STREET","movies","pieniądze","Wall Street","Jordan Belfort","Leonardo"],
 
+/* SERIALE */
 
-/* =====================================================
-   MUZYKA
-===================================================== */
+["STRANGER THINGS","series","Netflix","Upside Down","Eleven","Demogorgon"],
+["WEDNESDAY","series","Netflix","Addams","czarny","taniec"],
+["SQUID GAME","series","Netflix","zielone stroje","gry","456"],
+["THE OFFICE","series","biuro","Dunder Mifflin","Michael Scott","papier"],
+["BREAKING BAD","series","Walter White","chemia","Albuquerque","metamfetamina"],
+["GAME OF THRONES","series","smoki","Westeros","tron","zima"],
+["THE BOYS","series","superbohaterowie","Homelander","Amazon","brutalne"],
+["PEAKY BLINDERS","series","gang","Anglia","Tommy Shelby","czapka"],
+["LA CASA DE PAPEL","series","Hiszpania","maski","Profesor","napad"],
+["PRZYJACIELE","series","Nowy Jork","Monica","Ross","kanapa"],
+["THE WALKING DEAD","series","zombie","apokalipsa","Rick","Atlanta"],
+["EUPHORIA","series","HBO","Rue","szkoła","neon"],
+["THE LAST OF US","series","grzyb","Joel","Ellie","HBO"],
+["HOUSE OF THE DRAGON","series","smoki","Targaryen","Westeros","ogień"],
+["PEAKY BLINDERS","series","Tommy","gang","Birmingham","kapelusz"],
+["DAHMER","series","Netflix","morderca","Milwaukee","kryminalny"],
+["YOU","series","Netflix","Joe","książki","obsesja"],
+["THE WITCHER","series","Geralt","Netflix","potwory","Ciri"],
+["LOKI","series","Marvel","czas","TVA","Thor"],
+["FALLOUT","series","postapo","Vault","gry","mutant"],
+
+/* POSTACIE FILMOWE */
+
+["JACK SPARROW","characters","Piraci","kapitan","rum","Johnny Depp"],
+["HERMIONA","characters","Harry Potter","Granger","magia","książki"],
+["RON WEASLEY","characters","Harry Potter","rudy","Weasley","magia"],
+["HARRY POTTER","characters","blizna","Hogwart","magia","Gryffindor"],
+["DARTH VADER","characters","Star Wars","maska","Sith","Luke"],
+["YODA","characters","Star Wars","zielony","Jedi","mądry"],
+["LUKE SKYWALKER","characters","Star Wars","Jedi","Tatooine","Vader"],
+["FRODO","characters","Władca Pierścieni","hobbit","pierścień","Shire"],
+["GANDALF","characters","Władca Pierścieni","czarodziej","biały","laska"],
+["GOLLUM","characters","pierścień","hobbit","Smeagol","Mordor"],
+["SHREK","characters","ogr","bagno","Fiona","Donkey"],
+["KUNG FU PANDA","characters","Po","panda","kung fu","Dolina"],
+["WOODY","characters","Toy Story","kowboj","Andy","zabawka"],
+["BUZZ ASTRAL","characters","Toy Story","kosmos","rakieta","Andy"],
+["JAMES BOND","characters","agent","007","martini","MI6"],
+["ROCKY BALBOA","characters","bokser","Filadelfia","ring","Apollo"],
+["FORREST GUMP","characters","bieg","Tom Hanks","Wietnam","czekoladki"],
+["JOHN WICK","characters","Keanu Reeves","zabójca","pies","czarny garnitur"],
+
+/* ANIME */
+
+["NARUTO","anime","ninja","Konoha","ramen","Sasuke"],
+["GOKU","anime","Dragon Ball","Saiyan","Kamehameha","włosy"],
+["VEGETA","anime","Dragon Ball","Saiyan","książę","duma"],
+["LUFFY","anime","One Piece","pirat","gumowy","kapelusz"],
+["ZORO","anime","One Piece","miecz","zielone włosy","trzy miecze"],
+["SAILOR MOON","anime","księżyc","Japonia","wojowniczka","Moon Prism"],
+["PIKACHU","anime","Pokemon","żółty","elektryczny","Ash"],
+["TANJIRO","anime","Demon Slayer","miecz","Nezuko","woda"],
+["NEZUKO","anime","Demon Slayer","demon","bambus","Tanjiro"],
+["GOJO","anime","Jujutsu Kaisen","białe włosy","Six Eyes","Sensei"],
+["SUKUNA","anime","Jujutsu Kaisen","demon","palce","Yuji"],
+["LEVI","anime","Attack on Titan","żołnierz","mikasa","miecz"],
+["LIGHT YAGAMI","anime","Death Note","notatnik","Kira","Ryuk"],
+["RYUK","anime","Death Note","shinigami","jabłka","notatnik"],
+["EREN","anime","Attack on Titan","tytan","mury","Mikasa"],
+["ASH KETCHUM","anime","Pokemon","trener","Pikachu","czapka"],
+
+/* SUPERBOHATEROWIE */
+
+["SUPERMAN","superheroes","DC","peleryna","Kryptonite","Clark Kent"],
+["BATMAN","superheroes","DC","Gotham","nietoperz","Bruce Wayne"],
+["SPIDER-MAN","superheroes","Marvel","pajęczyna","Peter Parker","Nowy Jork"],
+["IRON MAN","superheroes","Marvel","zbroja","Tony Stark","reaktor"],
+["THOR","superheroes","Marvel","młot","Asgard","błyskawica"],
+["HULK","superheroes","zielony","Bruce Banner","siła","Marvel"],
+["CAPTAIN AMERICA","superheroes","tarcza","Steve Rogers","Marvel","USA"],
+["WONDER WOMAN","superheroes","DC","Amazonka","lasso","Diana"],
+["FLASH","superheroes","szybkość","DC","Barry Allen","czerwony"],
+["AQUAMAN","superheroes","Atlantyda","ocean","DC","trójząb"],
+["BLACK PANTHER","superheroes","Wakanda","Marvel","czarny","T'Challa"],
+["DEADPOOL","superheroes","Marvel","czerwony","katana","humor"],
+["WOLVERINE","superheroes","pazury","X-Men","Logan","adamantium"],
+["JOKER","superheroes","DC","klaun","Gotham","Batman"],
+["HARLEY QUINN","superheroes","DC","kij","Joker","Gotham"],
+["THANOS","superheroes","Infinity Stones","Marvel","fioletowy","Thanos"],
+
+/* MUZYKA */
 
 ["TAYLOR SWIFT","music","piosenkarka","Eras Tour","albumy","Swifties"],
 ["THE WEEKND","music","piosenkarz","Blinding Lights","Toronto","XO"],
@@ -1953,11 +1422,24 @@ const wordsList = [
 ["DJ","music","klub","muzyka","konsola","noc"],
 ["KARAOKE","music","mikrofon","śpiewanie","impreza","tekst"],
 ["FESTIWAL","music","muzyka","lato","scena","tłum"],
+["LADY GAGA","music","pop","aktorstwo","Born This Way","dziwne stroje"],
 
+/* CELEBRYCI */
 
-/* =====================================================
-   MODA
-===================================================== */
+["MRBEAST","celebrities","YouTube","wyzwania","miliony","Jimmy"],
+["KIM KARDASHIAN","celebrities","Kardashian","Reality TV","moda","SKIMS"],
+["ELON MUSK","celebrities","Tesla","SpaceX","X","miliarder"],
+["CRISTIANO RONALDO","celebrities","piłka","Portugalia","Siuuu","Al-Nassr"],
+["MESSI","celebrities","piłka","Argentyna","Barcelona","GOAT"],
+["LEWANDOWSKI","celebrities","Polska","piłka","Barcelona","napastnik"],
+["KENDALL JENNER","celebrities","modelka","Kardashian","moda","Instagram"],
+["RYAN REYNOLDS","celebrities","aktor","Deadpool","humor","Kanada"],
+["THE ROCK","celebrities","aktor","WWE","Dwayne Johnson","mięśnie"],
+["JENNA ORTEGA","celebrities","Wednesday","aktorka","Netflix","Addams"],
+["MR BEAST","celebrities","YouTube","wyzwania","czekolada","miliony"],
+["MARK ZUCKERBERG","celebrities","Facebook","Meta","CEO","VR"],
+
+/* MODA */
 
 ["NIKE","fashion","buty","swoosh","sport","Just Do It"],
 ["ADIDAS","fashion","trzy paski","buty","sport","niemiecka"],
@@ -1974,31 +1456,40 @@ const wordsList = [
 ["LOUIS VUITTON","fashion","luksus","monogram","Francja","torba"],
 ["BALENCIAGA","fashion","luksus","buty","duże","Hiszpania"],
 
+/* MARKI */
 
-/* =====================================================
-   SPORT
-===================================================== */
+["APPLE","brands","iPhone","Steve Jobs","jabłko","Mac"],
+["SAMSUNG","brands","Korea","telefon","Galaxy","technologia"],
+["NIKE","brands","buty","swoosh","sport","Just Do It"],
+["ADIDAS","brands","trzy paski","sport","buty","Niemcy"],
+["COCA-COLA","brands","czerwona","cola","puszka","Mikołaj"],
+["PEPSI","brands","niebieska","cola","puszka","konkurencja"],
+["MCDONALD'S","brands","burger","złote łuki","frytki","Ronald"],
+["TESLA","brands","Elon Musk","elektryczna","samochody","Model 3"],
+["NETFLIX","brands","filmy","czerwony","seriale","subskrypcja"],
+["SPOTIFY","brands","muzyka","zielony","playlista","Wrapped"],
+["LEGO","brands","klocki","dzieci","budowanie","Dania"],
+["AMAZON","brands","zakupy","paczka","Jeff Bezos","internet"],
+["GOOGLE","brands","wyszukiwarka","kolorowe","Android","Chrome"],
+["DISNEY","brands","Myszka","bajki","zamek","magia"],
+
+/* SPORT */
 
 ["PIŁKA NOŻNA","sports","bramka","mecz","murawa","Messi"],
 ["KOSZYKÓWKA","sports","kosz","piłka","NBA","LeBron"],
 ["TENIS","sports","rakieta","kort","Wimbledon","piłka"],
 ["SIATKÓWKA","sports","siatka","piłka","boisko","blok"],
 ["FORMUŁA 1","sports","samochód","wyścig","F1","pit stop"],
-["LEWIS HAMILTON","sports","F1","Mercedes","kierowca","siedem"],
 ["NBA","sports","koszykówka","USA","parkiet","LeBron"],
 ["OLIMPIADA","sports","sport","medale","flaga","lato"],
 ["MARATON","sports","bieganie","42 km","wytrzymałość","meta"],
 ["BOKS","sports","rękawice","ring","cios","Mike Tyson"],
 ["UFC","sports","MMA","octagon","Dana White","walka"],
 ["SIŁOWNIA","sports","hantle","trening","mięśnie","protein"],
-["PIŁKA NOŻNA PLAŻOWA","sports","piasek","bramka","piłka","lato"],
 ["SNOWBOARD","sports","śnieg","deska","góry","zima"],
 ["NARTY","sports","śnieg","kijki","góry","zjazd"],
 
-
-/* =====================================================
-   SAMOCHODY
-===================================================== */
+/* SAMOCHODY */
 
 ["BMW","cars","Niemcy","nerki","M3","kierowca"],
 ["MERCEDES","cars","gwiazda","Niemcy","luksus","AMG"],
@@ -2008,17 +1499,30 @@ const wordsList = [
 ["LAMBORGHINI","cars","Włochy","byk","drogi","Lambo"],
 ["PORSCHE","cars","Niemcy","911","sportowe","logo"],
 ["VOLKSWAGEN","cars","Niemcy","Golf","VW","garbus"],
-["GOLF","cars","Volkswagen","Niemcy","auto","GTI"],
 ["MUSTANG","cars","Ford","koń","USA","Muscle"],
 ["SUPERCAR","cars","szybki","drogi","Ferrari","V10"],
 ["DRIFT","cars","poślizg","samochód","Japonia","opony"],
 ["TAXI","cars","żółty","miasto","kierowca","Uber"],
 ["UBER","cars","aplikacja","samochód","przejazd","telefon"],
 
+/* ZAWODY */
 
-/* =====================================================
-   SZKOŁA
-===================================================== */
+["LEKARZ","jobs","szpital","biały fartuch","pacjent","stetoskop"],
+["POLICJANT","jobs","mundur","policja","kajdanki","radiowóz"],
+["STRAŻAK","jobs","ogień","wóz","mundur","wąż"],
+["NAUCZYCIEL","jobs","szkoła","lekcja","oceny","tablica"],
+["PRAWNIK","jobs","sąd","garnitur","prawo","adwokat"],
+["PROGRAMISTA","jobs","komputer","kod","IT","klawiatura"],
+["KUCHARZ","jobs","kuchnia","nóż","restauracja","szef"],
+["DJ","jobs","muzyka","klub","konsola","noc"],
+["AKTOR","jobs","film","scena","rola","kamera"],
+["PILOT","jobs","samolot","lotnisko","kokpit","kapitan"],
+["ARCHITEKT","jobs","budynek","projekt","rysunek","CAD"],
+["FOTOGRAF","jobs","aparat","zdjęcia","sesja","obiektyw"],
+["INFLUENCER","jobs","Instagram","followers","reklama","TikTok"],
+["STREAMER","jobs","Twitch","kamera","live","gaming"],
+
+/* SZKOŁA */
 
 ["MATEMATYKA","school","liczby","lekcja","równanie","kartkówka"],
 ["POLSKI","school","lektury","język","wypracowanie","ortografia"],
@@ -2029,16 +1533,10 @@ const wordsList = [
 ["DZWONEK","school","lekcja","przerwa","hałas","koniec"],
 ["PRZERWA","school","korytarz","jedzenie","10 minut","dzwonek"],
 ["TABLICA","school","marker","lekcja","ściana","nauczyciel"],
-["PLECAK","school","książki","ramiona","zeszyty","ciężki"],
 ["ZESZYT","school","papier","lekcja","notatki","kratka"],
-["NAUCZYCIEL","school","lekcja","oceny","tablica","profesor"],
-["LEKTURA","school","książka","polski","czytanie","egzamin"],
 ["ŚCIĄGA","school","egzamin","tajna","kartka","oszustwo"],
 
-
-/* =====================================================
-   RELACJE
-===================================================== */
+/* RELACJE */
 
 ["RANDKA","relationships","romantyczna","restauracja","dwie osoby","kino"],
 ["CRUSH","relationships","sympatia","szkoła","motyle","sekret"],
@@ -2053,28 +1551,20 @@ const wordsList = [
 ["GREEN FLAG","relationships","związek","dobry znak","partner","zdrowe"],
 ["FRIENDZONE","relationships","przyjaźń","romans","odrzucenie","uczucia"],
 
-
-/* =====================================================
-   NOSTALGIA
-===================================================== */
+/* NOSTALGIA */
 
 ["DISNEY CHANNEL","nostalgia","dzieciństwo","telewizja","bajki","Hannah Montana"],
-["HARRY POTTER","nostalgia","magia","książka","Hogwart","dzieciństwo"],
-["POKEMON","nostalgia","Pikachu","gry","karty","dzieciństwo"],
 ["KLOCKI LEGO","nostalgia","budowanie","dzieci","cegły","ból stopy"],
-["BAJKA","nostalgia","telewizja","dzieci","animacja","rano"],
 ["GAME BOY","nostalgia","Nintendo","przenośne","Pokemon","stare"],
 ["NINTENDO DS","nostalgia","konsola","dwa ekrany","Nintendo","dzieci"],
 ["PS2","nostalgia","PlayStation","Sony","gry","2000"],
-["GUMY KULKI","nostalgia","słodycze","dzieci","okrągłe","sklepik"],
-["KARTA POKEMON","nostalgia","Pokemon","kolekcja","Pikachu","gra"],
 ["TAMAGOTCHI","nostalgia","zwierzak","japońskie","dzieci","pikający"],
 ["NEOPETS","nostalgia","internet","zwierzątka","stare","gra"],
+["GUMY KULKI","nostalgia","słodycze","dzieci","okrągłe","sklepik"],
+["HANNAH MONTANA","nostalgia","Disney","Miley Cyrus","peruka","serial"],
+["HIGH SCHOOL MUSICAL","nostalgia","Disney","muzyka","szkoła","Troy"],
 
-
-/* =====================================================
-   PODRÓŻE
-===================================================== */
+/* PODRÓŻE */
 
 ["SAMOLOT","travel","lotnisko","skrzydła","podróż","pilot"],
 ["WALIZKA","travel","bagaż","lotnisko","ubrania","kółka"],
@@ -2087,14 +1577,11 @@ const wordsList = [
 ["WŁOCHY","travel","pizza","Rzym","makaron","espresso"],
 ["JAPONIA","travel","Tokio","anime","sushi","samuraj"],
 ["USA","travel","Nowy Jork","Hollywood","flaga","burger"],
-["THAILAND","travel","Azja","plaża","Bangkok","pad thai"],
+["TAJLANDIA","travel","Azja","plaża","Bangkok","pad thai"],
 ["EGIPT","travel","piramidy","Kair","pustynia","faraon"],
 ["MALDIVES","travel","wyspy","luksus","ocean","wakacje"],
 
-
-/* =====================================================
-   IMPREZA
-===================================================== */
+/* IMPREZA */
 
 ["IMPREZA","party","muzyka","ludzie","noc","alkohol"],
 ["DJ","party","muzyka","klub","konsola","mikrofon"],
@@ -2107,12 +1594,8 @@ const wordsList = [
 ["SYLWESTER","party","Nowy Rok","fajerwerki","północ","szampan"],
 ["URODZINY","party","tort","prezent","świeczki","rok"],
 ["DOMÓWKA","party","dom","znajomi","muzyka","noc"],
-["FESTIWAL","party","muzyka","lato","tłum","scena"],
 
-
-/* =====================================================
-   STRASZNE
-===================================================== */
+/* STRASZNE */
 
 ["DUCH","scary","zjawa","noc","zamek","przezroczysty"],
 ["WAMPIR","scary","krew","Dracula","noc","ząb"],
@@ -2121,34 +1604,25 @@ const wordsList = [
 ["CMENTARZ","scary","groby","noc","duchy","cisza"],
 ["DOM DUCHÓW","scary","strach","ciemność","atrakcja","Halloween"],
 ["HALLOWEEN","scary","dynia","kostium","cukierki","październik"],
-["NOŻOWNIK","scary","horror","morderca","nóż","film"],
-["DARK WEB","scary","internet","tajemnica","nielegalne","ciemność"],
 ["KOSZMAR","scary","sen","strach","noc","potwór"],
 ["PARALIŻ SENNY","scary","sen","ciało","strach","noc"],
 ["EGZORCYSTA","scary","duch","film","kościół","opętanie"],
+["DARK WEB","scary","internet","tajemnica","ciemność","niebezpieczne"],
 
-
-/* =====================================================
-   DZIWNE
-===================================================== */
+/* DZIWNE */
 
 ["KACZKA W BUTACH","weird","internet","buty","ptak","absurd"],
 ["BANAN NA PIZZY","weird","jedzenie","kontrowersja","żółty","dziwne"],
-["CZŁOWIEK W KOSTIUMIE KURCZAKA","weird","kurczak","kostium","internet","dziwne"],
 ["LATAJĄCY SAMOCHÓD","weird","przyszłość","samochód","niebo","science fiction"],
 ["SMAŻONY LÓD","weird","deser","gorące","zimne","dziwne"],
 ["ZIELONE MLEKO","weird","mleko","kolor","internet","dziwne"],
 ["MÓWIĄCY KOT","weird","kot","głos","internet","TikTok"],
 ["OLBRZYMI KURCZAK","weird","ptak","duży","internet","absurd"],
-["LUDZKI ROZMIAROWY PLUSZAK","weird","maskotka","człowiek","kostium","dziwne"],
-["JEDZENIE W KSZTAŁCIE ZWIERZĘCIA","weird","jedzenie","Instagram","słodkie","dziwne"],
 ["HOT DOG Z LODAMI","weird","jedzenie","lody","parówka","absurd"],
 ["PIZZA Z ANANASEM","weird","ananas","pizza","kontrowersja","Włochy"],
+["CZŁOWIEK W KOSTIUMIE KURCZAKA","weird","kurczak","kostium","internet","dziwne"],
 
-
-/* =====================================================
-   ŻYCIE CODZIENNE
-===================================================== */
+/* CODZIENNE */
 
 ["BUDZIK","everyday","rano","sen","telefon","hałas"],
 ["KORKI","everyday","samochody","droga","miasto","spóźnienie"],
@@ -2161,20 +1635,12 @@ const wordsList = [
 ["PACZKA","everyday","kurier","karton","zakupy","Amazon"],
 ["ZAKUPY ONLINE","everyday","internet","paczka","koszyk","dostawa"],
 ["WYPŁATA","everyday","pieniądze","praca","konto","koniec miesiąca"],
-["PODATEK","everyday","pieniądze","państwo","urząd","ból"],
 ["CZYNSZ","everyday","mieszkanie","pieniądze","rachunek","co miesiąc"],
 ["KAWA RANO","everyday","sen","kofeina","kubek","praca"],
 ["SPÓŹNIENIE","everyday","czas","autobus","szkoła","praca"],
-["GPS","everyday","mapa","droga","telefon","samochód"],
-["HASŁO DO WIFI","everyday","internet","router","dom","zapomniałem"],
 ["LODÓWKA O PÓŁNOCY","everyday","noc","jedzenie","głód","kuchnia"],
-["OTWIERANIE PACZKI","everyday","karton","zakupy","nożyczki","internet"],
-["ALARM","everyday","rano","telefon","hałas","sen"],
 
-
-/* =====================================================
-   18+
-===================================================== */
+/* 18+ */
 
 ["PREZERWATYWA","adult","bezpieczny seks","apteka","opakowanie","ochrona"],
 ["BIELIZNA","adult","sypialnia","koronka","ubrania","czarna"],
@@ -2200,143 +1666,232 @@ const wordsList = [
 ];
 
 
-/* =====================================================
-   NAZWY KATEGORII
-===================================================== */
+/* =========================================================
+   ZMIENNE GRY
+========================================================= */
 
-const categoryNames = {
-
-    food:
-        "🍕 Jedzenie",
-
-    fastfood:
-        "🍔 Fast Food",
-
-    drinks:
-        "🥤 Napoje",
-
-    animals:
-        "🐶 Zwierzęta",
-
-    places:
-        "🌍 Miejsca",
-
-    objects:
-        "📦 Przedmioty",
-
-    nature:
-        "🌲 Natura",
-
-    technology:
-        "💻 Technologia",
-
-    internet:
-        "🧠 Gen Z / Internet",
-
-    memes:
-        "💀 Memy / Brainrot",
-
-    social:
-        "📱 Social Media",
-
-    gaming:
-        "🎮 Gaming",
-
-    movies:
-        "🎬 Filmy i Seriale",
-
-    music:
-        "🎵 Muzyka",
-
-    fashion:
-        "👟 Moda",
-
-    sports:
-        "🏆 Sport",
-
-    cars:
-        "🚗 Samochody",
-
-    school:
-        "🏫 Szkoła",
-
-    relationships:
-        "❤️ Relacje / Randki",
-
-    nostalgia:
-        "🧸 Nostalgia",
-
-    travel:
-        "✈️ Podróże",
-
-    party:
-        "🎉 Impreza",
-
-    scary:
-        "👻 Straszne rzeczy",
-
-    weird:
-        "🧪 Dziwne rzeczy",
-
-    everyday:
-        "💸 Życie codzienne",
-
-    adult:
-        "🔞 18+ / Dla dorosłych"
-
-};
+let players=[];
+let impostors=[];
+let currentIndex=0;
+let currentWord=null;
+let currentHint=null;
+let currentDifficulty=null;
 
 
-/* =====================================================
-   NAZWY POZIOMÓW
-===================================================== */
+/* =========================================================
+   DOM
+========================================================= */
 
-const difficultyNames = {
-
-    easy:
-        "🟢 ŁATWA",
-
-    normal:
-        "🟡 NORMALNA",
-
-    hard:
-        "🔴 TRUDNA"
-
-};
+const playersInput=document.getElementById("players-input");
+const allCategories=document.getElementById("all-categories");
+const categoryScroll=document.getElementById("category-scroll");
+const categorySearch=document.getElementById("category-search");
 
 
-/* =====================================================
-   ZMIENNE
-===================================================== */
+/* =========================================================
+   GENEROWANIE KATEGORII
+========================================================= */
 
-let players = [];
+function renderCategories(){
 
-let impostors = [];
+    categoryScroll.innerHTML="";
 
-let currentIndex = 0;
+    categories.forEach(([value,name])=>{
 
-let currentWord = null;
+        const label=document.createElement("label");
 
-let currentHint = null;
+        label.className="category-check";
 
-let currentDifficulty = null;
+        label.dataset.name=name.toLowerCase();
+
+        label.innerHTML=`
+            <input type="checkbox" value="${value}">
+            <span>${name}</span>
+        `;
+
+        const checkbox=label.querySelector("input");
+
+        checkbox.addEventListener("change",()=>{
+
+            const selected=
+                categoryScroll.querySelectorAll(
+                    "input:checked"
+                ).length;
+
+            if(selected>0){
+                allCategories.checked=false;
+            }else{
+                allCategories.checked=true;
+            }
+
+            updateCategoryVisuals();
+
+        });
+
+        categoryScroll.appendChild(label);
+
+    });
+
+}
 
 
-/* =====================================================
-   ELEMENTY
-===================================================== */
+/* =========================================================
+   KATEGORIE — WSZYSTKIE
+========================================================= */
 
-const playersInput =
-    document.getElementById(
-        "players-input"
-    );
+allCategories.addEventListener("change",function(){
 
+    if(this.checked){
+
+        categoryScroll
+            .querySelectorAll("input")
+            .forEach(cb=>cb.checked=false);
+
+    }
+
+    updateCategoryVisuals();
+
+});
+
+
+function updateCategoryVisuals(){
+
+    document
+        .querySelectorAll(".category-check")
+        .forEach(element=>{
+
+            const checkbox=
+                element.querySelector("input");
+
+            if(checkbox.checked){
+                element.classList.add("selected");
+            }else{
+                element.classList.remove("selected");
+            }
+
+        });
+
+    const selected=
+        categoryScroll.querySelectorAll(
+            "input:checked"
+        ).length;
+
+    const counter=
+        document.getElementById("category-counter");
+
+    counter.innerText=
+        allCategories.checked
+            ? "Wszystkie"
+            : `${selected} wybr.`;
+
+    updateWordCounter();
+
+}
+
+
+/* =========================================================
+   WYSZUKIWANIE KATEGORII
+========================================================= */
+
+categorySearch.addEventListener("input",function(){
+
+    const search=this.value
+        .toLowerCase()
+        .trim();
+
+    document
+        .querySelectorAll("#category-scroll .category-check")
+        .forEach(item=>{
+
+            item.style.display=
+                item.dataset.name.includes(search)
+                    ? "flex"
+                    : "none";
+
+        });
+
+});
+
+
+/* =========================================================
+   LOSOWANIE KATEGORII
+========================================================= */
+
+function randomCategories(){
+
+    allCategories.checked=false;
+
+    const checkboxes=
+        [...categoryScroll.querySelectorAll("input")];
+
+    checkboxes.forEach(cb=>cb.checked=false);
+
+    const shuffled=
+        [...checkboxes].sort(
+            ()=>Math.random()-.5
+        );
+
+    const amount=
+        Math.floor(Math.random()*4)+2;
+
+    shuffled
+        .slice(0,amount)
+        .forEach(cb=>cb.checked=true);
+
+    updateCategoryVisuals();
+
+}
+
+
+/* =========================================================
+   WYBRANE KATEGORIE
+========================================================= */
+
+function getSelectedCategories(){
+
+    if(allCategories.checked){
+        return null;
+    }
+
+    return [
+        ...categoryScroll.querySelectorAll(
+            "input:checked"
+        )
+    ].map(cb=>cb.value);
+
+}
+
+
+/* =========================================================
+   LICZNIK HASEŁ
+========================================================= */
+
+function updateWordCounter(){
+
+    const selected=getSelectedCategories();
+
+    const available=
+        selected===null
+            ? wordsList
+            : wordsList.filter(
+                word=>selected.includes(word[1])
+            );
+
+    document.getElementById("word-count-info")
+        .innerText=
+            `${available.length} haseł`;
+
+}
+
+
+/* =========================================================
+   GRACZE
+========================================================= */
 
 playersInput.addEventListener(
     "input",
     updatePlayerPreview
 );
-
 
 playersInput.addEventListener(
     "input",
@@ -2344,324 +1899,208 @@ playersInput.addEventListener(
 );
 
 
-/* =====================================================
-   PODGLĄD GRACZY
-===================================================== */
+function getPlayerNames(){
 
-function updatePlayerPreview() {
-
-    const names =
-        playersInput.value
+    return playersInput.value
         .split(",")
-        .map(
-            name =>
-                name.trim()
-        )
-        .filter(
-            name =>
-                name.length > 0
-        );
+        .map(name=>name.trim())
+        .filter(name=>name.length>0);
+
+}
 
 
-    const preview =
+function updatePlayerPreview(){
+
+    const names=getPlayerNames();
+
+    const preview=
         document.getElementById(
             "player-preview"
         );
 
+    preview.innerHTML="";
 
-    preview.innerHTML = "";
+    names.forEach(name=>{
 
+        const tag=
+            document.createElement("div");
 
-    names.forEach(
-        name => {
+        tag.className="player-tag";
 
-            const tag =
-                document.createElement(
-                    "div"
-                );
+        tag.innerText="👤 "+name;
 
+        preview.appendChild(tag);
 
-            tag.className =
-                "player-tag";
-
-
-            tag.innerText =
-                "👤 " + name;
-
-
-            preview.appendChild(
-                tag
-            );
-
-        }
-    );
+    });
 
 }
 
 
-/* =====================================================
-   LICZBA IMPOSTORÓW
-===================================================== */
+/* =========================================================
+   IMPOSTOR COUNT
+========================================================= */
 
-function updateImpostorOptions() {
+function updateImpostorOptions(){
 
-    const names =
-        playersInput.value
-        .split(",")
-        .map(
-            name =>
-                name.trim()
-        )
-        .filter(
-            name =>
-                name.length > 0
-        );
+    const names=getPlayerNames();
 
-
-    const select =
+    const select=
         document.getElementById(
             "impostor-count"
         );
 
+    const old=
+        parseInt(select.value)||1;
 
-    const oldValue =
-        parseInt(
-            select.value
-        ) || 1;
+    select.innerHTML="";
 
+    const max=Math.max(
+        1,
+        names.length-1
+    );
 
-    select.innerHTML = "";
+    for(let i=1;i<=max;i++){
 
+        const option=
+            document.createElement("option");
 
-    const max =
-        Math.max(
-            1,
-            names.length - 1
-        );
+        option.value=i;
 
-
-    for (
-        let i = 1;
-        i <= max;
-        i++
-    ) {
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-
-        option.value =
-            i;
-
-
-        option.textContent =
-            i === 1
+        option.textContent=
+            i===1
                 ? "1 impostor"
                 : `${i} impostorów`;
 
-
-        select.appendChild(
-            option
-        );
+        select.appendChild(option);
 
     }
 
-
-    if (
-        oldValue <= max
-    ) {
-
-        select.value =
-            oldValue;
-
-    } else {
-
-        select.value =
-            max;
-
-    }
+    select.value=
+        old<=max
+            ? old
+            : max;
 
 }
 
 
-/* =====================================================
-   LOSOWANIE
-===================================================== */
+/* =========================================================
+   RANDOM
+========================================================= */
 
-function randomItem(array) {
+function randomItem(array){
 
-    if (
-        !array ||
-        array.length === 0
-    ) {
-
+    if(!array || !array.length){
         return null;
-
     }
-
 
     return array[
         Math.floor(
-            Math.random() *
-            array.length
+            Math.random()*array.length
         )
     ];
 
 }
 
 
-/* =====================================================
-   LOSOWANIE PODPOWIEDZI
-===================================================== */
+/* =========================================================
+   PODPOWIEDŹ
+========================================================= */
 
-function chooseHint(word) {
+const difficultyNames={
+    easy:"🟢 ŁATWA",
+    normal:"🟡 NORMALNA",
+    hard:"🔴 TRUDNA"
+};
 
-    const difficulty =
+
+function chooseHint(word){
+
+    const selected=
         document.getElementById(
             "difficulty-select"
         ).value;
 
+    let pool=[];
 
-    const hintData = {
+    if(selected==="easy"){
 
-        easy: [
+        pool=[
             {
-                hint: word[2],
-                difficulty: "easy"
+                hint:word[2],
+                difficulty:"easy"
             }
-        ],
+        ];
 
-        normal: [
+    }else if(selected==="normal"){
+
+        pool=[
             {
-                hint: word[3],
-                difficulty: "normal"
+                hint:word[3],
+                difficulty:"normal"
             }
-        ],
+        ];
 
-        hard: [
+    }else if(selected==="hard"){
+
+        pool=[
             {
-                hint: word[4],
-                difficulty: "hard"
-            }
-        ],
-
-        random: [
-
-            {
-                hint: word[2],
-                difficulty: "easy"
+                hint:word[4],
+                difficulty:"hard"
             },
-
             {
-                hint: word[3],
-                difficulty: "normal"
-            },
-
-            {
-                hint: word[4],
-                difficulty: "hard"
-            },
-
-            {
-                hint: word[5],
-                difficulty: "hard"
+                hint:word[5],
+                difficulty:"hard"
             }
+        ];
 
-        ]
+    }else{
 
-    };
-
-
-    let available =
-        hintData[difficulty]
-        .filter(
-            item =>
-                item.hint &&
-                item.hint.trim() !== ""
-        );
-
-
-    const selected =
-        randomItem(
-            available
-        );
-
-
-    currentDifficulty =
-        selected.difficulty;
-
-
-    return selected.hint;
-
-}
-
-
-/* =====================================================
-   POBIERANIE WYBRANYCH KATEGORII
-===================================================== */
-
-function getSelectedCategories() {
-
-    const allCategories =
-        document.getElementById(
-            "all-categories"
-        );
-
-
-    const checkboxes =
-        document.querySelectorAll(
-            "#category-options input[type='checkbox']"
-        );
-
-
-    if (
-        allCategories.checked
-    ) {
-
-        return null;
+        pool=[
+            {
+                hint:word[2],
+                difficulty:"easy"
+            },
+            {
+                hint:word[3],
+                difficulty:"normal"
+            },
+            {
+                hint:word[4],
+                difficulty:"hard"
+            },
+            {
+                hint:word[5],
+                difficulty:"hard"
+            }
+        ];
 
     }
 
-
-    return Array.from(
-        checkboxes
-    )
-    .filter(
-        checkbox =>
-            checkbox.checked
-    )
-    .map(
-        checkbox =>
-            checkbox.value
+    pool=pool.filter(
+        item=>item.hint &&
+        item.hint.trim()
     );
+
+    const selectedHint=
+        randomItem(pool);
+
+    currentDifficulty=
+        selectedHint.difficulty;
+
+    return selectedHint.hint;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    START GRY
-===================================================== */
+========================================================= */
 
-function startGame() {
+function startGame(){
 
-    players =
-        playersInput.value
-        .split(",")
-        .map(
-            name =>
-                name.trim()
-        )
-        .filter(
-            name =>
-                name.length > 0
-        );
+    players=getPlayerNames();
 
-
-    if (
-        players.length < 3
-    ) {
+    if(players.length<3){
 
         alert(
             "Potrzebujesz co najmniej 3 graczy!"
@@ -2671,19 +2110,14 @@ function startGame() {
 
     }
 
-
-    const impostorCount =
+    const impostorCount=
         parseInt(
             document.getElementById(
                 "impostor-count"
             ).value
         );
 
-
-    if (
-        impostorCount >=
-        players.length
-    ) {
+    if(impostorCount>=players.length){
 
         alert(
             "Liczba impostorów musi być mniejsza niż liczba graczy!"
@@ -2693,30 +2127,18 @@ function startGame() {
 
     }
 
-
-    const selectedCategories =
+    const selected=
         getSelectedCategories();
-
 
     let availableWords;
 
+    if(selected===null){
 
-    /*
-       NULL = wszystkie
-    */
+        availableWords=wordsList;
 
-    if (
-        selectedCategories === null
-    ) {
+    }else{
 
-        availableWords =
-            wordsList;
-
-    } else {
-
-        if (
-            selectedCategories.length === 0
-        ) {
+        if(selected.length===0){
 
             alert(
                 "Wybierz przynajmniej jedną kategorię!"
@@ -2726,21 +2148,14 @@ function startGame() {
 
         }
 
-
-        availableWords =
+        availableWords=
             wordsList.filter(
-                word =>
-                    selectedCategories.includes(
-                        word[1]
-                    )
+                word=>selected.includes(word[1])
             );
 
     }
 
-
-    if (
-        availableWords.length === 0
-    ) {
+    if(!availableWords.length){
 
         alert(
             "Nie znaleziono haseł w wybranych kategoriach."
@@ -2750,271 +2165,173 @@ function startGame() {
 
     }
 
+    currentWord=
+        randomItem(availableWords);
 
-    /*
-       Losowanie hasła
-    */
+    currentHint=
+        chooseHint(currentWord);
 
-    currentWord =
-        randomItem(
-            availableWords
-        );
+    impostors=[];
 
-
-    /*
-       Losowanie podpowiedzi
-    */
-
-    currentHint =
-        chooseHint(
-            currentWord
-        );
-
-
-    /*
-       Losowanie impostorów
-    */
-
-    impostors = [];
-
-
-    while (
-        impostors.length <
+    while(
+        impostors.length<
         impostorCount
-    ) {
+    ){
 
-        const index =
+        const index=
             Math.floor(
-                Math.random() *
-                players.length
+                Math.random()*players.length
             );
 
-
-        if (
-            !impostors.includes(
-                index
-            )
-        ) {
-
-            impostors.push(
-                index
-            );
-
+        if(!impostors.includes(index)){
+            impostors.push(index);
         }
 
     }
 
+    currentIndex=0;
 
-    currentIndex = 0;
-
-
-    /*
-       Ukrywamy ekrany
-    */
-
-    document.getElementById(
-        "setup-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "role-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "end-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "final-screen"
-    ).classList.add(
-        "hidden"
-    );
-
+    hideAllScreens();
 
     showPassScreen();
 
 }
 
 
-/* =====================================================
-   EKRAN PRZEKAZYWANIA
-===================================================== */
+/* =========================================================
+   EKRANY
+========================================================= */
 
-function showPassScreen() {
+function hideAllScreens(){
 
-    document.getElementById(
-        "pass-screen"
-    ).classList.remove(
-        "hidden"
-    );
+    [
+        "setup-screen",
+        "pass-screen",
+        "role-screen",
+        "end-screen",
+        "final-screen"
+    ].forEach(id=>{
 
+        document
+            .getElementById(id)
+            .classList.add("hidden");
 
-    document.getElementById(
-        "role-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "pass-player-name"
-    ).innerText =
-        players[
-            currentIndex
-        ];
-
-
-    const percentage =
-        (
-            currentIndex /
-            players.length
-        ) * 100;
-
-
-    document.getElementById(
-        "progress-bar"
-    ).style.width =
-        percentage + "%";
-
-
-    document.getElementById(
-        "progress-text"
-    ).innerText =
-        `Gracz ${
-            currentIndex + 1
-        } z ${
-            players.length
-        }`;
+    });
 
 }
 
 
-/* =====================================================
-   POKAŻ ROLĘ
-===================================================== */
+/* =========================================================
+   PASS SCREEN
+========================================================= */
 
-function revealRole() {
+function showPassScreen(){
 
-    document.getElementById(
-        "pass-screen"
-    ).classList.add(
-        "hidden"
-    );
+    document
+        .getElementById("pass-screen")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("role-screen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("pass-player-name")
+        .innerText=
+            players[currentIndex];
+
+    const percentage=
+        currentIndex/
+        players.length*
+        100;
+
+    document
+        .getElementById("progress-bar")
+        .style.width=
+            percentage+"%";
+
+    document
+        .getElementById("progress-text")
+        .innerText=
+            `Gracz ${currentIndex+1} z ${players.length}`;
+
+}
 
 
-    document.getElementById(
-        "role-screen"
-    ).classList.remove(
-        "hidden"
-    );
+/* =========================================================
+   REVEAL ROLE
+========================================================= */
 
+function revealRole(){
 
-    document.getElementById(
-        "role-player-name"
-    ).innerText =
-        players[
-            currentIndex
-        ];
+    document
+        .getElementById("pass-screen")
+        .classList.add("hidden");
 
+    document
+        .getElementById("role-screen")
+        .classList.remove("hidden");
 
-    const content =
+    document
+        .getElementById("role-player-name")
+        .innerText=
+            players[currentIndex];
+
+    const content=
         document.getElementById(
             "role-content"
         );
 
+    const isImpostor=
+        impostors.includes(currentIndex);
 
-    const isImpostor =
-        impostors.includes(
-            currentIndex
-        );
+    if(isImpostor){
 
-
-    if (
-        isImpostor
-    ) {
-
-        content.innerHTML = `
+        content.innerHTML=`
 
             <div class="role-title">
-
                 🕵️ JESTEŚ IMPOSTOREM!
-
             </div>
 
             <p class="role-subtitle">
-
                 Nie znasz hasła.
-
                 <br><br>
-
-                Słuchaj innych graczy
-                i spróbuj nie dać się
-                zdemaskować.
-
+                Słuchaj innych graczy,
+                obserwuj ich odpowiedzi
+                i spróbuj nie dać się zdemaskować.
             </p>
 
             <div class="hint-title">
-
                 💡 TWOJA WSKAZÓWKA
-
             </div>
 
             <div class="hint">
-
                 ${currentHint}
-
             </div>
 
             <div class="difficulty">
-
-                ${
-                    difficultyNames[
-                        currentDifficulty
-                    ]
-                }
-
+                ${difficultyNames[currentDifficulty]}
             </div>
-
         `;
 
-    } else {
+    }else{
 
-        content.innerHTML = `
+        content.innerHTML=`
 
             <p>
                 Twoje hasło:
             </p>
 
             <div class="word">
-
                 ${currentWord[0]}
-
             </div>
 
             <div class="category">
-
-                ${
-                    categoryNames[
-                        currentWord[1]
-                    ]
-                }
-
+                ${categoryNames[currentWord[1]]}
             </div>
 
             <p class="small">
-
-                Nie pokazuj tego ekranu
-                innym graczom!
-
+                Nie pokazuj tego ekranu innym graczom!
             </p>
 
         `;
@@ -3024,23 +2341,22 @@ function revealRole() {
 }
 
 
-/* =====================================================
-   NASTĘPNY GRACZ
-===================================================== */
+/* =========================================================
+   NEXT PLAYER
+========================================================= */
 
-function nextPlayer() {
+function nextPlayer(){
 
     currentIndex++;
 
-
-    if (
-        currentIndex <
+    if(
+        currentIndex<
         players.length
-    ) {
+    ){
 
         showPassScreen();
 
-    } else {
+    }else{
 
         showEndScreen();
 
@@ -3049,297 +2365,113 @@ function nextPlayer() {
 }
 
 
-/* =====================================================
-   EKRAN ROZPOCZĘCIA
-===================================================== */
+/* =========================================================
+   STARTER
+========================================================= */
 
-function showEndScreen() {
+function showEndScreen(){
 
-    document.getElementById(
-        "role-screen"
-    ).classList.add(
-        "hidden"
-    );
+    document
+        .getElementById("role-screen")
+        .classList.add("hidden");
 
+    document
+        .getElementById("pass-screen")
+        .classList.add("hidden");
 
-    document.getElementById(
-        "pass-screen"
-    ).classList.add(
-        "hidden"
-    );
+    document
+        .getElementById("end-screen")
+        .classList.remove("hidden");
 
+    const starter=
+        randomItem(players);
 
-    document.getElementById(
-        "final-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "end-screen"
-    ).classList.remove(
-        "hidden"
-    );
-
-
-    const starter =
-        randomItem(
-            players
-        );
-
-
-    document.getElementById(
-        "starter-info"
-    ).innerText =
-        starter;
+    document
+        .getElementById("starter-info")
+        .innerText=
+            starter;
 
 }
 
 
-/* =====================================================
-   KONIEC GRY
-===================================================== */
+/* =========================================================
+   FINAL
+========================================================= */
 
-function revealFinalResult() {
+function revealFinalResult(){
 
-    document.getElementById(
-        "end-screen"
-    ).classList.add(
-        "hidden"
-    );
+    document
+        .getElementById("end-screen")
+        .classList.add("hidden");
 
+    document
+        .getElementById("final-screen")
+        .classList.remove("hidden");
 
-    document.getElementById(
-        "final-screen"
-    ).classList.remove(
-        "hidden"
-    );
+    document
+        .getElementById("final-word")
+        .innerText=
+            currentWord[0];
 
+    document
+        .getElementById("final-category")
+        .innerText=
+            categoryNames[currentWord[1]];
 
-    document.getElementById(
-        "final-word"
-    ).innerText =
-        currentWord[0];
-
-
-    document.getElementById(
-        "final-category"
-    ).innerText =
-        categoryNames[
-            currentWord[1]
-        ];
-
-
-    const names =
+    const names=
         impostors.map(
-            index =>
-                players[index]
+            index=>players[index]
         );
 
-
-    document.getElementById(
-        "final-impostors"
-    ).innerText =
-        names.join(", ");
+    document
+        .getElementById("final-impostors")
+        .innerText=
+            names.join(", ");
 
 }
 
 
-/* =====================================================
-   NOWA GRA
-===================================================== */
+/* =========================================================
+   NOWA RUNDA
+========================================================= */
 
-function newRound() {
+function newRound(){
 
     startGame();
 
 }
 
 
-/* =====================================================
-   ZMIEŃ USTAWIENIA
-===================================================== */
+/* =========================================================
+   USTAWIENIA
+========================================================= */
 
-function backToSetup() {
+function backToSetup(){
 
-    document.getElementById(
-        "end-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "final-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "role-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "pass-screen"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "setup-screen"
-    ).classList.remove(
-        "hidden"
-    );
-
-
-    updatePlayerPreview();
-
-    updateImpostorOptions();
-
-}
-
-
-/* =====================================================
-   OBSŁUGA KATEGORII
-===================================================== */
-
-const allCategories =
-    document.getElementById(
-        "all-categories"
-    );
-
-
-const categoryCheckboxes =
-    document.querySelectorAll(
-        "#category-options input[type='checkbox']"
-    );
-
-
-allCategories.addEventListener(
-    "change",
-    function() {
-
-        if (
-            this.checked
-        ) {
-
-            categoryCheckboxes.forEach(
-                checkbox => {
-
-                    checkbox.checked =
-                        false;
-
-                }
-            );
-
-        }
-
-        updateCategoryVisuals();
-
-    }
-);
-
-
-categoryCheckboxes.forEach(
-    checkbox => {
-
-        checkbox.addEventListener(
-            "change",
-            function() {
-
-                const anySelected =
-                    Array.from(
-                        categoryCheckboxes
-                    ).some(
-                        item =>
-                            item.checked
-                    );
-
-
-                if (
-                    anySelected
-                ) {
-
-                    allCategories.checked =
-                        false;
-
-                }
-
-
-                if (
-                    !anySelected
-                ) {
-
-                    allCategories.checked =
-                        true;
-
-                }
-
-
-                updateCategoryVisuals();
-
-            }
-        );
-
-    }
-);
-
-
-function updateCategoryVisuals() {
+    hideAllScreens();
 
     document
-        .querySelectorAll(
-            ".category-check"
-        )
-        .forEach(
-            element => {
+        .getElementById("setup-screen")
+        .classList.remove("hidden");
 
-                const checkbox =
-                    element.querySelector(
-                        "input"
-                    );
-
-
-                if (
-                    checkbox.checked
-                ) {
-
-                    element.classList.add(
-                        "category-selected"
-                    );
-
-                } else {
-
-                    element.classList.remove(
-                        "category-selected"
-                    );
-
-                }
-
-            }
-        );
+    updatePlayerPreview();
+    updateImpostorOptions();
+    updateCategoryVisuals();
 
 }
 
 
-/* =====================================================
-   START APLIKACJI
-===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
+renderCategories();
 updatePlayerPreview();
-
 updateImpostorOptions();
-
 updateCategoryVisuals();
+updateWordCounter();
 
 </script>
 
 </body>
-
 </html>
