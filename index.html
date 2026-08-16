@@ -49,8 +49,6 @@ body{
     padding:18px;
 }
 
-/* ANIMOWANE TŁO */
-
 body::before,
 body::after{
     content:"";
@@ -221,7 +219,9 @@ select{
 input[type="text"]:focus,
 select:focus{
     border-color:#9b6cff;
-    box-shadow:0 0 0 3px rgba(139,92,246,.14),0 0 20px rgba(139,92,246,.08);
+    box-shadow:
+        0 0 0 3px rgba(139,92,246,.14),
+        0 0 20px rgba(139,92,246,.08);
 }
 
 /* BUTTONY */
@@ -271,6 +271,30 @@ button.small-btn{
     margin:0;
     padding:9px 12px;
     font-size:12px;
+}
+
+/* PRZYCISK JAK GRAĆ */
+
+.how-to-play-btn{
+    margin-top:12px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34,211,238,.12),
+            rgba(139,92,246,.16)
+        );
+    border:1px solid rgba(139,92,246,.25);
+    color:#d8d3e8;
+    box-shadow:none;
+}
+
+.how-to-play-btn:hover{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34,211,238,.18),
+            rgba(139,92,246,.25)
+        );
 }
 
 /* GRACZE */
@@ -541,6 +565,14 @@ button.small-btn{
     margin-top:8px;
 }
 
+.no-hint{
+    color:#ef4444;
+    font-size:22px;
+    font-weight:900;
+    margin-top:20px;
+    text-shadow:0 0 20px rgba(239,68,68,.2);
+}
+
 .category{
     display:inline-block;
     padding:7px 12px;
@@ -604,6 +636,142 @@ hr{
     margin:20px 0;
 }
 
+/* MODAL JAK GRAĆ */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:18px;
+    z-index:1000;
+    animation:modalFade .2s ease;
+}
+
+.modal-overlay.hidden{
+    display:none!important;
+}
+
+@keyframes modalFade{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+.how-modal{
+    width:100%;
+    max-width:520px;
+    max-height:88vh;
+    overflow-y:auto;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(28,26,48,.98),
+            rgba(11,11,20,.99)
+        );
+    border:1px solid rgba(168,85,247,.3);
+    border-radius:25px;
+    padding:23px;
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.75),
+        0 0 50px rgba(139,92,246,.12);
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.modal-header h2{
+    margin:0;
+}
+
+.close-modal{
+    width:38px;
+    height:38px;
+    margin:0;
+    padding:0;
+    border-radius:12px;
+    background:#29273a;
+    box-shadow:none;
+    font-size:18px;
+}
+
+.how-step{
+    display:flex;
+    gap:13px;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.how-step:last-of-type{
+    border-bottom:0;
+}
+
+.how-number{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:linear-gradient(135deg,#7c3aed,#c026d3);
+    font-weight:900;
+    font-size:14px;
+}
+
+.how-step h3{
+    margin:0 0 5px;
+    font-size:15px;
+}
+
+.how-step p{
+    margin:0;
+    color:#aaa6b7;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.how-tip{
+    margin-top:14px;
+    padding:14px;
+    border-radius:15px;
+    background:rgba(34,211,238,.07);
+    border:1px solid rgba(34,211,238,.15);
+    color:#b9b6c5;
+    font-size:12px;
+    line-height:1.55;
+}
+
+.how-warning{
+    margin-top:10px;
+    padding:14px;
+    border-radius:15px;
+    background:rgba(239,68,68,.07);
+    border:1px solid rgba(239,68,68,.17);
+    color:#c8aeb1;
+    font-size:12px;
+    line-height:1.55;
+}
+
 /* FOOTER */
 
 .footer{
@@ -642,6 +810,7 @@ hr{
 /* MOBILE */
 
 @media(max-width:600px){
+
     body{
         align-items:flex-start;
         padding:12px;
@@ -667,6 +836,12 @@ hr{
     .creator-credit{
         right:8px;
         bottom:6px;
+    }
+
+    .how-modal{
+        max-height:91vh;
+        padding:19px;
+        border-radius:22px;
     }
 }
 </style>
@@ -711,9 +886,7 @@ hr{
     <select id="impostor-count"></select>
 
 
-    <label>
-        Kategorie
-    </label>
+    <label>Kategorie</label>
 
     <div class="category-header">
         <span class="small">
@@ -741,6 +914,7 @@ hr{
         <button
             class="small-btn secondary"
             onclick="randomCategories()"
+            type="button"
         >
             🎲
         </button>
@@ -766,11 +940,7 @@ hr{
         <div
             id="category-scroll"
             class="category-scroll"
-        >
-
-            <!-- KATEGORIE BĘDĄ WYGNEROWANE JS -->
-
-        </div>
+        ></div>
 
     </div>
 
@@ -780,6 +950,7 @@ hr{
     <select id="difficulty-select">
 
         <option value="random">🎲 Losowy</option>
+        <option value="none">🚫 Bez podpowiedzi</option>
         <option value="easy">🟢 Łatwy</option>
         <option value="normal">🟡 Normalny</option>
         <option value="hard">🔴 Trudny</option>
@@ -790,15 +961,19 @@ hr{
     <div class="info">
 
         💡 <b>Jak działa gra?</b><br>
-        Każdy gracz dostaje to samo hasło — oprócz impostora.
-        Impostor otrzymuje tylko jedną podpowiedź i musi udawać,
-        że zna hasło.<br><br>
 
-        🔎 Możesz wyszukiwać kategorie, przewijać listę
-        i zaznaczyć kilka jednocześnie.<br><br>
+        Każdy gracz dostaje to samo hasło —
+        oprócz impostora.
 
-        🎲 Kliknij <b>🎲</b>, aby automatycznie wylosować
-        kilka kategorii.
+        Impostor nie zna hasła i otrzymuje
+        tylko podpowiedź zależną od ustawionego
+        poziomu trudności.<br><br>
+
+        📱 Telefon przechodzi z rąk do rąk.
+        Każdy gracz widzi wyłącznie swoją rolę.<br><br>
+
+        🔎 Kategorie można wyszukiwać,
+        zaznaczać pojedynczo lub losować automatycznie.
 
     </div>
 
@@ -806,6 +981,16 @@ hr{
     <button onclick="startGame()">
         🚀 ROZPOCZNIJ GRĘ
     </button>
+
+
+    <button
+        class="how-to-play-btn"
+        onclick="openHowToPlay()"
+        type="button"
+    >
+        ❓ JAK GRAĆ?
+    </button>
+
 
     <p class="small">
         Minimum 3 graczy.
@@ -943,8 +1128,221 @@ hr{
 
 </div>
 
+
 <div class="creator-credit">
     IMPOSTOR by: @tlada_
+</div>
+
+
+<!-- =========================
+     MODAL JAK GRAĆ
+========================= -->
+
+<div
+    id="how-to-play-modal"
+    class="modal-overlay hidden"
+    onclick="handleModalBackground(event)"
+>
+
+    <div class="how-modal">
+
+        <div class="modal-header">
+
+            <h2>❓ Jak grać?</h2>
+
+            <button
+                class="close-modal"
+                onclick="closeHowToPlay()"
+                type="button"
+                aria-label="Zamknij"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">1</div>
+
+            <div>
+
+                <h3>👥 Dodaj graczy</h3>
+
+                <p>
+                    Wpisz imiona wszystkich osób,
+                    oddzielając je przecinkami.
+                    Potrzebujesz minimum 3 graczy.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">2</div>
+
+            <div>
+
+                <h3>🕵️ Wybierz impostorów</h3>
+
+                <p>
+                    Ustaw, ilu graczy ma być impostorami.
+                    Pozostali będą znali prawdziwe hasło.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">3</div>
+
+            <div>
+
+                <h3>🎯 Wybierz kategorie</h3>
+
+                <p>
+                    Możesz zostawić wszystkie kategorie
+                    albo wybrać konkretne, np. Gaming,
+                    Filmy, Sport czy Memy.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">4</div>
+
+            <div>
+
+                <h3>📱 Przekazuj telefon</h3>
+
+                <p>
+                    Gra pokazuje kolejno każdego gracza.
+                    Przekaż telefon danej osobie
+                    i upewnij się, że nikt inny nie patrzy.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">5</div>
+
+            <div>
+
+                <h3>👁️ Sprawdź swoją rolę</h3>
+
+                <p>
+                    Zwykły gracz zobaczy hasło.
+                    Impostor zobaczy informację,
+                    że jest impostorem oraz ewentualną podpowiedź.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">6</div>
+
+            <div>
+
+                <h3>🎤 Zacznijcie dyskusję</h3>
+
+                <p>
+                    Każdy po kolei mówi coś kojarzącego się
+                    z hasłem. Nie wolno powiedzieć hasła
+                    wprost. Impostor próbuje udawać,
+                    że zna odpowiedź.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">7</div>
+
+            <div>
+
+                <h3>🗳️ Zdemaskujcie impostora</h3>
+
+                <p>
+                    Po dyskusji gracze wskazują osobę,
+                    którą podejrzewają o bycie impostorem.
+                    Możecie ustalić własne zasady głosowania.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-step">
+
+            <div class="how-number">8</div>
+
+            <div>
+
+                <h3>🏁 Sprawdźcie wynik</h3>
+
+                <p>
+                    Po zakończeniu rundy kliknijcie
+                    „KONIEC GRY”. Aplikacja pokaże prawdziwe
+                    hasło oraz wszystkich impostorów.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="how-tip">
+
+            💡 <b>Tip:</b> Nie dawajcie zbyt oczywistych
+            podpowiedzi. Jeśli hasłem jest np. „Pizza”,
+            powiedzenie „włoskie jedzenie” jest bezpieczniejsze
+            niż „mozzarella”.
+
+        </div>
+
+
+        <div class="how-warning">
+
+            🔞 <b>Kategoria 18+:</b> zawiera hasła przeznaczone
+            dla dorosłych. Jeśli grają młodsze osoby,
+            po prostu nie zaznaczaj tej kategorii.
+
+        </div>
+
+
+        <button
+            class="green"
+            onclick="closeHowToPlay()"
+            type="button"
+        >
+            👍 ROZUMIEM, ZACZYNAMY!
+        </button>
+
+    </div>
+
 </div>
 
 
@@ -1000,13 +1398,17 @@ const categoryNames = Object.fromEntries(categories);
 
 /* =========================================================
    BAZA HASEŁ
-   format:
+   Twoja dotychczasowa baza + nowe hasła.
+   
+   Format:
    [HASŁO,KATEGORIA,ŁATWA,NORMALNA,TRUDNA,DODATKOWA]
 ========================================================= */
 
 const wordsList = [
 
-/* JEDZENIE */
+/* =========================
+   JEDZENIE
+========================= */
 
 ["PIZZA","food","Włochy","mozzarella","trójkąt","piec"],
 ["SUSHI","food","Japonia","ryż","pałeczki","surowe"],
@@ -1038,6 +1440,10 @@ const wordsList = [
 ["BURRITO","food","Meksyk","tortilla","ryż","fasola"],
 ["RAMEN TONKOTSU","food","Japonia","zupa","wieprzowina","bulion"],
 ["CYNAMONKA","food","słodkie","bułka","cynamon","piekarnia"],
+["RISOTTO","food","Włochy","ryż","kremowe","parmezan"],
+["BIGOS","food","Polska","kapusta","myśliwski","garnek"],
+["ŻUREK","food","Polska","zakwas","biała kiełbasa","Wielkanoc"],
+["SZARLOTKA","food","jabłka","ciasto","cynamon","deser"],
 
 /* FAST FOOD */
 
@@ -1053,6 +1459,9 @@ const wordsList = [
 ["MCFLURRY","fastfood","lody","McDonald's","łyżka","Oreo"],
 ["PIZZA HAWAJSKA","fastfood","ananas","Włochy","kontrowersyjna","ser"],
 ["KUBEŁEK KFC","fastfood","KFC","kurczak","dużo","papier"],
+["FISH AND CHIPS","fastfood","Anglia","ryba","frytki","ocet"],
+["QUESADILLA","fastfood","Meksyk","ser","tortilla","grill"],
+["CHICKEN BURGER","fastfood","kurczak","bułka","fast food","sos"],
 
 /* NAPOJE */
 
@@ -1068,6 +1477,9 @@ const wordsList = [
 ["SMOOTHIE","drinks","owoce","blender","gęste","kolorowe"],
 ["WODA","drinks","szklanka","pragnienie","butelka","bez smaku"],
 ["MATCHA","drinks","zielona","Japonia","proszek","mleko"],
+["ESPRESSO","drinks","kawa","mała filiżanka","Włochy","mocne"],
+["CAPPUCCINO","drinks","kawa","pianka","mleko","Włochy"],
+["ICED TEA","drinks","herbata","lód","lato","cytryna"],
 
 /* ZWIERZĘTA */
 
@@ -1094,6 +1506,9 @@ const wordsList = [
 ["PIES","animals","szczeka","smycz","pupil","Hachiko"],
 ["KAMELEON","animals","kolor","język","jaszczurka","kamuflaż"],
 ["AXOLOTL","animals","Minecraft","woda","różowy","płaz"],
+["PANDA","animals","Chiny","czarno-biała","bambus","miś"],
+["ŻABA","animals","staw","zielona","skacze","kumkanie"],
+["ŻÓŁW","animals","skorupa","wolny","gady","żółw morski"],
 
 /* MIEJSCA */
 
@@ -1112,6 +1527,9 @@ const wordsList = [
 ["STADION","places","mecz","kibice","trybuny","murawa"],
 ["MUZEUM","places","obrazy","eksponaty","historia","cisza"],
 ["PLAŻA","places","piasek","morze","lato","parasol"],
+["BIBLIOTEKA","places","książki","cisza","regały","czytelnia"],
+["AQUAPARK","places","baseny","zjeżdżalnie","woda","wakacje"],
+["DWORZEC","places","pociągi","peron","bilet","tor"],
 
 /* MIASTA */
 
@@ -1129,6 +1547,9 @@ const wordsList = [
 ["BARCELONA","cities","Hiszpania","Gaudi","FC Barcelona","plaża"],
 ["BERLIN","cities","Niemcy","mur","Brama Brandenburska","techno"],
 ["LIZBONA","cities","Portugalia","tramwaj","ocean","pastel"],
+["PRAGA","cities","Czechy","most Karola","zamek","zegary"],
+["WIEDEŃ","cities","Austria","walc","pałace","Mozart"],
+["BUDAPESZT","cities","Węgry","Dunaj","termalne","parlament"],
 
 /* KRAJE */
 
@@ -1146,6 +1567,9 @@ const wordsList = [
 ["KANADA","countries","liść klonu","hokej","Toronto","zimno"],
 ["KOREA POŁUDNIOWA","countries","Seul","K-pop","Samsung","kimchi"],
 ["EGIPT","countries","piramidy","Kair","faraon","pustynia"],
+["NORWEGIA","countries","fiordy","Oslo","Wikingowie","zorza"],
+["ISLANDIA","countries","wulkany","Reykjavik","lód","gejzery"],
+["PORTUGALIA","countries","Lizbona","ocean","Porto","azulejos"],
 
 /* PRZEDMIOTY */
 
@@ -1167,6 +1591,9 @@ const wordsList = [
 ["WALIZKA","objects","podróż","lotnisko","bagaż","kółka"],
 ["GITARA","objects","muzyka","struny","koncert","akustyczna"],
 ["APARAT","objects","zdjęcie","obiektyw","fotograf","flash"],
+["LATARKA","objects","światło","ciemność","bateria","noc"],
+["DŁUGOPIS","objects","pisanie","szkoła","atrament","notatki"],
+["SZCZOTECZKA","objects","zęby","łazienka","pasta","rano"],
 
 /* NATURA */
 
@@ -1184,6 +1611,9 @@ const wordsList = [
 ["LAWINA","nature","śnieg","góry","zjazd","niebezpieczna"],
 ["DRZEWO","nature","liście","las","pień","korzenie"],
 ["KWIAT","nature","płatki","ogród","zapach","bukiet"],
+["ZORZA POLARNA","nature","niebo","zielona","Arktyka","światła"],
+["JASKINIA","nature","skała","ciemność","podziemia","nietoperze"],
+["GEJZER","nature","gorąca woda","ziemia","Islandia","wybuch"],
 
 /* TECHNOLOGIA */
 
@@ -1202,6 +1632,9 @@ const wordsList = [
 ["HASŁO","technology","bezpieczeństwo","login","tajne","1234"],
 ["KOD QR","technology","kwadrat","telefon","skanowanie","menu"],
 ["POWERBANK","technology","bateria","telefon","ładowanie","kabel"],
+["SMARTWATCH","technology","zegarek","telefon","Apple Watch","nadgarstek"],
+["TABLET","technology","ekran","dotyk","aplikacje","iPad"],
+["SSD","technology","dysk","komputer","pamięć","szybki"],
 
 /* INTERNET */
 
@@ -1223,6 +1656,9 @@ const wordsList = [
 ["GRWM","internet","TikTok","ubieranie","makijaż","film"],
 ["RATIO","internet","Twitter","komentarze","lajki","internet"],
 ["CORE","internet","estetyka","TikTok","styl","mood"],
+["HASHTAG","internet","symbol","Instagram","TikTok","kratka"],
+["LURKER","internet","forum","czytanie","bez komentarzy","internet"],
+["DOOMSCROLLING","internet","telefon","negatywne","scroll","noc"],
 
 /* MEMY */
 
@@ -1240,6 +1676,9 @@ const wordsList = [
 ["RICKROLL","memes","YouTube","piosenka","Rick Astley","link"],
 ["LOSS","memes","komiks","internet","cztery panele","meme"],
 ["REACTION IMAGE","memes","twarz","internet","komentarz","GIF"],
+["SIGMA FACE","memes","sigma","twarz","meme","TikTok"],
+["SKIBIDI","memes","brainrot","toaleta","TikTok","internet"],
+["TROLLFACE","memes","troll","twarz","internet","rage comic"],
 
 /* SOCIAL */
 
@@ -1257,6 +1696,9 @@ const wordsList = [
 ["BE REAL","social","zdjęcie","codziennie","aplikacja","szczerość"],
 ["STREAK","social","Snapchat","dni","ogień","wiadomości"],
 ["STORY","social","Instagram","24 godziny","zdjęcie","relacja"],
+["THREADS","social","Meta","posty","tekst","Instagram"],
+["X","social","Twitter","posty","niebieski","Elon"],
+["TELEGRAM","social","wiadomości","niebieski","czat","kanały"],
 
 /* GAMING */
 
@@ -1278,6 +1720,9 @@ const wordsList = [
 ["ELDEN RING","gaming","boss","Dark Souls","otwarty świat","Malenia"],
 ["THE SIMS","gaming","dom","EA","życie","sim"],
 ["VALHEIM","gaming","wiking","survival","las","boss"],
+["TERRARIA","gaming","klocki","survival","kopanie","boss"],
+["STARDEW VALLEY","gaming","farma","pixel art","wieś","uprawy"],
+["CLASH ROYALE","gaming","karty","Supercell","arena","wieże"],
 
 /* POSTACIE Z GIER */
 
@@ -1297,6 +1742,9 @@ const wordsList = [
 ["PAC-MAN","gamechars","żółty","labirynt","duchy","retro"],
 ["KIRBY","gamechars","różowy","Nintendo","połyka","gwiazdy"],
 ["CREEPER","gamechars","Minecraft","zielony","wybuch","ssss"],
+["SAMUS ARAN","gamechars","Metroid","zbroja","Nintendo","łowczyni"],
+["DONKEY KONG","gamechars","małpa","Nintendo","banany","Mario"],
+["BOWSER","gamechars","Mario","żółw","ogień","zamek"],
 
 /* FILMY */
 
@@ -1320,6 +1768,9 @@ const wordsList = [
 ["GLADIATOR","movies","Rzym","arena","Maximus","Cezar"],
 ["INTERSTELLAR","movies","kosmos","czarna dziura","Nolan","czas"],
 ["THE WOLF OF WALL STREET","movies","pieniądze","Wall Street","Jordan Belfort","Leonardo"],
+["DUNE","movies","pustynia","Arrakis","piasek","Paul"],
+["TOP GUN","movies","samoloty","pilot","Maverick","Tom Cruise"],
+["WALL-E","movies","robot","kosmos","Pixar","śmieci"],
 
 /* SERIALE */
 
@@ -1337,19 +1788,19 @@ const wordsList = [
 ["EUPHORIA","series","HBO","Rue","szkoła","neon"],
 ["THE LAST OF US","series","grzyb","Joel","Ellie","HBO"],
 ["HOUSE OF THE DRAGON","series","smoki","Targaryen","Westeros","ogień"],
-["PEAKY BLINDERS","series","Tommy","gang","Birmingham","kapelusz"],
 ["DAHMER","series","Netflix","morderca","Milwaukee","kryminalny"],
 ["YOU","series","Netflix","Joe","książki","obsesja"],
 ["THE WITCHER","series","Geralt","Netflix","potwory","Ciri"],
 ["LOKI","series","Marvel","czas","TVA","Thor"],
 ["FALLOUT","series","postapo","Vault","gry","mutant"],
+["BLACK MIRROR","series","Netflix","technologia","dystopia","odcinki"],
+["SUCCESSION","series","HBO","bogata rodzina","biznes","Roy"],
 
 /* POSTACIE FILMOWE */
 
 ["JACK SPARROW","characters","Piraci","kapitan","rum","Johnny Depp"],
 ["HERMIONA","characters","Harry Potter","Granger","magia","książki"],
 ["RON WEASLEY","characters","Harry Potter","rudy","Weasley","magia"],
-["HARRY POTTER","characters","blizna","Hogwart","magia","Gryffindor"],
 ["DARTH VADER","characters","Star Wars","maska","Sith","Luke"],
 ["YODA","characters","Star Wars","zielony","Jedi","mądry"],
 ["LUKE SKYWALKER","characters","Star Wars","Jedi","Tatooine","Vader"],
@@ -1364,6 +1815,9 @@ const wordsList = [
 ["ROCKY BALBOA","characters","bokser","Filadelfia","ring","Apollo"],
 ["FORREST GUMP","characters","bieg","Tom Hanks","Wietnam","czekoladki"],
 ["JOHN WICK","characters","Keanu Reeves","zabójca","pies","czarny garnitur"],
+["WONKA","characters","czekolada","fabryka","kapelusz","cukierki"],
+["NEO","characters","Matrix","czarny płaszcz","tabletka","Thomas Anderson"],
+["ELSA","characters","Kraina Lodu","lód","księżniczka","Anna"],
 
 /* ANIME */
 
@@ -1373,7 +1827,6 @@ const wordsList = [
 ["LUFFY","anime","One Piece","pirat","gumowy","kapelusz"],
 ["ZORO","anime","One Piece","miecz","zielone włosy","trzy miecze"],
 ["SAILOR MOON","anime","księżyc","Japonia","wojowniczka","Moon Prism"],
-["PIKACHU","anime","Pokemon","żółty","elektryczny","Ash"],
 ["TANJIRO","anime","Demon Slayer","miecz","Nezuko","woda"],
 ["NEZUKO","anime","Demon Slayer","demon","bambus","Tanjiro"],
 ["GOJO","anime","Jujutsu Kaisen","białe włosy","Six Eyes","Sensei"],
@@ -1383,6 +1836,9 @@ const wordsList = [
 ["RYUK","anime","Death Note","shinigami","jabłka","notatnik"],
 ["EREN","anime","Attack on Titan","tytan","mury","Mikasa"],
 ["ASH KETCHUM","anime","Pokemon","trener","Pikachu","czapka"],
+["ICHIGO","anime","Bleach","Soul Reaper","miecz","Hollow"],
+["DEKU","anime","My Hero Academia","bohater","One For All","zielone włosy"],
+["MIKASA","anime","Attack on Titan","żołnierz","szalik","Eren"],
 
 /* SUPERBOHATEROWIE */
 
@@ -1402,6 +1858,9 @@ const wordsList = [
 ["JOKER","superheroes","DC","klaun","Gotham","Batman"],
 ["HARLEY QUINN","superheroes","DC","kij","Joker","Gotham"],
 ["THANOS","superheroes","Infinity Stones","Marvel","fioletowy","Thanos"],
+["STORM","superheroes","X-Men","pogoda","burza","mutant"],
+["CYCLOPS","superheroes","X-Men","laser","Scott Summers","wizjer"],
+["DOCTOR STRANGE","superheroes","Marvel","magia","portal","Cumberbatch"],
 
 /* MUZYKA */
 
@@ -1423,6 +1882,8 @@ const wordsList = [
 ["KARAOKE","music","mikrofon","śpiewanie","impreza","tekst"],
 ["FESTIWAL","music","muzyka","lato","scena","tłum"],
 ["LADY GAGA","music","pop","aktorstwo","Born This Way","dziwne stroje"],
+["BRUNO MARS","music","pop","Hawaje","taniec","Uptown Funk"],
+["BEYONCÉ","music","Queen B","R&B","Houston","Lemonade"],
 
 /* CELEBRYCI */
 
@@ -1438,6 +1899,8 @@ const wordsList = [
 ["JENNA ORTEGA","celebrities","Wednesday","aktorka","Netflix","Addams"],
 ["MR BEAST","celebrities","YouTube","wyzwania","czekolada","miliony"],
 ["MARK ZUCKERBERG","celebrities","Facebook","Meta","CEO","VR"],
+["KAI CENAT","celebrities","streamer","Twitch","YouTube","internet"],
+["CENTRAL CEE","celebrities","rap","Londyn","UK","muzyka"],
 
 /* MODA */
 
@@ -1455,6 +1918,8 @@ const wordsList = [
 ["GUCCI","fashion","luksus","wąż","Włochy","GG"],
 ["LOUIS VUITTON","fashion","luksus","monogram","Francja","torba"],
 ["BALENCIAGA","fashion","luksus","buty","duże","Hiszpania"],
+["CARGO PANTS","fashion","spodnie","kieszenie","streetwear","luźne"],
+["VARSITY JACKET","fashion","kurtka","szkoła","college","streetwear"],
 
 /* MARKI */
 
@@ -1472,6 +1937,8 @@ const wordsList = [
 ["AMAZON","brands","zakupy","paczka","Jeff Bezos","internet"],
 ["GOOGLE","brands","wyszukiwarka","kolorowe","Android","Chrome"],
 ["DISNEY","brands","Myszka","bajki","zamek","magia"],
+["PLAYSTATION","brands","Sony","konsola","niebieski","DualSense"],
+["MICROSOFT","brands","Windows","Xbox","komputer","Bill Gates"],
 
 /* SPORT */
 
@@ -1488,6 +1955,8 @@ const wordsList = [
 ["SIŁOWNIA","sports","hantle","trening","mięśnie","protein"],
 ["SNOWBOARD","sports","śnieg","deska","góry","zima"],
 ["NARTY","sports","śnieg","kijki","góry","zjazd"],
+["GOLF","sports","kij","piłeczka","pole","dołek"],
+["FORMUŁA E","sports","elektryczne","wyścig","bolid","energia"],
 
 /* SAMOCHODY */
 
@@ -1504,6 +1973,9 @@ const wordsList = [
 ["DRIFT","cars","poślizg","samochód","Japonia","opony"],
 ["TAXI","cars","żółty","miasto","kierowca","Uber"],
 ["UBER","cars","aplikacja","samochód","przejazd","telefon"],
+["NISSAN SKYLINE","cars","Japonia","JDM","GT-R","wyścigi"],
+["TOYOTA SUPRA","cars","Japonia","JDM","Fast & Furious","turbo"],
+["LIMUZYNA","cars","luksus","długa","VIP","kierowca"],
 
 /* ZAWODY */
 
@@ -1521,6 +1993,8 @@ const wordsList = [
 ["FOTOGRAF","jobs","aparat","zdjęcia","sesja","obiektyw"],
 ["INFLUENCER","jobs","Instagram","followers","reklama","TikTok"],
 ["STREAMER","jobs","Twitch","kamera","live","gaming"],
+["DENTYSTA","jobs","zęby","gabinet","dentysta","wiertło"],
+["MECHANIK","jobs","samochód","garaż","silnik","klucz"],
 
 /* SZKOŁA */
 
@@ -1535,6 +2009,9 @@ const wordsList = [
 ["TABLICA","school","marker","lekcja","ściana","nauczyciel"],
 ["ZESZYT","school","papier","lekcja","notatki","kratka"],
 ["ŚCIĄGA","school","egzamin","tajna","kartka","oszustwo"],
+["GEOGRAFIA","school","mapa","kraje","kontynenty","atlas"],
+["CHEMIA","school","laboratorium","reakcja","probówka","układ okresowy"],
+["FIZYKA","school","energia","siła","lekcja","Newton"],
 
 /* RELACJE */
 
@@ -1550,6 +2027,8 @@ const wordsList = [
 ["RED FLAG","relationships","związek","ostrzeżenie","problem","TikTok"],
 ["GREEN FLAG","relationships","związek","dobry znak","partner","zdrowe"],
 ["FRIENDZONE","relationships","przyjaźń","romans","odrzucenie","uczucia"],
+["KŁÓTNIA","relationships","emocje","głośno","para","problem"],
+["PRZYJAŹŃ","relationships","znajomi","zaufanie","razem","wsparcie"],
 
 /* NOSTALGIA */
 
@@ -1563,6 +2042,8 @@ const wordsList = [
 ["GUMY KULKI","nostalgia","słodycze","dzieci","okrągłe","sklepik"],
 ["HANNAH MONTANA","nostalgia","Disney","Miley Cyrus","peruka","serial"],
 ["HIGH SCHOOL MUSICAL","nostalgia","Disney","muzyka","szkoła","Troy"],
+["MYSPACE","nostalgia","internet","profile","stare","muzyka"],
+["MP3","nostalgia","muzyka","odtwarzacz","słuchawki","piosenki"],
 
 /* PODRÓŻE */
 
@@ -1580,6 +2061,8 @@ const wordsList = [
 ["TAJLANDIA","travel","Azja","plaża","Bangkok","pad thai"],
 ["EGIPT","travel","piramidy","Kair","pustynia","faraon"],
 ["MALDIVES","travel","wyspy","luksus","ocean","wakacje"],
+["CHORWACJA","travel","Adriatyk","Dubrownik","plaża","wakacje"],
+["ALPY","travel","góry","śnieg","Austria","narty"],
 
 /* IMPREZA */
 
@@ -1594,6 +2077,8 @@ const wordsList = [
 ["SYLWESTER","party","Nowy Rok","fajerwerki","północ","szampan"],
 ["URODZINY","party","tort","prezent","świeczki","rok"],
 ["DOMÓWKA","party","dom","znajomi","muzyka","noc"],
+["KARAOKE BAR","party","mikrofon","bar","śpiewanie","piosenki"],
+["PIŻAMA PARTY","party","piżama","dom","znajomi","noc"],
 
 /* STRASZNE */
 
@@ -1608,6 +2093,9 @@ const wordsList = [
 ["PARALIŻ SENNY","scary","sen","ciało","strach","noc"],
 ["EGZORCYSTA","scary","duch","film","kościół","opętanie"],
 ["DARK WEB","scary","internet","tajemnica","ciemność","niebezpieczne"],
+["UPIÓR","scary","duch","noc","straszny","zamek"],
+["KRWAWY MARY","scary","lustro","legenda","łazienka","imię"],
+["WIEDŹMA","scary","magia","miotła","czarownica","las"],
 
 /* DZIWNE */
 
@@ -1621,6 +2109,9 @@ const wordsList = [
 ["HOT DOG Z LODAMI","weird","jedzenie","lody","parówka","absurd"],
 ["PIZZA Z ANANASEM","weird","ananas","pizza","kontrowersja","Włochy"],
 ["CZŁOWIEK W KOSTIUMIE KURCZAKA","weird","kurczak","kostium","internet","dziwne"],
+["LATAJĄCA KANAPKA","weird","jedzenie","powietrze","absurd","internet"],
+["KOT W OKULARACH","weird","kot","okulary","internet","meme"],
+["LODOWY BURGER","weird","burger","lód","jedzenie","dziwne"],
 
 /* CODZIENNE */
 
@@ -1639,6 +2130,8 @@ const wordsList = [
 ["KAWA RANO","everyday","sen","kofeina","kubek","praca"],
 ["SPÓŹNIENIE","everyday","czas","autobus","szkoła","praca"],
 ["LODÓWKA O PÓŁNOCY","everyday","noc","jedzenie","głód","kuchnia"],
+["ZMYWANIE NACZYŃ","everyday","kuchnia","woda","talerze","gąbka"],
+["WYNOSZENIE ŚMIECI","everyday","dom","kosz","worki","zapach"],
 
 /* 18+ */
 
@@ -1661,9 +2154,59 @@ const wordsList = [
 ["HOT DATE","adult","randka","romans","wieczór","elegancko"],
 ["SINGIEL","adult","samotny","randki","Tinder","wolność"],
 ["TINDER","adult","swipe","randki","serce","aplikacja"],
-["FLIRTOWANIE","adult","rizz","wiadomości","uśmiech","kontakt"]
+["FLIRTOWANIE","adult","rizz","wiadomości","uśmiech","kontakt"],
+["SEKRETNA RANDKA","adult","romans","tajemnica","noc","spotkanie"],
+["ROMANTYCZNY HOTEL","adult","pokój","para","wieczór","klucz"]
 
 ];
+
+
+/* =========================================================
+   DEDUPLIKACJA HASEŁ
+========================================================= */
+
+/*
+ * Niektóre hasła z pierwotnej wersji występowały
+ * w kilku kategoriach, np. PIKACHU, KRAKÓW, BATMAN itd.
+ *
+ * Gra korzysta teraz z jednej wspólnej, unikalnej bazy.
+ * Pierwsze wystąpienie hasła zostaje zachowane.
+ *
+ * Dzięki temu:
+ * - jedno hasło nie może zostać wylosowane z dwóch kategorii,
+ * - licznik pokazuje rzeczywistą liczbę haseł,
+ * - nowe hasła również są automatycznie sprawdzane.
+ */
+
+function normalizeWord(word){
+
+    return String(word)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .toUpperCase()
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+const uniqueWordsList=[];
+
+const usedWords=new Set();
+
+wordsList.forEach(word=>{
+
+    const key=normalizeWord(word[0]);
+
+    if(!usedWords.has(key)){
+
+        usedWords.add(key);
+
+        uniqueWordsList.push(word);
+
+    }
+
+});
 
 
 /* =========================================================
@@ -1687,6 +2230,9 @@ const allCategories=document.getElementById("all-categories");
 const categoryScroll=document.getElementById("category-scroll");
 const categorySearch=document.getElementById("category-search");
 
+const howToPlayModal=
+    document.getElementById("how-to-play-modal");
+
 
 /* =========================================================
    GENEROWANIE KATEGORII
@@ -1702,6 +2248,10 @@ function renderCategories(){
 
         label.className="category-check";
 
+        if(value==="adult"){
+            label.classList.add("adult-category");
+        }
+
         label.dataset.name=name.toLowerCase();
 
         label.innerHTML=`
@@ -1709,7 +2259,8 @@ function renderCategories(){
             <span>${name}</span>
         `;
 
-        const checkbox=label.querySelector("input");
+        const checkbox=
+            label.querySelector("input");
 
         checkbox.addEventListener("change",()=>{
 
@@ -1800,7 +2351,9 @@ categorySearch.addEventListener("input",function(){
         .trim();
 
     document
-        .querySelectorAll("#category-scroll .category-check")
+        .querySelectorAll(
+            "#category-scroll .category-check"
+        )
         .forEach(item=>{
 
             item.style.display=
@@ -1866,18 +2419,27 @@ function getSelectedCategories(){
    LICZNIK HASEŁ
 ========================================================= */
 
-function updateWordCounter(){
+function getAvailableWords(){
 
     const selected=getSelectedCategories();
 
-    const available=
-        selected===null
-            ? wordsList
-            : wordsList.filter(
-                word=>selected.includes(word[1])
-            );
+    if(selected===null){
+        return uniqueWordsList;
+    }
 
-    document.getElementById("word-count-info")
+    return uniqueWordsList.filter(
+        word=>selected.includes(word[1])
+    );
+
+}
+
+
+function updateWordCounter(){
+
+    const available=getAvailableWords();
+
+    document
+        .getElementById("word-count-info")
         .innerText=
             `${available.length} haseł`;
 
@@ -2020,7 +2582,18 @@ function chooseHint(word){
             "difficulty-select"
         ).value;
 
+
+    if(selected==="none"){
+
+        currentDifficulty=null;
+
+        return null;
+
+    }
+
+
     let pool=[];
+
 
     if(selected==="easy"){
 
@@ -2076,16 +2649,29 @@ function chooseHint(word){
 
     }
 
+
     pool=pool.filter(
         item=>item.hint &&
         item.hint.trim()
     );
 
+
     const selectedHint=
         randomItem(pool);
 
+
+    if(!selectedHint){
+
+        currentDifficulty=null;
+
+        return null;
+
+    }
+
+
     currentDifficulty=
         selectedHint.difficulty;
+
 
     return selectedHint.hint;
 
@@ -2110,12 +2696,14 @@ function startGame(){
 
     }
 
+
     const impostorCount=
         parseInt(
             document.getElementById(
                 "impostor-count"
             ).value
         );
+
 
     if(impostorCount>=players.length){
 
@@ -2127,14 +2715,17 @@ function startGame(){
 
     }
 
+
     const selected=
         getSelectedCategories();
 
+
     let availableWords;
+
 
     if(selected===null){
 
-        availableWords=wordsList;
+        availableWords=uniqueWordsList;
 
     }else{
 
@@ -2149,11 +2740,12 @@ function startGame(){
         }
 
         availableWords=
-            wordsList.filter(
+            uniqueWordsList.filter(
                 word=>selected.includes(word[1])
             );
 
     }
+
 
     if(!availableWords.length){
 
@@ -2165,13 +2757,17 @@ function startGame(){
 
     }
 
+
     currentWord=
         randomItem(availableWords);
+
 
     currentHint=
         chooseHint(currentWord);
 
+
     impostors=[];
+
 
     while(
         impostors.length<
@@ -2189,7 +2785,9 @@ function startGame(){
 
     }
 
+
     currentIndex=0;
+
 
     hideAllScreens();
 
@@ -2240,15 +2838,18 @@ function showPassScreen(){
         .innerText=
             players[currentIndex];
 
+
     const percentage=
         currentIndex/
         players.length*
         100;
 
+
     document
         .getElementById("progress-bar")
         .style.width=
             percentage+"%";
+
 
     document
         .getElementById("progress-text")
@@ -2277,42 +2878,78 @@ function revealRole(){
         .innerText=
             players[currentIndex];
 
+
     const content=
         document.getElementById(
             "role-content"
         );
 
+
     const isImpostor=
         impostors.includes(currentIndex);
 
+
     if(isImpostor){
 
-        content.innerHTML=`
+        if(currentHint===null){
 
-            <div class="role-title">
-                🕵️ JESTEŚ IMPOSTOREM!
-            </div>
+            content.innerHTML=`
 
-            <p class="role-subtitle">
-                Nie znasz hasła.
-                <br><br>
-                Słuchaj innych graczy,
-                obserwuj ich odpowiedzi
-                i spróbuj nie dać się zdemaskować.
-            </p>
+                <div class="role-title">
+                    🕵️ JESTEŚ IMPOSTOREM!
+                </div>
 
-            <div class="hint-title">
-                💡 TWOJA WSKAZÓWKA
-            </div>
+                <p class="role-subtitle">
+                    Nie znasz hasła.
+                    <br><br>
+                    Słuchaj innych graczy,
+                    obserwuj ich odpowiedzi
+                    i spróbuj nie dać się zdemaskować.
+                </p>
 
-            <div class="hint">
-                ${currentHint}
-            </div>
+                <div class="no-hint">
+                    🚫 BRAK PODPOWIEDZI
+                </div>
 
-            <div class="difficulty">
-                ${difficultyNames[currentDifficulty]}
-            </div>
-        `;
+                <p class="small">
+                    Tym razem musisz poradzić sobie
+                    całkowicie bez podpowiedzi.
+                </p>
+
+            `;
+
+        }else{
+
+            content.innerHTML=`
+
+                <div class="role-title">
+                    🕵️ JESTEŚ IMPOSTOREM!
+                </div>
+
+                <p class="role-subtitle">
+                    Nie znasz hasła.
+                    <br><br>
+                    Słuchaj innych graczy,
+                    obserwuj ich odpowiedzi
+                    i spróbuj nie dać się zdemaskować.
+                </p>
+
+                <div class="hint-title">
+                    💡 TWOJA WSKAZÓWKA
+                </div>
+
+                <div class="hint">
+                    ${escapeHTML(currentHint)}
+                </div>
+
+                <div class="difficulty">
+                    ${difficultyNames[currentDifficulty]}
+                </div>
+
+            `;
+
+        }
+
 
     }else{
 
@@ -2323,11 +2960,11 @@ function revealRole(){
             </p>
 
             <div class="word">
-                ${currentWord[0]}
+                ${escapeHTML(currentWord[0])}
             </div>
 
             <div class="category">
-                ${categoryNames[currentWord[1]]}
+                ${escapeHTML(categoryNames[currentWord[1]])}
             </div>
 
             <p class="small">
@@ -2348,6 +2985,7 @@ function revealRole(){
 function nextPlayer(){
 
     currentIndex++;
+
 
     if(
         currentIndex<
@@ -2383,8 +3021,10 @@ function showEndScreen(){
         .getElementById("end-screen")
         .classList.remove("hidden");
 
+
     const starter=
         randomItem(players);
+
 
     document
         .getElementById("starter-info")
@@ -2408,20 +3048,24 @@ function revealFinalResult(){
         .getElementById("final-screen")
         .classList.remove("hidden");
 
+
     document
         .getElementById("final-word")
         .innerText=
             currentWord[0];
+
 
     document
         .getElementById("final-category")
         .innerText=
             categoryNames[currentWord[1]];
 
+
     const names=
         impostors.map(
             index=>players[index]
         );
+
 
     document
         .getElementById("final-impostors")
@@ -2462,13 +3106,73 @@ function backToSetup(){
 
 
 /* =========================================================
+   JAK GRAĆ — MODAL
+========================================================= */
+
+function openHowToPlay(){
+
+    howToPlayModal.classList.remove("hidden");
+
+    document.body.style.overflow="hidden";
+
+}
+
+
+function closeHowToPlay(){
+
+    howToPlayModal.classList.add("hidden");
+
+    document.body.style.overflow="";
+
+}
+
+
+function handleModalBackground(event){
+
+    if(event.target===howToPlayModal){
+        closeHowToPlay();
+    }
+
+}
+
+
+document.addEventListener("keydown",function(event){
+
+    if(event.key==="Escape"){
+        closeHowToPlay();
+    }
+
+});
+
+
+/* =========================================================
+   BEZPIECZNE WSTAWIANIE TEKSTU DO HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
    START
 ========================================================= */
 
 renderCategories();
+
 updatePlayerPreview();
+
 updateImpostorOptions();
+
 updateCategoryVisuals();
+
 updateWordCounter();
 
 </script>
